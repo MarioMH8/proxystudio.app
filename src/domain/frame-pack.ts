@@ -2,18 +2,18 @@ import type { Bounds } from './card';
 
 /** An individual selectable frame image within a pack */
 interface FrameTile {
-	/** Optional custom bounds (null = full card) */
-	bounds: Bounds | null;
+	/** Optional custom bounds (undefined = full card) */
+	bounds: Bounds | undefined;
 	/** Unique identifier within the pack */
 	id: string;
 	/** Named mask reference (future use) */
-	mask: null | string;
+	mask: string | undefined;
 	/** Display name (e.g., "White", "Blue P/T Box") */
 	name: string;
 	/** Image source URL */
 	src: string;
 	/** Optional smaller thumbnail for the picker grid */
-	thumbnailSrc: null | string;
+	thumbnailSrc: string | undefined;
 }
 
 /** Default positions for layer types when a frame pack is loaded */
@@ -48,8 +48,8 @@ interface FramePack {
 	groupId: string;
 	/** Unique identifier (e.g., "m15-standard") */
 	id: string;
-	/** Default positions for other layer types (null for addon packs) */
-	layoutPreset: LayoutPreset | null;
+	/** Default positions for other layer types (undefined for addon packs) */
+	layoutPreset: LayoutPreset | undefined;
 	/** Display name (e.g., "M15 Standard") */
 	name: string;
 	/** Available frame tiles in this pack */

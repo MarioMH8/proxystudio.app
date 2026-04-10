@@ -21,8 +21,8 @@ interface LayerBase {
 
 /** A layer that displays a frame image (border, pinline, P/T box) */
 interface FrameLayer extends LayerBase {
-	/** Custom position/size on canvas (null = full card) */
-	bounds: Bounds | null;
+	/** Custom position/size on canvas (undefined = full card) */
+	bounds: Bounds | undefined;
 	/** Image source URL (e.g., /frames/m15/white.png) */
 	src: string;
 	/** Reference to the FrameTile that created this layer */
@@ -74,9 +74,9 @@ interface WatermarkLayer extends LayerBase {
 	/** Position/size */
 	bounds: Bounds;
 	/** Optional left gradient color */
-	colorLeft: null | string;
+	colorLeft: string | undefined;
 	/** Optional right gradient color */
-	colorRight: null | string;
+	colorRight: string | undefined;
 	/** Watermark image source */
 	src: string;
 	type: 'watermark';

@@ -21,7 +21,7 @@ interface Card {
 	/** Ordered layer stack. Index 0 = topmost (rendered last, painter's algorithm) */
 	layers: Layer[];
 	/** Active frame pack identifier (e.g., "m15-standard") */
-	version: null | string;
+	version: string | undefined;
 	/** Canvas width in pixels */
 	width: number;
 }
