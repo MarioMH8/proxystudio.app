@@ -23,7 +23,7 @@ interface LayerBase {
 interface FrameLayer extends LayerBase {
 	/** Custom position/size on canvas (undefined = full card) */
 	bounds: Bounds | undefined;
-	/** Image source URL (e.g., /frames/m15/white.png) */
+	/** Image source URL (e.g., /frames/m15/regular/white.png) */
 	src: string;
 	/** Reference to the FrameTile that created this layer */
 	tileId: string;

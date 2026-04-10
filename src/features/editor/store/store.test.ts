@@ -39,7 +39,7 @@ const FRAME_PAYLOAD = {
 	bounds: undefined,
 	defaultName: 'White Frame',
 	name: 'White Frame',
-	src: '/frames/m15/white.png',
+	src: '/frames/m15/regular/white.png',
 	tileId: 'tile-white',
 };
 

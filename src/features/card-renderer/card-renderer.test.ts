@@ -11,7 +11,7 @@ function makeFrameLayer(overrides: Partial<FrameLayer> & { id: string }): FrameL
 		defaultName: 'Frame',
 		name: 'Frame',
 		opacity: 100,
-		src: '/frames/m15/white.png',
+		src: '/frames/m15/regular/white.png',
 		tileId: 'tile-white',
 		type: 'frame',
 		visible: true,
