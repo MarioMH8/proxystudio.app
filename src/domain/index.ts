@@ -1,10 +1,23 @@
 /**
  * Domain barrel export.
- * Types and entities will be added here as they are implemented.
+ * Pure domain types — no editing concerns, no runtime state.
  */
 
 /** Unique identifier for domain entities */
 type EntityId = string;
 
-// eslint-disable-next-line import/prefer-default-export -- barrel file, will have multiple exports
 export type { EntityId };
+export type { Bounds, Card } from './card';
+export { CARD_HEIGHT, CARD_WIDTH } from './card';
+export type { FrameGroup, FramePack, FrameTile, LayoutPreset, TextPreset } from './frame-pack';
+export type {
+	ArtLayer,
+	BottomInfoLayer,
+	FrameLayer,
+	Layer,
+	LayerBase,
+	LayerType,
+	SetSymbolLayer,
+	TextLayer,
+	WatermarkLayer,
+} from './layer';
