@@ -1,13 +1,8 @@
+import { EditorLayout } from '@features/editor';
 import type { ReactNode } from 'react';
 
-import { EditorLayout } from '../features/editor';
-
 function Creator(): ReactNode {
-	return (
-		<div className='h-full w-full'>
-			<EditorLayout />
-		</div>
-	);
+	return <EditorLayout />;
 }
 
 Creator.displayName = 'CreatorPage';

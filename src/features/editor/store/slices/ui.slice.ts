@@ -20,13 +20,16 @@ const initialState: UIState = {
 	isFramePickerOpen: false,
 	panX: 0,
 	panY: 0,
-	zoom: undefined,
+	zoom: 80,
 };
 
 const uiSlice = createSlice({
 	initialState,
 	name: 'ui',
 	reducers: {
+		resetZoom(state) {
+			state.zoom = 80;
+		},
 		setBottomDrawerOpen(state, action: PayloadAction<{ open: boolean }>) {
 			state.isBottomDrawerOpen = action.payload.open;
 		},
@@ -47,5 +50,6 @@ const uiSlice = createSlice({
 });
 
 export type { UIState };
-export const { setBottomDrawerOpen, setCommandPaletteOpen, setFramePickerOpen, setPan, setZoom } = uiSlice.actions;
+export const { resetZoom, setBottomDrawerOpen, setCommandPaletteOpen, setFramePickerOpen, setPan, setZoom } =
+	uiSlice.actions;
 export default uiSlice;

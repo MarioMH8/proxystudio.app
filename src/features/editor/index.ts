@@ -1,7 +1,6 @@
 /**
  * Editor feature barrel export.
- * Exports the main EditorLayout component for page composition.
+ * Exports the main Editor component for page composition.
  */
-
-export { default as EditorLayout } from './components/editor-layout';
-export { default as Toolbar } from './components/toolbar';
+// eslint-disable-next-line import/prefer-default-export
+export { default as EditorLayout } from './editor';

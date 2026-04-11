@@ -20,7 +20,7 @@ interface CardRendererProps {
 	/** Viewport width (CSS pixels) */
 	width: number;
 	/** Zoom level percentage (default: fit-to-viewport) */
-	zoom?: number;
+	zoom?: number | undefined;
 }
 
 /** Compute the scale factor from viewport dimensions and optional zoom. */
@@ -79,8 +79,20 @@ const CardRenderer = forwardRef<CardRendererReference, CardRendererProps>(
 					throw new Error('Stage not available');
 				}
 
-				// Export at full resolution (2010x2814) regardless of viewport zoom
+				/*
+				 * Export at full resolution (CARD_WIDTH x CARD_HEIGHT) cropped to the card bounds.
+				 * pixelRatio=1/scale converts from scaled viewport coords back to card native pixels.
+				 */
 				const pixelRatio = options?.pixelRatio ?? 1 / scale;
+
+				/*
+				 * The card is positioned at (offset.x, offset.y) in the stage coordinate system.
+				 * We need to crop the export to only the card area.
+				 */
+				const cardScaledWidth = CARD_WIDTH * scale;
+				const cardScaledHeight = CARD_HEIGHT * scale;
+				const cardX = (width - cardScaledWidth) / 2 + panX;
+				const cardY = (height - cardScaledHeight) / 2 + panY;
 
 				return new Promise<Blob>((resolve, reject) => {
 					void stage
@@ -92,22 +104,27 @@ const CardRenderer = forwardRef<CardRendererReference, CardRendererProps>(
 									reject(new Error('Failed to export canvas to blob'));
 								}
 							},
+							height: cardScaledHeight,
 							pixelRatio,
+							width: cardScaledWidth,
+							x: cardX,
+							y: cardY,
 						})
 						.catch((error: unknown) => {
 							reject(error instanceof Error ? error : new Error('Export failed'));
 						});
 				});
 			},
-			[scale]
+			[scale, width, height, panX, panY]
 		);
 
 		const getStage = useCallback((): Konva.Stage | undefined => stageReference.current ?? undefined, []);
 
 		const resetTransform = useCallback((): void => {
 			/*
-			 * Reset is handled by the parent through zoom/pan props
-			 * This is a signal to the parent to reset
+			 * TODO: Accept an optional `onResetTransform` prop so the parent
+			 * can dispatch resetZoom() + setPan({ x: 0, y: 0 }) when called.
+			 * Currently a no-op — zoom/pan are controlled by the parent via props.
 			 */
 		}, []);
 
@@ -123,26 +140,32 @@ const CardRenderer = forwardRef<CardRendererReference, CardRendererProps>(
 
 		const renderOrder = computeRenderOrder(card.layers);
 
+		const layerCount = renderOrder.length;
+
 		return (
-			<Stage
-				height={height}
-				ref={stageReference}
-				scaleX={scale}
-				scaleY={scale}
-				width={width}
-				x={offset.x}
-				y={offset.y}>
-				<KonvaLayer>
-					{renderOrder.map(layer => (
-						<LayerRenderer
-							cardHeight={CARD_HEIGHT}
-							cardWidth={CARD_WIDTH}
-							key={layer.id}
-							layer={layer}
-						/>
-					))}
-				</KonvaLayer>
-			</Stage>
+			<div
+				aria-label={`Card preview with ${String(layerCount)} visible ${layerCount === 1 ? 'layer' : 'layers'}`}
+				role='img'>
+				<Stage
+					height={height}
+					ref={stageReference}
+					scaleX={scale}
+					scaleY={scale}
+					width={width}
+					x={offset.x}
+					y={offset.y}>
+					<KonvaLayer>
+						{renderOrder.map(layer => (
+							<LayerRenderer
+								cardHeight={CARD_HEIGHT}
+								cardWidth={CARD_WIDTH}
+								key={layer.id}
+								layer={layer}
+							/>
+						))}
+					</KonvaLayer>
+				</Stage>
+			</div>
 		);
 	}
 );

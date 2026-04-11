@@ -14,8 +14,8 @@ import { buildAddFrameLayerPayload } from './data/m15-standard';
 const sampleTile: FrameTile = {
 	bounds: undefined,
 	id: 'white',
-	mask: undefined,
-	name: 'White',
+	masks: [],
+	name: 'White Frame',
 	src: '/frames/m15/regular/white.png',
 	thumbnailSrc: '/frames/m15/regular/white.thumb.png',
 };

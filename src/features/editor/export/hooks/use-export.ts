@@ -1,9 +1,9 @@
 import type { Layer } from '@domain';
+import type { CardRendererReference } from '@features/card-renderer';
 import type { RefObject } from 'react';
 import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
 
-import type { CardRendererReference } from '../../../card-renderer';
 import { selectLayers, useEditorSelector } from '../../store';
 
 /**

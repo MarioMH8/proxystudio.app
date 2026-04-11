@@ -1,21 +1,29 @@
+import type { CardRendererReference } from '@features/card-renderer';
 import type { ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 
-import type { CardRendererReference } from '../../card-renderer';
-import { CanvasViewport } from '../canvas';
-import { FramePickerDialog } from '../frame-picker';
-import { selectIsFramePickerOpen, setFramePickerOpen, useEditorDispatch, useEditorSelector } from '../store';
-import createEditorStore from '../store/store';
-import Toolbar from './toolbar';
+import { CanvasEmptyState, CanvasViewport } from './canvas';
+import { FramePickerDialog } from './frame-picker';
+import { LayersPanel } from './layers';
+import {
+	createEditorStore,
+	selectIsFramePickerOpen,
+	selectLayers,
+	setFramePickerOpen,
+	useEditorDispatch,
+	useEditorSelector,
+} from './store';
+import { LayerToolbar } from './toolbar';
 
 /**
  * Inner layout that has access to the editor Redux store.
- * Separated from EditorLayout to allow useSelector/useDispatch access.
+ * Separated from Editor to allow useSelector/useDispatch access.
  */
 function EditorLayoutInner(): ReactNode {
 	const dispatch = useEditorDispatch();
 	const isFramePickerOpen = useEditorSelector(selectIsFramePickerOpen);
+	const layers = useEditorSelector(selectLayers);
 
 	const rendererReference = useRef<CardRendererReference>(null);
 
@@ -56,50 +64,57 @@ function EditorLayoutInner(): ReactNode {
 		[dispatch]
 	);
 
+	const hasLayers = layers.length > 0;
+
 	return (
-		<div className='flex h-full w-full flex-col overflow-hidden'>
-			{/* Toolbar */}
-			<Toolbar rendererReference={rendererReference} />
+		<section
+			aria-label='Card editor'
+			className='h-full w-full flex flex-row overflow-hidden'>
+			{/* Canvas viewport with floating toolbar */}
+			<div
+				aria-label='Card canvas'
+				className='relative flex-1 overflow-hidden'
+				ref={canvasContainerReference}
+				role='region'>
+				{/* Empty state overlay */}
+				{!hasLayers && <CanvasEmptyState />}
 
-			{/* Main area: canvas (left ~60%) + right panel placeholder (~40%) */}
-			<div className='flex flex-1 overflow-hidden'>
-				{/* Canvas viewport */}
-				<div
-					className='relative flex-1 overflow-hidden bg-foreground-200 dark:bg-foreground-800'
-					ref={canvasContainerReference}>
-					{viewportSize.width > 0 && viewportSize.height > 0 && (
-						<CanvasViewport
-							height={viewportSize.height}
-							rendererReference={rendererReference}
-							width={viewportSize.width}
-						/>
-					)}
-				</div>
+				{/* Canvas */}
+				{viewportSize.width > 0 && viewportSize.height > 0 && (
+					<CanvasViewport
+						height={viewportSize.height}
+						rendererReference={rendererReference}
+						width={viewportSize.width}
+					/>
+				)}
 
-				{/* Right panel placeholder — layers + properties (Phase 4/6) */}
-				<div className='hidden w-80 shrink-0 overflow-y-auto border-l border-foreground-200 bg-foreground-50 dark:border-foreground-700 dark:bg-foreground-900 md:flex md:flex-col'>
-					<div className='flex items-center justify-center p-6 text-sm text-foreground-400'>
-						Layers panel coming soon
-					</div>
-				</div>
+				{/* Floating toolbar — positioned at bottom-center of canvas */}
+				<LayerToolbar rendererReference={rendererReference} />
 			</div>
+
+			{/* Right panel — Layers (40 % of width, min 288 px so it never gets too small) */}
+			<aside
+				aria-label='Layers sidebar'
+				className='hidden w-2/5 min-w-lg shrink-0 overflow-y-auto xl:flex xl:flex-col'>
+				<LayersPanel />
+			</aside>
 
 			{/* Frame picker dialog */}
 			<FramePickerDialog
 				onOpenChange={handleFramePickerOpenChange}
 				open={isFramePickerOpen}
 			/>
-		</div>
+		</section>
 	);
 }
 
 /**
  * Top-level layout component for the editor.
  * Wraps the editor in its own Redux Provider (editor store is scoped, not global).
- * Renders a two-region desktop layout (canvas ~60% left, right panel ~40%).
+ * Renders a two-region desktop layout (canvas left, layers panel right).
  * Mobile layout (canvas + bottom drawer) is added in Phase 9 (US7).
  */
-function EditorLayout(): ReactNode {
+function Editor(): ReactNode {
 	// Create a stable store instance for this editor session
 	const store = useMemo(() => createEditorStore(), []);
 
@@ -110,6 +125,6 @@ function EditorLayout(): ReactNode {
 	);
 }
 
-EditorLayout.displayName = 'EditorLayout';
+Editor.displayName = 'Editor';
 
-export default EditorLayout;
+export default Editor;

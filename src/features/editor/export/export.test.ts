@@ -6,15 +6,22 @@
  * DOM operations (anchor download) are tested via a mock injected factory.
  */
 
+import type { CardRendererReference } from '@features/card-renderer';
 import { describe, expect, it, mock } from 'bun:test';
 
-import type { CardRendererReference } from '../../card-renderer';
-import type { CardState } from '../store/slices/card.slice';
+import type { CardState } from '../store';
 import { exportPNGFromReference } from './hooks/use-export';
 
 /** Stub for void-return callbacks used in mocks */
 function voidStub(..._arguments: unknown[]): void {
 	void _arguments;
+}
+
+/** Stub for getStage — returns undefined to satisfy Konva.Stage | undefined */
+function getStageStub(..._arguments: unknown[]): undefined {
+	void _arguments;
+
+	return undefined;
 }
 
 /**
@@ -28,7 +35,7 @@ function createMockReference(blobResult?: Blob): { current: CardRendererReferenc
 	return {
 		current: {
 			exportPNG: mockExportPNG,
-			getStage: mock(voidStub),
+			getStage: mock(getStageStub),
 			resetTransform: mock(voidStub),
 		},
 	};

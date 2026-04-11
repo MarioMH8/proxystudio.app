@@ -1,13 +1,21 @@
 import type { Bounds } from './card';
 
+/** A named mask image that can be applied to a frame tile */
+interface MaskReference {
+	/** Display name (e.g., "Pinline", "Title", "Frame") */
+	name: string;
+	/** Mask image source URL */
+	src: string;
+}
+
 /** An individual selectable frame image within a pack */
 interface FrameTile {
 	/** Optional custom bounds (undefined = full card) */
 	bounds: Bounds | undefined;
 	/** Unique identifier within the pack */
 	id: string;
-	/** Named mask reference (future use) */
-	mask: string | undefined;
+	/** Pre-configured masks for this tile (empty array = no masks) */
+	masks: MaskReference[];
 	/** Display name (e.g., "White", "Blue P/T Box") */
 	name: string;
 	/** Image source URL */
@@ -16,7 +24,14 @@ interface FrameTile {
 	thumbnailSrc: string | undefined;
 }
 
-/** Default positions for layer types when a frame pack is loaded */
+/**
+ * Default configuration for a text field when a frame pack is loaded.
+ *
+ * Core positional fields (bounds, font, fontSize, alignment) are always present.
+ * Additional fields from the original `loadTextOptions()` call are preserved
+ * as optional properties so that no information from the original pack file
+ * is lost (see constitution.md §Frame Pack Fidelity).
+ */
 interface TextPreset {
 	/** Text alignment */
 	alignment: 'center' | 'left' | 'right';
@@ -24,20 +39,43 @@ interface TextPreset {
 	bounds: Bounds;
 	/** Font family */
 	font: string;
-	/** Font size */
+	/** Font size (fraction of card height) */
 	fontSize: number;
-	/** Preset name */
+	/** Whether this is a mana cost field (renders mana symbols) */
+	manaCost?: boolean;
+	/** Spacing between mana symbols */
+	manaSpacing?: number;
+	/** Preset name (e.g., "Mana Cost", "Title", "Rules Text") */
 	name: string;
+	/** Whether this text field is restricted to a single line */
+	oneLine?: boolean;
+	/** Horizontal shadow offset (fraction of card width) */
+	shadowX?: number;
+	/** Vertical shadow offset (fraction of card height) */
+	shadowY?: number;
+}
+
+/** Vertical/horizontal anchor for set symbol positioning */
+type Anchor = 'bottom' | 'center' | 'left' | 'right' | 'top';
+
+/** Set symbol bounds with alignment anchors */
+interface SetSymbolBounds extends Bounds {
+	/** Horizontal alignment anchor */
+	horizontal: Anchor;
+	/** Vertical alignment anchor */
+	vertical: Anchor;
 }
 
 /** Layout preset defining default positions for other layer types */
 interface LayoutPreset {
 	/** Default art layer position */
 	artBounds: Bounds;
-	/** Default set symbol position with vertical anchor */
-	setSymbolBounds: Bounds & { vertical: boolean };
+	/** Default set symbol position with alignment anchors */
+	setSymbolBounds: SetSymbolBounds;
 	/** Default text layer configurations */
 	textPresets: TextPreset[];
+	/** Card version identifier (e.g., "m15Regular") from the original card.version */
+	version: string;
 	/** Default watermark position */
 	watermarkBounds: Bounds;
 }
@@ -66,4 +104,4 @@ interface FrameGroup {
 	packs: FramePack[];
 }
 
-export type { FrameGroup, FramePack, FrameTile, LayoutPreset, TextPreset };
+export type { Anchor, FrameGroup, FramePack, FrameTile, LayoutPreset, MaskReference, SetSymbolBounds, TextPreset };

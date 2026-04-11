@@ -256,7 +256,7 @@ describe('editorSlice', () => {
 
 describe('uiSlice', () => {
 	it('should have correct initial state', () => {
-		expect(selectZoom(store.getState())).toBeUndefined();
+		expect(selectZoom(store.getState())).toBe(80);
 		expect(selectPan(store.getState())).toEqual({ x: 0, y: 0 });
 		expect(selectIsFramePickerOpen(store.getState())).toBe(false);
 		expect(selectIsCommandPaletteOpen(store.getState())).toBe(false);

@@ -25,7 +25,14 @@ export { selectLayer, setImageStatus, toggleLock } from './slices/editor.slice';
 
 // Slices — ui
 export type { UIState } from './slices/ui.slice';
-export { setBottomDrawerOpen, setCommandPaletteOpen, setFramePickerOpen, setPan, setZoom } from './slices/ui.slice';
+export {
+	resetZoom,
+	setBottomDrawerOpen,
+	setCommandPaletteOpen,
+	setFramePickerOpen,
+	setPan,
+	setZoom,
+} from './slices/ui.slice';
 
 // Selectors
 export {

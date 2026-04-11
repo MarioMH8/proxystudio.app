@@ -1,7 +1,7 @@
+import type { CardRendererReference } from '@features/card-renderer';
+import { CardRenderer } from '@features/card-renderer';
 import type { ReactNode, RefObject } from 'react';
 
-import type { CardRendererReference } from '../../../card-renderer';
-import { CardRenderer } from '../../../card-renderer';
 import { selectCard, selectPan, selectZoom, useEditorSelector } from '../../store';
 
 interface CanvasViewportProps {

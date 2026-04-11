@@ -16,13 +16,13 @@ import NavigationMenuLi from './navigation-menu-li';
 import NavigationMenuUl from './navigation-menu-ul';
 
 const variants = cva({
-	base: 'fixed w-full z-20 motion-safe:transition-all',
+	base: 'fixed w-full z-20 motion-safe:transition-all flex flex-col items-center',
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {
 		bordered: {
 			false: 'border-b-0 border-transparent',
-			true: 'border-b border-foreground-300 dark:border-foreground-800',
+			true: 'border-b border-foreground-300 dark:border-foreground-800 min-h-28',
 		},
 		scrolled: {
 			false: 'bg-transparent py-6',

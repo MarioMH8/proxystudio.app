@@ -9,6 +9,8 @@
 		"paths": {
 			"@components/*": ["./src/components/*"],
 			"@domain": ["./src/domain/index.ts"],
+			"@features/card-renderer": ["./src/features/card-renderer/index.ts"],
+			"@features/editor": ["./src/features/editor/index.ts"],
 			"@pages/*": ["./src/pages/*"],
 			"@shared/*": ["./src/shared/*"]
 		}

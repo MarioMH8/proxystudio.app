@@ -1,6 +1,5 @@
 /**
  * Export sub-feature barrel export.
  */
-
-export type { UseExportOptions, UseExportReturn } from './hooks/use-export';
-export { exportPNGFromReference, default as useExport } from './hooks/use-export';
+// eslint-disable-next-line import/prefer-default-export
+export { default as useExport } from './hooks/use-export';

@@ -1,0 +1,34 @@
+import type { ReactNode } from 'react';
+
+import { selectLayers, useEditorSelector } from '../../store';
+import LayersEmptyState from './layers-empty-state';
+import LayersHeader from './layers-header';
+import LayerList from './layers-list';
+
+/**
+ * Layers panel for the editor sidebar.
+ * Shows a header with "Layers" title and "+ Add Layer" action.
+ * Lists existing layers, or shows an empty state when none exist.
+ */
+function LayersPanel(): ReactNode {
+	const layers = useEditorSelector(selectLayers);
+
+	return (
+		<div
+			aria-label='Layers panel'
+			className='flex h-full flex-col gap-4 p-8'
+			role='region'>
+			{/* Header */}
+			<LayersHeader />
+
+			{/* Content */}
+			<div className='flex-1 overflow-y-auto p-2 rounded-xl border border-foreground-300 bg-foreground-200 shadow-inner dark:border-foreground-800 dark:bg-foreground-900'>
+				{layers.length === 0 ? <LayersEmptyState /> : <LayerList layers={layers} />}
+			</div>
+		</div>
+	);
+}
+
+LayersPanel.displayName = 'LayersPanel';
+
+export default LayersPanel;
