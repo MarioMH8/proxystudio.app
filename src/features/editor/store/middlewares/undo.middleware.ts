@@ -29,7 +29,7 @@ enablePatches();
 const UNDO_ACTION = 'undo/undo';
 const REDO_ACTION = 'undo/redo';
 const REPLACE_STATE_ACTION = 'undo/replaceState';
-const MAX_HISTORY = 100;
+const MAX_HISTORY = Number(import.meta.env.VITE_MAX_UNDO_HISTORY ?? 100);
 
 interface PatchEntry {
 	redo: Patch[];
