@@ -29,6 +29,16 @@ const variants = cva({
 			icon: false,
 		},
 		{
+			className: 'p-2 w-6 h-6',
+			dimension: 'xs',
+			icon: true,
+		},
+		{
+			className: 'px-3 py-1 rounded',
+			dimension: 'xs',
+			icon: false,
+		},
+		{
 			className: 'bg-foreground-300/50 dark:bg-foreground-700/50',
 			transparent: false,
 			variant: 'default',
@@ -74,6 +84,7 @@ const variants = cva({
 		dimension: {
 			base: 'text-base',
 			sm: 'text-sm',
+			xs: 'text-xs',
 		},
 		disabled: {
 			false: [],

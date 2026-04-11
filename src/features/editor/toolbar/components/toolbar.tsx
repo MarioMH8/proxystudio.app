@@ -1,5 +1,4 @@
 import Button from '@components/button';
-import Span from '@components/span';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/tooltip';
 import type { CardRendererReference } from '@features/card-renderer';
 import { Download, Redo2, Undo2, ZoomIn, ZoomOut } from 'lucide-react';
@@ -8,6 +7,7 @@ import type { ReactNode, RefObject } from 'react';
 import { useExport } from '../../export';
 import {
 	REDO_ACTION,
+	resetZoom,
 	selectCanRedo,
 	selectCanUndo,
 	selectZoom,
@@ -117,15 +117,24 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 					<TooltipContent>Zoom out</TooltipContent>
 				</Tooltip>
 
-				<Span
-					aria-live='polite'
-					className='min-w-12 select-none text-center'
-					dimension='xs'
-					role='status'
-					variant='middle'
-					weight='medium'>
-					{zoomPercent}
-				</Span>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<Button
+							aria-label='Reset zoom'
+							aria-live='polite'
+							className='min-w-12 text-foreground-500 dark:text-foreground-500'
+							dimension='xs'
+							onClick={() => {
+								dispatch(resetZoom());
+							}}
+							role='status'
+							transparent
+							weight='normal'>
+							{zoomPercent}
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent>Reset zoom (80%)</TooltipContent>
+				</Tooltip>
 
 				<Tooltip>
 					<TooltipTrigger asChild>
