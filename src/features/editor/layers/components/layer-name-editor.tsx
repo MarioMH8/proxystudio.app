@@ -1,3 +1,4 @@
+import Input from '@components/input';
 import type { KeyboardEvent, ReactNode } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -70,8 +71,9 @@ function LayerNameEditor({ defaultName, isEditing, name, onCancel, onConfirm }: 
 	}
 
 	return (
-		<input
-			className='min-w-0 flex-1 rounded border border-primary-500 bg-foreground-50 px-1 py-0 text-sm focus:outline-none dark:bg-foreground-900'
+		<Input
+			className='min-w-0 flex-1 px-1 py-0'
+			dimension='sm'
 			onBlur={handleConfirm}
 			onChange={event => {
 				setDraft(event.target.value);
