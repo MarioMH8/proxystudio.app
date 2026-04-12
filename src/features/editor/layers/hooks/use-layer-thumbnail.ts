@@ -29,7 +29,7 @@ interface UseLayerThumbnailOptions {
  */
 function useLayerThumbnail({ isDragging, layerId, source }: UseLayerThumbnailOptions): string | undefined {
 	const [dataUrl, setDataUrl] = useState<string | undefined>(() => thumbnailCache.get(layerId));
-	const rafReference = useRef<number | undefined>();
+	const rafReference = useRef<number | undefined>(undefined);
 
 	const generate = useCallback(() => {
 		if (!source || isDragging) {
