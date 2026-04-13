@@ -8,6 +8,7 @@ import { useCallback } from 'react';
 import { setLayerBounds, setOpacity, useEditorDispatch } from '../../store';
 
 interface FramePropertiesProps {
+	isLocked?: boolean;
 	layer: FrameLayer;
 }
 
@@ -27,7 +28,7 @@ const FULL_CARD_BOUNDS: Bounds = { height: 1, width: 1, x: 0, y: 0 };
  * Consecutive setLayerBounds / setOpacity dispatches for the same layer are
  * collapsed into a single undo entry by the undo middleware.
  */
-function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
+function FrameProperties({ isLocked = false, layer }: FramePropertiesProps): ReactNode {
 	const dispatch = useEditorDispatch();
 	const bounds = layer.bounds ?? FULL_CARD_BOUNDS;
 
@@ -35,16 +36,24 @@ function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
 
 	const handleOpacityChange = useCallback(
 		(event: ChangeEvent<HTMLInputElement>) => {
+			if (isLocked) {
+				return;
+			}
+
 			const opacity = Number(event.target.value);
 			dispatch(setOpacity({ layerId: layer.id, opacity }));
 		},
-		[dispatch, layer.id]
+		[dispatch, isLocked, layer.id]
 	);
 
 	// ── Bounds ───────────────────────────────────────────────────────────────
 
 	const handleBoundsChange = useCallback(
 		(field: keyof Bounds) => (event: ChangeEvent<HTMLInputElement>) => {
+			if (isLocked) {
+				return;
+			}
+
 			const px = Number(event.target.value);
 			const fraction = field === 'x' || field === 'width' ? px / CARD_WIDTH : px / CARD_HEIGHT;
 
@@ -55,7 +64,7 @@ function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
 				})
 			);
 		},
-		[dispatch, layer.id, bounds]
+		[dispatch, isLocked, layer.id, bounds]
 	);
 
 	// Display values rounded to nearest integer pixel
@@ -76,6 +85,7 @@ function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
 						X
 						<Input
 							dimension='xs'
+							disabled={isLocked}
 							id={`bounds-x-${layer.id}`}
 							max={CARD_WIDTH}
 							min={0}
@@ -89,6 +99,7 @@ function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
 						Y
 						<Input
 							dimension='xs'
+							disabled={isLocked}
 							id={`bounds-y-${layer.id}`}
 							max={CARD_HEIGHT}
 							min={0}
@@ -102,6 +113,7 @@ function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
 						W
 						<Input
 							dimension='xs'
+							disabled={isLocked}
 							id={`bounds-w-${layer.id}`}
 							max={CARD_WIDTH}
 							min={0}
@@ -115,6 +127,7 @@ function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
 						H
 						<Input
 							dimension='xs'
+							disabled={isLocked}
 							id={`bounds-h-${layer.id}`}
 							max={CARD_HEIGHT}
 							min={0}
@@ -140,7 +153,8 @@ function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
 					</span>
 				</div>
 				<input
-					className='h-2 w-full cursor-pointer appearance-none rounded-full bg-foreground-200 accent-primary-600 dark:bg-foreground-700 dark:accent-primary-400'
+					className='h-2 w-full appearance-none rounded-full bg-foreground-200 accent-primary-600 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-foreground-700 dark:accent-primary-400'
+					disabled={isLocked}
 					id={`opacity-${layer.id}`}
 					max={100}
 					min={0}

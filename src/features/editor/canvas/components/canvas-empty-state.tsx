@@ -9,7 +9,7 @@ function CanvasEmptyState(): ReactNode {
 		<div
 			aria-hidden='true'
 			className='flex h-full w-full items-center justify-center'>
-			<div className='h-full w-full rounded border-2 border-dashed border-foreground-400 dark:border-foreground-600' />
+			<div className='h-full w-full rounded border-2 border-foreground-400 dark:border-foreground-600' />
 		</div>
 	);
 }
