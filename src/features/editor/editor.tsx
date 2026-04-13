@@ -14,8 +14,8 @@ import {
 	setFramePickerOpen,
 	useEditorDispatch,
 	useEditorSelector,
+	useUndoRedoShortcuts,
 } from './store';
-import useUndoRedoShortcuts from './store/hooks/use-undo-redo-shortcuts';
 import { LayerToolbar } from './toolbar';
 
 /**

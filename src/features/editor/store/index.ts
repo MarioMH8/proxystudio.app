@@ -3,6 +3,8 @@
  * Re-exports store factory, typed hooks, slices, selectors, and undo actions.
  */
 
+export { default as useUndoRedoShortcuts } from './hooks/use-undo-redo-shortcuts';
+
 // Store
 export type { EditorDispatch, EditorRootState, EditorStore } from './store';
 export { default as createEditorStore, useEditorDispatch, useEditorSelector } from './store';
@@ -36,7 +38,6 @@ export {
 	ZOOM_MAX,
 	ZOOM_MIN,
 } from './slices/ui.slice';
-
 // Selectors
 export {
 	selectCanRedo,

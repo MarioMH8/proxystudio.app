@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
-import { REDO_ACTION, UNDO_ACTION, useEditorDispatch } from '..';
+import { REDO_ACTION, UNDO_ACTION } from '../middlewares/undo.middleware';
+import { useEditorDispatch } from '../store';
 
 /**
  * Registers global keyboard shortcuts for undo and redo.
