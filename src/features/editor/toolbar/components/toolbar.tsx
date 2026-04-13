@@ -7,7 +7,7 @@ import type { ReactNode, RefObject } from 'react';
 import { useExport } from '../../export';
 import {
 	REDO_ACTION,
-	resetZoom,
+	resetView,
 	selectCanRedo,
 	selectCanUndo,
 	selectZoom,
@@ -128,7 +128,7 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 							className='min-w-12 text-foreground-500 dark:text-foreground-500'
 							dimension='xs'
 							onClick={() => {
-								dispatch(resetZoom());
+								dispatch(resetView());
 							}}
 							role='status'
 							transparent
@@ -136,7 +136,7 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 							{zoomPercent}
 						</Button>
 					</TooltipTrigger>
-					<TooltipContent>Reset zoom ({ZOOM_DEFAULT}%)</TooltipContent>
+					<TooltipContent>Reset view ({ZOOM_DEFAULT}%)</TooltipContent>
 				</Tooltip>
 
 				<Tooltip>
