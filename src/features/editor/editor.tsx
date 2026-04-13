@@ -86,7 +86,7 @@ function EditorLayoutInner(): ReactNode {
 			{/* Right panel — Layers (40 % of width, min 288 px so it never gets too small) */}
 			<aside
 				aria-label='Layers sidebar'
-				className='hidden w-2/5 min-w-lg shrink-0 overflow-y-auto xl:flex xl:flex-col'>
+				className='hidden w-2/5 min-w-lg shrink-0 overflow-y-auto xl:flex xl:flex-col space-y-8 pb-8'>
 				<LayersPanel />
 				<PropertiesPanel />
 			</aside>

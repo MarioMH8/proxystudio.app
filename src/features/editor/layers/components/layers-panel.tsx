@@ -16,7 +16,7 @@ function LayersPanel(): ReactNode {
 	return (
 		<div
 			aria-label='Layers panel'
-			className='flex h-full flex-col gap-4 p-8'
+			className='flex h-full flex-col gap-4 px-8'
 			role='region'>
 			{/* Header */}
 			<LayersHeader />

@@ -1,3 +1,4 @@
+import Heading from '@components/heading';
 import type { ReactNode } from 'react';
 
 import { selectSelectedLayer, useEditorSelector } from '../../store';
@@ -24,12 +25,16 @@ function PropertiesPanel(): ReactNode {
 		return (
 			<section
 				aria-label='Layer properties'
-				className='border-t border-foreground-200 dark:border-foreground-700'>
-				<div className='px-4 pt-3 pb-1'>
-					<h3 className='text-xs font-semibold uppercase tracking-wide text-foreground-500 dark:text-foreground-400'>
-						Properties
-					</h3>
-				</div>
+				className='px-8'>
+				<Heading
+					dimension='xs'
+					heading='h3'
+					tracking='wide'
+					uppercase
+					variant='muted'
+					weight='semibold'>
+					Properties
+				</Heading>
 				<FrameProperties layer={selectedLayer} />
 			</section>
 		);
