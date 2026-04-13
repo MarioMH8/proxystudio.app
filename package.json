@@ -1,5 +1,5 @@
 {
-	"name": "proxycard.app",
+	"name": "proxystudio.app",
 	"version": "0.0.0",
 	"author": "MarioMH <dev@mariomh.com>",
 	"description": "A website that creates custom TCG cards",
@@ -13,12 +13,12 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/MarioMH8/proxycard.app.git",
+		"url": "git+https://github.com/MarioMH8/proxystudio.app.git",
 		"directory": "app"
 	},
-	"homepage": "https://proxycard.app",
+	"homepage": "https://proxystudio.app",
 	"bugs": {
-		"url": "https://github.com/MarioMH8/proxycard.app/issues"
+		"url": "https://github.com/MarioMH8/proxystudio.app/issues"
 	},
 	"private": true,
 	"type": "module",

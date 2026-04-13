@@ -56,7 +56,7 @@ async function exportPNGFromReference(
 	}
 
 	const blob = await reference.exportPNG();
-	downloadBlob(blob, 'proxycard.png');
+	downloadBlob(blob, 'proxystudio.png');
 	showSuccessToast('Image downloaded');
 }
 

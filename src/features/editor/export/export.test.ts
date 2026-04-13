@@ -99,7 +99,7 @@ describe('exportPNGFromReference', () => {
 		expect(calledBlob).toBe(blob);
 	});
 
-	it('should use proxycard.png as the download filename', async () => {
+	it('should use proxystudio.png as the download filename', async () => {
 		const blob = new Blob(['png-data'], { type: 'image/png' });
 		const reference = createMockReference(blob);
 		const layers = makeLayers(1);
@@ -110,7 +110,7 @@ describe('exportPNGFromReference', () => {
 		await exportPNGFromReference(reference, layers, errorToastSpy, successToastSpy, downloadSpy);
 
 		const [, filename] = (downloadSpy as ReturnType<typeof mock>).mock.calls[0] as [Blob, string];
-		expect(filename).toBe('proxycard.png');
+		expect(filename).toBe('proxystudio.png');
 	});
 
 	it('should show a success toast after a successful download', async () => {
