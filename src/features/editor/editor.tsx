@@ -8,9 +8,11 @@ import { FramePickerDialog } from './frame-picker';
 import { LayersPanel } from './layers';
 import {
 	createEditorStore,
+	REDO_ACTION,
 	selectIsFramePickerOpen,
 	selectLayers,
 	setFramePickerOpen,
+	UNDO_ACTION,
 	useEditorDispatch,
 	useEditorSelector,
 } from './store';
@@ -63,6 +65,32 @@ function EditorLayoutInner(): ReactNode {
 		},
 		[dispatch]
 	);
+
+	// Global keyboard shortcuts: undo (Cmd/Ctrl+Z) and redo (Cmd/Ctrl+Shift+Z)
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			const isMac = navigator.platform.startsWith('Mac');
+			const modifier = isMac ? event.metaKey : event.ctrlKey;
+
+			if (!modifier) {
+				return;
+			}
+
+			if (event.key === 'z' && !event.shiftKey) {
+				event.preventDefault();
+				dispatch({ type: UNDO_ACTION });
+			} else if (event.key === 'z' && event.shiftKey) {
+				event.preventDefault();
+				dispatch({ type: REDO_ACTION });
+			}
+		};
+
+		globalThis.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			globalThis.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [dispatch]);
 
 	const hasLayers = layers.length > 0;
 
