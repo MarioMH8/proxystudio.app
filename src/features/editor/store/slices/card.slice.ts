@@ -1,15 +1,10 @@
-import type { Bounds, FrameLayer, Layer } from '@domain';
+import type { Bounds, Card, FrameLayer, Layer } from '@domain';
 import { CARD_HEIGHT, CARD_WIDTH } from '@domain';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-interface CardState {
-	height: number;
-	id: string;
-	layers: Layer[];
-	version: string | undefined;
-	width: number;
-}
+/** Redux slice state for the card — structurally identical to the domain Card entity. */
+type CardState = Card;
 
 const initialState: CardState = {
 	height: CARD_HEIGHT,

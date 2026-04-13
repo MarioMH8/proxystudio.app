@@ -1,16 +1,15 @@
-import type { Layer } from '@domain';
+import type { Card, Layer } from '@domain';
 import { CARD_HEIGHT, CARD_WIDTH } from '@domain';
 import type Konva from 'konva';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import { Layer as KonvaLayer, Stage } from 'react-konva';
 
-import type { CardState } from '../../editor/store/slices/card.slice';
 import type { CardRendererReference } from '../types';
 import LayerRenderer from './layer-renderer';
 
 interface CardRendererProps {
-	/** Pure domain state: card data including layers */
-	card: CardState;
+	/** Pure domain entity: card data including layers */
+	card: Card;
 	/** Viewport height (CSS pixels) */
 	height: number;
 	/** Pan X offset (default: 0) */
