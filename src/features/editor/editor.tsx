@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { useCallback, useMemo, useRef } from 'react';
 import { Provider } from 'react-redux';
 
-import { CanvasEmptyState, CanvasViewport } from './canvas';
+import { CanvasViewport } from './canvas';
 import { CommandPalette, useCommands } from './command-palette';
 import { FramePickerDialog } from './frame-picker';
 import { LayersPanel } from './layers';
@@ -13,7 +13,6 @@ import {
 	createEditorStore,
 	selectIsCommandPaletteOpen,
 	selectIsFramePickerOpen,
-	selectLayers,
 	setCommandPaletteOpen,
 	setFramePickerOpen,
 	useCommandPaletteShortcut,
@@ -31,7 +30,6 @@ function EditorLayoutInner(): ReactNode {
 	const dispatch = useEditorDispatch();
 	const isFramePickerOpen = useEditorSelector(selectIsFramePickerOpen);
 	const isCommandPaletteOpen = useEditorSelector(selectIsCommandPaletteOpen);
-	const layers = useEditorSelector(selectLayers);
 
 	const rendererReference = useRef<CardRendererReference>(null);
 	const { containerRef: canvasContainerReference, size: viewportSize } = useContainerSize();
@@ -55,8 +53,6 @@ function EditorLayoutInner(): ReactNode {
 		[dispatch]
 	);
 
-	const hasLayers = layers.length > 0;
-
 	return (
 		<section
 			aria-label='Card editor'
@@ -67,10 +63,7 @@ function EditorLayoutInner(): ReactNode {
 				className='relative flex-1 overflow-hidden'
 				ref={canvasContainerReference}
 				role='region'>
-				{/* Empty state overlay */}
-				{!hasLayers && <CanvasEmptyState />}
-
-				{/* Canvas */}
+				{/* Canvas — CanvasViewport handles empty state internally */}
 				{viewportSize.width > 0 && viewportSize.height > 0 && (
 					<CanvasViewport
 						height={viewportSize.height}

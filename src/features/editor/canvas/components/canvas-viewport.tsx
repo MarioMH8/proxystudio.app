@@ -4,9 +4,10 @@ import { CardRenderer } from '@features/card-renderer';
 import type { ReactNode, RefObject } from 'react';
 import { useMemo, useRef } from 'react';
 
-import { selectCard, selectPan, selectZoom, useEditorSelector } from '../../store';
+import { selectCard, selectLayers, selectPan, selectZoom, useEditorSelector } from '../../store';
 import useZoomPan from '../hooks/use-zoom-pan';
 import { computeScale, computeTranslate } from '../utilities';
+import CanvasEmptyState from './canvas-empty-state';
 
 interface CanvasViewportProps {
 	/** Viewport height in CSS pixels */
@@ -23,9 +24,12 @@ interface CanvasViewportProps {
  * Applies zoom and pan as a CSS transform on the renderer container —
  * keeping CardRenderer itself at its native card resolution (CARD_WIDTH × CARD_HEIGHT).
  * Attaches gesture-based zoom/pan interactions via useZoomPan.
+ * Renders CanvasEmptyState inside the transform when no layers exist,
+ * so it follows zoom/pan and the shadow only appears when there is content.
  */
 function CanvasViewport({ height, rendererReference, width }: CanvasViewportProps): ReactNode {
 	const card = useEditorSelector(selectCard);
+	const layers = useEditorSelector(selectLayers);
 	const zoom = useEditorSelector(selectZoom);
 	const pan = useEditorSelector(selectPan);
 	const containerReference = useRef<HTMLDivElement | null>(null);
@@ -39,6 +43,8 @@ function CanvasViewport({ height, rendererReference, width }: CanvasViewportProp
 		[width, height, scale, pan.x, pan.y]
 	);
 
+	const hasLayers = layers.length > 0;
+
 	return (
 		<div
 			className='h-full w-full overflow-hidden'
@@ -48,8 +54,10 @@ function CanvasViewport({ height, rendererReference, width }: CanvasViewportProp
 			 * transform-origin: top left so scale expands downward/rightward.
 			 * translate + scale positions and zooms the card within the viewport.
 			 * will-change: transform hints the browser to promote to a compositor layer.
+			 * shadow-2xl only when layers exist — no shadow on the empty state placeholder.
 			 */}
 			<div
+				className={hasLayers ? 'shadow-2xl' : undefined}
 				style={{
 					height: CARD_HEIGHT,
 					left: 0,
@@ -60,10 +68,14 @@ function CanvasViewport({ height, rendererReference, width }: CanvasViewportProp
 					width: CARD_WIDTH,
 					willChange: 'transform',
 				}}>
-				<CardRenderer
-					card={card}
-					ref={rendererReference}
-				/>
+				{hasLayers ? (
+					<CardRenderer
+						card={card}
+						ref={rendererReference}
+					/>
+				) : (
+					<CanvasEmptyState />
+				)}
 			</div>
 		</div>
 	);
