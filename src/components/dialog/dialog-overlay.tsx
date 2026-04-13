@@ -4,14 +4,14 @@ import { Dialog as RadixDialog } from 'radix-ui';
 import type { ReactNode } from 'react';
 
 const variants = cva({
-	base: ['fixed', 'inset-0', 'z-40'],
+	base: ['fixed inset-0 z-30'],
 	compoundVariants: [],
 	defaultVariants: {
 		variant: 'default',
 	},
 	variants: {
 		variant: {
-			default: 'bg-foreground-950/50 dark:bg-foreground-950/80',
+			default: 'bg-black/40 backdrop-blur-sm',
 		},
 	},
 });

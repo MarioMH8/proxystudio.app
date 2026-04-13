@@ -29,7 +29,7 @@ const variants = cva({
 	},
 	variants: {
 		variant: {
-			default: 'bg-foreground-100 dark:bg-foreground-800 dark:border dark:border-foreground-700',
+			default: 'bg-foreground-100 dark:bg-foreground-900 dark:border dark:border-foreground-700',
 		},
 	},
 });
