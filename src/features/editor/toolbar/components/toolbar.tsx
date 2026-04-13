@@ -11,6 +11,7 @@ import {
 	resetView,
 	selectCanRedo,
 	selectCanUndo,
+	selectIsCommandPaletteOpen,
 	selectZoom,
 	setCommandPaletteOpen,
 	setZoom,
@@ -48,6 +49,7 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 	const canUndo = useEditorSelector(selectCanUndo);
 	const canRedo = useEditorSelector(selectCanRedo);
 	const zoom = useEditorSelector(selectZoom);
+	const isCommandPaletteOpen = useEditorSelector(selectIsCommandPaletteOpen);
 	const { exportPNG, isExporting } = useExport({ rendererReference });
 
 	const effectiveZoom = zoom ?? ZOOM_DEFAULT;
@@ -56,8 +58,9 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 	return (
 		<div className='pointer-events-none absolute inset-x-0 bottom-6 z-10 flex justify-center'>
 			<menu
+				aria-hidden={isCommandPaletteOpen}
 				aria-label='Editor toolbar'
-				className='pointer-events-auto px-2 py-1.5 flex items-center gap-1 rounded-xl border border-foreground-200 bg-foreground-50/90 dark:border-foreground-700 dark:bg-foreground-900/90 shadow-lg backdrop-blur-md'>
+				className={`pointer-events-auto px-2 py-1.5 flex items-center gap-1 rounded-xl border border-foreground-200 bg-foreground-50/90 dark:border-foreground-700 dark:bg-foreground-900/90 shadow-lg backdrop-blur-md${isCommandPaletteOpen ? ' pointer-events-none' : ''}`}>
 				{/* History group */}
 				<Tooltip>
 					<TooltipTrigger asChild>
@@ -76,7 +79,7 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 							/>
 						</Button>
 					</TooltipTrigger>
-					<TooltipContent>Undo (${modifierKey()}+Z)</TooltipContent>
+					<TooltipContent>{`Undo (${modifierKey()}+Z)`}</TooltipContent>
 				</Tooltip>
 
 				<Tooltip>
@@ -96,7 +99,7 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 							/>
 						</Button>
 					</TooltipTrigger>
-					<TooltipContent>Redo (${modifierKey()}+Shift+Z)</TooltipContent>
+					<TooltipContent>{`Redo (${modifierKey()}+Shift+Z)`}</TooltipContent>
 				</Tooltip>
 
 				<LayerToolbarSeparator />
@@ -203,7 +206,7 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 							/>
 						</Button>
 					</TooltipTrigger>
-					<TooltipContent>Commands (${modifierKey()}+K)</TooltipContent>
+					<TooltipContent>{`Commands (${modifierKey()}+K)`}</TooltipContent>
 				</Tooltip>
 			</menu>
 		</div>
