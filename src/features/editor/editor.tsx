@@ -1,6 +1,7 @@
 import type { CardRendererReference } from '@features/card-renderer';
+import useContainerSize from '@shared/hooks/use-container-size';
 import type { ReactNode } from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { Provider } from 'react-redux';
 
 import { CanvasEmptyState, CanvasViewport } from './canvas';
@@ -8,14 +9,13 @@ import { FramePickerDialog } from './frame-picker';
 import { LayersPanel } from './layers';
 import {
 	createEditorStore,
-	REDO_ACTION,
 	selectIsFramePickerOpen,
 	selectLayers,
 	setFramePickerOpen,
-	UNDO_ACTION,
 	useEditorDispatch,
 	useEditorSelector,
 } from './store';
+import useUndoRedoShortcuts from './store/hooks/use-undo-redo-shortcuts';
 import { LayerToolbar } from './toolbar';
 
 /**
@@ -28,36 +28,9 @@ function EditorLayoutInner(): ReactNode {
 	const layers = useEditorSelector(selectLayers);
 
 	const rendererReference = useRef<CardRendererReference>(null);
+	const { containerRef: canvasContainerReference, size: viewportSize } = useContainerSize();
 
-	// Viewport size for the canvas
-	const [viewportSize, setViewportSize] = useState({ height: 600, width: 800 });
-	const canvasContainerReference = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		const container = canvasContainerReference.current;
-		if (!container) {
-			return;
-		}
-
-		const observer = new ResizeObserver(entries => {
-			const entry = entries[0];
-			if (entry) {
-				const { height, width } = entry.contentRect;
-				setViewportSize({ height, width });
-			}
-		});
-
-		observer.observe(container);
-		// Set initial size
-		setViewportSize({
-			height: container.clientHeight,
-			width: container.clientWidth,
-		});
-
-		return () => {
-			observer.disconnect();
-		};
-	}, []);
+	useUndoRedoShortcuts();
 
 	const handleFramePickerOpenChange = useCallback(
 		(open: boolean) => {
@@ -65,32 +38,6 @@ function EditorLayoutInner(): ReactNode {
 		},
 		[dispatch]
 	);
-
-	// Global keyboard shortcuts: undo (Cmd/Ctrl+Z) and redo (Cmd/Ctrl+Shift+Z)
-	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			const isMac = navigator.platform.startsWith('Mac');
-			const modifier = isMac ? event.metaKey : event.ctrlKey;
-
-			if (!modifier) {
-				return;
-			}
-
-			if (event.key === 'z' && !event.shiftKey) {
-				event.preventDefault();
-				dispatch({ type: UNDO_ACTION });
-			} else if (event.key === 'z' && event.shiftKey) {
-				event.preventDefault();
-				dispatch({ type: REDO_ACTION });
-			}
-		};
-
-		globalThis.addEventListener('keydown', handleKeyDown);
-
-		return () => {
-			globalThis.removeEventListener('keydown', handleKeyDown);
-		};
-	}, [dispatch]);
 
 	const hasLayers = layers.length > 0;
 
