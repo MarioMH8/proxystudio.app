@@ -527,3 +527,88 @@ describe('undo/redo middleware', () => {
 		expect(selectZoom(store.getState())).toBe(200);
 	});
 });
+
+/*
+ * ---------------------------------------------------------------------------
+ * Collapsible actions — consecutive setOpacity for the same layer merges into
+ * a single undo entry so slider drags don't flood the undo stack.
+ * ---------------------------------------------------------------------------
+ */
+
+describe('collapsible undo entries (setOpacity)', () => {
+	it('multiple consecutive setOpacity dispatches produce a single undo entry', () => {
+		store.dispatch(addFrameLayer(FRAME_PAYLOAD));
+		const layerId = firstLayerId(store);
+
+		// Simulate a slider drag: 100 → 80 → 60 → 40
+		store.dispatch(setOpacity({ layerId, opacity: 80 }));
+		store.dispatch(setOpacity({ layerId, opacity: 60 }));
+		store.dispatch(setOpacity({ layerId, opacity: 40 }));
+
+		expect(selectLayerById(store.getState(), layerId)?.opacity).toBe(40);
+		expect(selectCanUndo()).toBe(true);
+
+		// One undo should revert all the way to the original value (100)
+		store.dispatch({ type: UNDO_ACTION });
+		expect(selectLayerById(store.getState(), layerId)?.opacity).toBe(100);
+
+		// Only the addFrameLayer entry remains — the three setOpacity calls collapsed into one
+		store.dispatch({ type: UNDO_ACTION });
+		expect(selectLayers(store.getState())).toHaveLength(0);
+		expect(selectCanUndo()).toBe(false);
+	});
+
+	it('redo after collapsed undo restores the final dragged value', () => {
+		store.dispatch(addFrameLayer(FRAME_PAYLOAD));
+		const layerId = firstLayerId(store);
+
+		store.dispatch(setOpacity({ layerId, opacity: 80 }));
+		store.dispatch(setOpacity({ layerId, opacity: 60 }));
+		store.dispatch(setOpacity({ layerId, opacity: 40 }));
+
+		store.dispatch({ type: UNDO_ACTION });
+		expect(selectLayerById(store.getState(), layerId)?.opacity).toBe(100);
+
+		store.dispatch({ type: REDO_ACTION });
+		expect(selectLayerById(store.getState(), layerId)?.opacity).toBe(40);
+	});
+
+	it('setOpacity on a different layer does NOT collapse with the previous entry', () => {
+		store.dispatch(addFrameLayer(FRAME_PAYLOAD));
+		store.dispatch(addFrameLayer({ ...FRAME_PAYLOAD, defaultName: 'Blue Frame', name: 'Blue Frame' }));
+		const layers = selectLayers(store.getState());
+		const layerAId = layers[0]?.id ?? '';
+		const layerBId = layers[1]?.id ?? '';
+
+		store.dispatch(setOpacity({ layerId: layerAId, opacity: 50 }));
+		store.dispatch(setOpacity({ layerId: layerBId, opacity: 30 }));
+
+		// Two separate entries — undoing once only reverts layerB
+		store.dispatch({ type: UNDO_ACTION });
+		expect(selectLayerById(store.getState(), layerAId)?.opacity).toBe(50);
+		expect(selectLayerById(store.getState(), layerBId)?.opacity).toBe(100);
+
+		store.dispatch({ type: UNDO_ACTION });
+		expect(selectLayerById(store.getState(), layerAId)?.opacity).toBe(100);
+	});
+
+	it('a different undoable action between setOpacity calls breaks the collapse chain', () => {
+		store.dispatch(addFrameLayer(FRAME_PAYLOAD));
+		const layerId = firstLayerId(store);
+
+		store.dispatch(setOpacity({ layerId, opacity: 50 }));
+		// Interleaved action breaks the chain
+		store.dispatch(toggleVisibility({ layerId }));
+		store.dispatch(setOpacity({ layerId, opacity: 30 }));
+
+		// Three separate undo entries: setOpacity(50), toggleVisibility, setOpacity(30)
+		store.dispatch({ type: UNDO_ACTION });
+		expect(selectLayerById(store.getState(), layerId)?.opacity).toBe(50);
+
+		store.dispatch({ type: UNDO_ACTION });
+		expect(selectLayerById(store.getState(), layerId)?.visible).toBe(true);
+
+		store.dispatch({ type: UNDO_ACTION });
+		expect(selectLayerById(store.getState(), layerId)?.opacity).toBe(100);
+	});
+});

@@ -31,7 +31,18 @@ const REDO_ACTION = 'undo/redo';
 const REPLACE_STATE_ACTION = 'undo/replaceState';
 const MAX_HISTORY = Number(import.meta.env.VITE_MAX_UNDO_HISTORY ?? 100);
 
+/*
+ * Actions whose consecutive dispatches for the same target should be merged
+ * into a single undo entry. The key is the action type, the value is the
+ * payload field used to identify the target (e.g. 'layerId').
+ */
+const COLLAPSIBLE_ACTIONS = new Map<string, string>([[setOpacity.type, 'layerId']]);
+
 interface PatchEntry {
+	/** Action type that produced this entry — used for collapse detection */
+	actionType: string;
+	/** Payload field value used for collapsing (e.g. the layerId for setOpacity) */
+	collapseKey?: string;
 	redo: Patch[];
 	undo: Patch[];
 }
@@ -121,6 +132,35 @@ function updateFlags(): void {
 	undoState.canRedo = undoState.future.length > 0;
 }
 
+/**
+ * Push a new entry onto the undo stack, collapsing it with the previous entry
+ * when both have the same action type and collapseKey (e.g. consecutive
+ * setOpacity dispatches for the same layer during a slider drag).
+ */
+function pushOrCollapse(
+	patches: Patch[],
+	inversePatches: Patch[],
+	actionType: string,
+	collapseKey: string | undefined
+): void {
+	const lastEntry = undoState.past.at(-1);
+	const shouldCollapse =
+		lastEntry?.actionType === actionType && collapseKey !== undefined && lastEntry.collapseKey === collapseKey;
+
+	if (shouldCollapse) {
+		// Keep the original undo patches; advance redo patches to the latest diff.
+		lastEntry.redo = [...patches];
+
+		return;
+	}
+
+	undoState.past.push({ actionType, collapseKey, redo: [...patches], undo: [...inversePatches] });
+
+	if (undoState.past.length > MAX_HISTORY) {
+		undoState.past.shift();
+	}
+}
+
 const undoMiddleware: Middleware = store => next => action => {
 	const actionObject = action as { payload?: unknown; type: string };
 
@@ -179,16 +219,13 @@ const undoMiddleware: Middleware = store => next => action => {
 				// New action clears future stack
 				undoState.future = [];
 
-				undoState.past.push({
-					redo: [...patches],
-					undo: [...inversePatches],
-				});
+				const collapseField = COLLAPSIBLE_ACTIONS.get(actionObject.type);
+				const collapseKey =
+					collapseField === undefined
+						? undefined
+						: String((actionObject.payload as Record<string, unknown>)[collapseField]);
 
-				// Enforce max history (FIFO)
-				if (undoState.past.length > MAX_HISTORY) {
-					undoState.past.shift();
-				}
-
+				pushOrCollapse(patches, inversePatches, actionObject.type, collapseKey);
 				updateFlags();
 			}
 		} catch {
