@@ -1,6 +1,6 @@
-import type { VariantProperties } from '@lib/cva';
-import { cn, cva } from '@lib/cva';
-import type { PropertiesWithAsChild } from '@lib/types';
+import type { VariantProperties } from '@shared/cva';
+import { cn, cva } from '@shared/cva';
+import type { PropertiesWithAsChild } from '@shared/types';
 import { Slot } from 'radix-ui';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
@@ -34,7 +34,7 @@ function Logotipo({ asChild = false, className, dimension, ...properties }: Logo
 		<Comp
 			className={cn(variants({ className, dimension }), className)}
 			{...properties}>
-			Card<span className={cn(accentVariants())}>Conjurer</span>
+			Proxy<span className={cn(accentVariants())}>Studio</span>
 		</Comp>
 	);
 }

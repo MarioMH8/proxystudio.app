@@ -1,7 +1,7 @@
 import focus from '@components/focus';
-import type { VariantProperties } from '@lib/cva';
-import { cn, cva } from '@lib/cva';
-import type { PropertiesWithAsChild } from '@lib/types';
+import type { VariantProperties } from '@shared/cva';
+import { cn, cva } from '@shared/cva';
+import type { PropertiesWithAsChild } from '@shared/types';
 import { Slot } from 'radix-ui';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
@@ -26,6 +26,16 @@ const variants = cva({
 		{
 			className: 'px-4 py-2 rounded',
 			dimension: 'sm',
+			icon: false,
+		},
+		{
+			className: 'p-2 w-6 h-6',
+			dimension: 'xs',
+			icon: true,
+		},
+		{
+			className: 'px-3 py-1 rounded',
+			dimension: 'xs',
 			icon: false,
 		},
 		{
@@ -74,6 +84,7 @@ const variants = cva({
 		dimension: {
 			base: 'text-base',
 			sm: 'text-sm',
+			xs: 'text-xs',
 		},
 		disabled: {
 			false: [],

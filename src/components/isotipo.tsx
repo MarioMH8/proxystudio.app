@@ -1,5 +1,5 @@
-import type { VariantProperties } from '@lib/cva';
-import { cn, cva } from '@lib/cva';
+import type { VariantProperties } from '@shared/cva';
+import { cn, cva } from '@shared/cva';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 const variants = cva({
@@ -18,7 +18,7 @@ const variants = cva({
 
 type IsotipoProperties = Omit<ComponentPropsWithRef<'img'>, 'src' | 'srcSet'> & VariantProperties<typeof variants>;
 
-function Isotipo({ alt = 'Card Conjurer isotipo', className, dimension, ...properties }: IsotipoProperties): ReactNode {
+function Isotipo({ alt = 'ProxyStudio isotipo', className, dimension, ...properties }: IsotipoProperties): ReactNode {
 	return (
 		<img
 			alt={alt}

@@ -3,9 +3,9 @@ import focus from '@components/focus';
 import { variants as imagotipo } from '@components/imagotipo';
 import Isotipo from '@components/isotipo';
 import Logotipo from '@components/logotipo';
-import type { VariantProperties } from '@lib/cva';
-import { cn, cva } from '@lib/cva';
-import type { PropertiesWithAsChild } from '@lib/types';
+import type { VariantProperties } from '@shared/cva';
+import { cn, cva } from '@shared/cva';
+import type { PropertiesWithAsChild } from '@shared/types';
 import { MenuIcon, XIcon } from 'lucide-react';
 import { Slot } from 'radix-ui';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
@@ -16,13 +16,13 @@ import NavigationMenuLi from './navigation-menu-li';
 import NavigationMenuUl from './navigation-menu-ul';
 
 const variants = cva({
-	base: 'fixed w-full z-20 motion-safe:transition-all',
+	base: 'fixed w-full z-20 motion-safe:transition-all flex flex-col items-center',
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {
 		bordered: {
 			false: 'border-b-0 border-transparent',
-			true: 'border-b border-foreground-300 dark:border-foreground-800',
+			true: 'border-b border-foreground-300 dark:border-foreground-800 min-h-28',
 		},
 		scrolled: {
 			false: 'bg-transparent py-6',

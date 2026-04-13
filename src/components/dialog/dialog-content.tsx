@@ -1,5 +1,5 @@
-import type { VariantProperties } from '@lib/cva';
-import { cn, cva } from '@lib/cva';
+import type { VariantProperties } from '@shared/cva';
+import { cn, cva } from '@shared/cva';
 import { Dialog as RadixDialog } from 'radix-ui';
 import type { ReactNode } from 'react';
 
@@ -29,7 +29,7 @@ const variants = cva({
 	},
 	variants: {
 		variant: {
-			default: 'bg-foreground-100 dark:bg-foreground-800 dark:border dark:border-foreground-700',
+			default: 'bg-foreground-100 dark:bg-foreground-900 dark:border dark:border-foreground-700',
 		},
 	},
 });

@@ -1,6 +1,6 @@
 import './index.css';
 
-import Layout from '@layout';
+import Layout from '@shared/layout';
 import { lazy, StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
@@ -20,12 +20,16 @@ createRoot(root).render(
 			<Suspense fallback={<div className='flex h-screen items-center justify-center'>Loading…</div>}>
 				<Routes>
 					<Route
-						element={<Layout />}
+						element={<Layout fullScreen />}
 						path='/'>
 						<Route
 							element={<Creator />}
 							index
 						/>
+					</Route>
+					<Route
+						element={<Layout />}
+						path='/gallery'>
 						<Route
 							element={<Gallery />}
 							path='/gallery'

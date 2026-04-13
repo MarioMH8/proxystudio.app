@@ -1,8 +1,8 @@
+import { EditorLayout } from '@features/editor';
 import type { ReactNode } from 'react';
-import { Fragment } from 'react';
 
 function Creator(): ReactNode {
-	return <Fragment />;
+	return <EditorLayout />;
 }
 
 Creator.displayName = 'CreatorPage';

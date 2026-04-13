@@ -1,4 +1,4 @@
-import { cn } from '@lib/cva';
+import { cn } from '@shared/cva';
 import type { ElementType, ReactNode } from 'react';
 
 interface EmptyStateProps {
@@ -11,7 +11,12 @@ interface EmptyStateProps {
 function EmptyState({ className, icon: Icon, iconSize = 32, message }: EmptyStateProps): ReactNode {
 	return (
 		<div className={cn('flex flex-col items-center gap-3 py-8 text-center text-foreground-500', className)}>
-			{Icon ? <Icon size={iconSize} /> : undefined}
+			{Icon ? (
+				<Icon
+					aria-hidden='true'
+					size={iconSize}
+				/>
+			) : undefined}
 			<p>{message}</p>
 		</div>
 	);

@@ -6,7 +6,11 @@ import type { ReactNode } from 'react';
 import { Fragment } from 'react';
 import { Outlet } from 'react-router';
 
-function Layout(): ReactNode {
+interface LayoutProps {
+	fullScreen?: boolean;
+}
+
+function Layout({ fullScreen }: LayoutProps): ReactNode {
 	return (
 		<Fragment>
 			<NavigationMenu>
@@ -17,7 +21,7 @@ function Layout(): ReactNode {
 				</NavigationMenuLink>
 			</NavigationMenu>
 			<TooltipProvider>
-				<Main>
+				<Main fullscreen={fullScreen}>
 					<Outlet />
 				</Main>
 			</TooltipProvider>
