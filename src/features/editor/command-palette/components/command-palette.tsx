@@ -32,10 +32,10 @@ function CommandPalette({ commands, onOpenChange, open }: CommandPaletteProps): 
 
 	return (
 		<Command.Dialog
-			contentClassName='fixed inset-x-4 top-[20%] mx-auto max-w-xl overflow-hidden rounded-xl border border-foreground-200 bg-foreground-50 shadow-2xl dark:border-foreground-700 dark:bg-foreground-900'
+			contentClassName='fixed inset-x-4 top-[20%] z-20 mx-auto max-w-xl overflow-hidden rounded-xl border border-foreground-200 bg-foreground-50 shadow-2xl dark:border-foreground-700 dark:bg-foreground-900'
 			onOpenChange={onOpenChange}
 			open={open}
-			overlayClassName='fixed inset-0 bg-black/40 backdrop-blur-sm'>
+			overlayClassName='fixed inset-0 z-20 bg-black/40 backdrop-blur-sm'>
 			{/* Search input */}
 			<div className='flex items-center border-b border-foreground-200 px-3 dark:border-foreground-700'>
 				<Command.Input
