@@ -1,4 +1,5 @@
 import type { CardRendererReference } from '@features/card-renderer';
+import { modifierKey } from '@shared/platform';
 import type { RefObject } from 'react';
 import { useCallback, useMemo } from 'react';
 
@@ -116,14 +117,14 @@ function useCommands({ rendererReference }: UseCommandsOptions): UseCommandsRetu
 				disabled: () => !canUndo,
 				id: 'undo',
 				label: 'Undo',
-				shortcut: 'Cmd+Z',
+				shortcut: `${modifierKey()}+Z`,
 			},
 			{
 				action: handleRedo,
 				disabled: () => !canRedo,
 				id: 'redo',
 				label: 'Redo',
-				shortcut: 'Cmd+Shift+Z',
+				shortcut: `${modifierKey()}+Shift+Z`,
 			},
 		],
 		[canUndo, canRedo, handleAddLayer, handleDownload, handleUndo, handleRedo]

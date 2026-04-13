@@ -1,3 +1,4 @@
+import { isMac } from '@shared/platform';
 import { useEffect } from 'react';
 
 import { REDO_ACTION, UNDO_ACTION } from '../middlewares/undo.middleware';
@@ -5,7 +6,7 @@ import { useEditorDispatch } from '../store';
 
 /**
  * Registers global keyboard shortcuts for undo and redo.
- *  - Cmd+Z / Ctrl+Z       → undo
+ *  - Cmd+Z / Ctrl+Z             → undo
  *  - Cmd+Shift+Z / Ctrl+Shift+Z → redo
  *
  * Must be called inside a component that has access to the editor Redux store.
@@ -15,8 +16,7 @@ function useUndoRedoShortcuts(): void {
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
-			const isMac = navigator.platform.startsWith('Mac');
-			const modifier = isMac ? event.metaKey : event.ctrlKey;
+			const modifier = isMac() ? event.metaKey : event.ctrlKey;
 
 			if (!modifier) {
 				return;
