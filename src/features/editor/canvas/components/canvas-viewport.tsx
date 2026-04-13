@@ -1,10 +1,12 @@
+import { CARD_HEIGHT, CARD_WIDTH } from '@domain';
 import type { CardRendererReference } from '@features/card-renderer';
 import { CardRenderer } from '@features/card-renderer';
 import type { ReactNode, RefObject } from 'react';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { selectCard, selectPan, selectZoom, useEditorSelector } from '../../store';
 import useZoomPan from '../hooks/use-zoom-pan';
+import { computeScale, computeTranslate } from '../utilities';
 
 interface CanvasViewportProps {
 	/** Viewport height in CSS pixels */
@@ -18,8 +20,9 @@ interface CanvasViewportProps {
 /**
  * Editor-aware canvas viewport.
  * Bridges Redux state (card data, zoom, pan) to the portable CardRenderer.
+ * Applies zoom and pan as a CSS transform on the renderer container —
+ * keeping CardRenderer itself at its native card resolution (CARD_WIDTH × CARD_HEIGHT).
  * Attaches gesture-based zoom/pan interactions via useZoomPan.
- * Holds the CardRendererRef that the Toolbar's export action uses.
  */
 function CanvasViewport({ height, rendererReference, width }: CanvasViewportProps): ReactNode {
 	const card = useEditorSelector(selectCard);
@@ -29,20 +32,39 @@ function CanvasViewport({ height, rendererReference, width }: CanvasViewportProp
 
 	useZoomPan({ containerRef: containerReference });
 
+	const scale = useMemo(() => computeScale(width, height, zoom ?? 100), [width, height, zoom]);
+
+	const translate = useMemo(
+		() => computeTranslate(width, height, scale, pan.x, pan.y),
+		[width, height, scale, pan.x, pan.y]
+	);
+
 	return (
 		<div
-			className='h-full w-full'
+			className='h-full w-full overflow-hidden'
 			ref={containerReference}
 			style={{ touchAction: 'none' }}>
-			<CardRenderer
-				card={card}
-				height={height}
-				panX={pan.x}
-				panY={pan.y}
-				ref={rendererReference}
-				width={width}
-				zoom={zoom}
-			/>
+			{/*
+			 * transform-origin: top left so scale expands downward/rightward.
+			 * translate + scale positions and zooms the card within the viewport.
+			 * will-change: transform hints the browser to promote to a compositor layer.
+			 */}
+			<div
+				style={{
+					height: CARD_HEIGHT,
+					left: 0,
+					position: 'absolute',
+					top: 0,
+					transform: `translate(${String(translate.x)}px, ${String(translate.y)}px) scale(${String(scale)})`,
+					transformOrigin: 'top left',
+					width: CARD_WIDTH,
+					willChange: 'transform',
+				}}>
+				<CardRenderer
+					card={card}
+					ref={rendererReference}
+				/>
+			</div>
 		</div>
 	);
 }
