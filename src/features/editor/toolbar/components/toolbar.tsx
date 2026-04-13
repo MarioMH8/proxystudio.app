@@ -1,7 +1,7 @@
 import Button from '@components/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/tooltip';
 import type { CardRendererReference } from '@features/card-renderer';
-import { Download, Redo2, Undo2, ZoomIn, ZoomOut } from 'lucide-react';
+import { Download, Redo2, Search, Undo2, ZoomIn, ZoomOut } from 'lucide-react';
 import type { ReactNode, RefObject } from 'react';
 
 import { useExport } from '../../export';
@@ -11,6 +11,7 @@ import {
 	selectCanRedo,
 	selectCanUndo,
 	selectZoom,
+	setCommandPaletteOpen,
 	setZoom,
 	UNDO_ACTION,
 	useEditorDispatch,
@@ -180,6 +181,28 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 						</Button>
 					</TooltipTrigger>
 					<TooltipContent>Download PNG</TooltipContent>
+				</Tooltip>
+
+				<LayerToolbarSeparator />
+
+				{/* Command palette */}
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<Button
+							aria-label='Open command palette'
+							dimension='sm'
+							icon
+							onClick={() => {
+								dispatch(setCommandPaletteOpen({ open: true }));
+							}}
+							transparent>
+							<Search
+								aria-hidden='true'
+								className='h-4 w-4'
+							/>
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent>Commands (Cmd+K)</TooltipContent>
 				</Tooltip>
 			</menu>
 		</div>

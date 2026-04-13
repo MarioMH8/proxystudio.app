@@ -1,16 +1,19 @@
 import type { CardRendererReference } from '@features/card-renderer';
 import useContainerSize from '@shared/hooks/use-container-size';
 import type { ReactNode } from 'react';
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Provider } from 'react-redux';
 
 import { CanvasEmptyState, CanvasViewport } from './canvas';
+import { CommandPalette, useCommands } from './command-palette';
 import { FramePickerDialog } from './frame-picker';
 import { LayersPanel } from './layers';
 import {
 	createEditorStore,
+	selectIsCommandPaletteOpen,
 	selectIsFramePickerOpen,
 	selectLayers,
+	setCommandPaletteOpen,
 	setFramePickerOpen,
 	useEditorDispatch,
 	useEditorSelector,
@@ -25,6 +28,7 @@ import { LayerToolbar } from './toolbar';
 function EditorLayoutInner(): ReactNode {
 	const dispatch = useEditorDispatch();
 	const isFramePickerOpen = useEditorSelector(selectIsFramePickerOpen);
+	const isCommandPaletteOpen = useEditorSelector(selectIsCommandPaletteOpen);
 	const layers = useEditorSelector(selectLayers);
 
 	const rendererReference = useRef<CardRendererReference>(null);
@@ -32,9 +36,34 @@ function EditorLayoutInner(): ReactNode {
 
 	useUndoRedoShortcuts();
 
+	// Global Cmd+K / Ctrl+K shortcut to open command palette
+	useEffect(() => {
+		function handleKeyDown(event: KeyboardEvent): void {
+			if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+				event.preventDefault();
+				dispatch(setCommandPaletteOpen({ open: true }));
+			}
+		}
+
+		globalThis.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			globalThis.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [dispatch]);
+
+	const { commands } = useCommands({ rendererReference });
+
 	const handleFramePickerOpenChange = useCallback(
 		(open: boolean) => {
 			dispatch(setFramePickerOpen({ open }));
+		},
+		[dispatch]
+	);
+
+	const handleCommandPaletteOpenChange = useCallback(
+		(open: boolean) => {
+			dispatch(setCommandPaletteOpen({ open }));
 		},
 		[dispatch]
 	);
@@ -78,6 +107,13 @@ function EditorLayoutInner(): ReactNode {
 			<FramePickerDialog
 				onOpenChange={handleFramePickerOpenChange}
 				open={isFramePickerOpen}
+			/>
+
+			{/* Command palette (Cmd+K) */}
+			<CommandPalette
+				commands={commands}
+				onOpenChange={handleCommandPaletteOpenChange}
+				open={isCommandPaletteOpen}
 			/>
 		</section>
 	);
