@@ -17,7 +17,7 @@ import {
 import useLayerOperations from '../hooks/use-layer-operations';
 import LayerItemSortable from './layer-item-sortable';
 
-const LAYER_WARNING_THRESHOLD = 50;
+const LAYER_WARNING_THRESHOLD = Number(import.meta.env.VITE_LAYER_WARNING_THRESHOLD ?? 50);
 
 const KEYBOARD_SENSOR_OPTIONS = { coordinateGetter: sortableKeyboardCoordinates };
 const POINTER_SENSOR_OPTIONS = { activationConstraint: { distance: 5 } };

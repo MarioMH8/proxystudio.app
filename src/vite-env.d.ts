@@ -1,6 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
+	/** Number of layers above which a performance warning toast is shown. Defaults to 50. */
+	readonly VITE_LAYER_WARNING_THRESHOLD?: string;
 	/** Maximum number of undo history entries. Defaults to 100. */
 	readonly VITE_MAX_UNDO_HISTORY?: string;
 	/** Default zoom percentage on editor load. Defaults to 80. */
