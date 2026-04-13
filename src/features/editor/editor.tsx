@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 
 import { CanvasViewport } from './canvas';
 import { CommandPalette, useCommands } from './command-palette';
+import BottomDrawer from './components/bottom-drawer';
 import { FramePickerDialog } from './frame-picker';
 import { LayersPanel } from './layers';
 import { PropertiesPanel } from './properties';
@@ -76,13 +77,23 @@ function EditorLayoutInner(): ReactNode {
 				<LayerToolbar rendererReference={rendererReference} />
 			</div>
 
-			{/* Right panel — Layers (40 % of width, min 288 px so it never gets too small) */}
+			{/* Right panel — desktop only (≥xl). Hidden below xl breakpoint. */}
 			<aside
 				aria-label='Layers sidebar'
 				className='hidden w-2/5 min-w-lg shrink-0 overflow-y-auto xl:flex xl:flex-col space-y-8 pb-8'>
 				<LayersPanel />
 				<PropertiesPanel />
 			</aside>
+
+			{/*
+			 * Mobile bottom drawer (<xl breakpoint).
+			 * Overlays the canvas via fixed positioning — canvas is NOT resized.
+			 * Contains LayersPanel + PropertiesPanel, accessible from mobile viewports.
+			 */}
+			<BottomDrawer>
+				<LayersPanel />
+				<PropertiesPanel />
+			</BottomDrawer>
 
 			{/* Frame picker dialog */}
 			<FramePickerDialog
@@ -103,8 +114,9 @@ function EditorLayoutInner(): ReactNode {
 /**
  * Top-level layout component for the editor.
  * Wraps the editor in its own Redux Provider (editor store is scoped, not global).
- * Renders a two-region desktop layout (canvas left, layers panel right).
- * Mobile layout (canvas + bottom drawer) is added in Phase 9 (US7).
+ *
+ * Desktop (≥xl): two-region layout — canvas left, layers+properties panel right.
+ * Mobile (<xl):  full-viewport canvas + collapsible BottomDrawer overlay with layers+properties.
  */
 function Editor(): ReactNode {
 	// Create a stable store instance for this editor session
