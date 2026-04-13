@@ -159,7 +159,14 @@ function pushOrCollapse(
 		return;
 	}
 
-	undoState.past.push({ actionType, collapseKey, redo: [...patches], undo: [...inversePatches] });
+	const entry: PatchEntry = {
+		actionType,
+		redo: [...patches],
+		undo: [...inversePatches],
+		...(collapseKey === undefined ? {} : { collapseKey }),
+	};
+
+	undoState.past.push(entry);
 
 	if (undoState.past.length > MAX_HISTORY) {
 		undoState.past.shift();
@@ -225,10 +232,11 @@ const undoMiddleware: Middleware = store => next => action => {
 				undoState.future = [];
 
 				const collapseField = COLLAPSIBLE_ACTIONS.get(actionObject.type);
-				const collapseKey =
+				const rawCollapseKey =
 					collapseField === undefined
 						? undefined
-						: String((actionObject.payload as Record<string, unknown>)[collapseField]);
+						: (actionObject.payload as Record<string, unknown>)[collapseField];
+				const collapseKey = typeof rawCollapseKey === 'string' ? rawCollapseKey : undefined;
 
 				pushOrCollapse(patches, inversePatches, actionObject.type, collapseKey);
 				updateFlags();
