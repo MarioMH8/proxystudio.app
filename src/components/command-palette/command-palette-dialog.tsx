@@ -1,10 +1,13 @@
 import { Command } from 'cmdk';
-import type { ComponentPropsWithRef, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
-type CommandPaletteDialogProps = Pick<
-	ComponentPropsWithRef<typeof Command.Dialog>,
-	'children' | 'onOpenChange' | 'open'
->;
+interface CommandPaletteDialogProps {
+	children: ReactNode;
+	/** Called when the dialog requests open state change. */
+	onOpenChange: (open: boolean) => void;
+	/** Whether the dialog is currently open. */
+	open: boolean;
+}
 
 /**
  * Styled wrapper for the cmdk Command.Dialog.
