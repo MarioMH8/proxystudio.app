@@ -1,3 +1,5 @@
+import Input from '@components/input';
+import Label from '@components/label';
 import type { Bounds, FrameLayer } from '@domain';
 import { CARD_HEIGHT, CARD_WIDTH } from '@domain';
 import type { ChangeEvent, ReactNode } from 'react';
@@ -70,15 +72,10 @@ function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
 					Position &amp; Size
 				</span>
 				<div className='grid grid-cols-2 gap-x-3 gap-y-2'>
-					{/* X */}
-					<div className='flex flex-col gap-1'>
-						<label
-							className='text-xs text-foreground-500 dark:text-foreground-400'
-							htmlFor={`bounds-x-${layer.id}`}>
-							X
-						</label>
-						<input
-							className='w-full rounded border border-foreground-300 bg-background px-2 py-1 text-sm tabular-nums text-foreground focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-foreground-600'
+					<Label htmlFor={`bounds-x-${layer.id}`}>
+						X
+						<Input
+							dimension='xs'
 							id={`bounds-x-${layer.id}`}
 							max={CARD_WIDTH}
 							min={0}
@@ -87,16 +84,11 @@ function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
 							type='number'
 							value={xPx}
 						/>
-					</div>
-					{/* Y */}
-					<div className='flex flex-col gap-1'>
-						<label
-							className='text-xs text-foreground-500 dark:text-foreground-400'
-							htmlFor={`bounds-y-${layer.id}`}>
-							Y
-						</label>
-						<input
-							className='w-full rounded border border-foreground-300 bg-background px-2 py-1 text-sm tabular-nums text-foreground focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-foreground-600'
+					</Label>
+					<Label htmlFor={`bounds-y-${layer.id}`}>
+						Y
+						<Input
+							dimension='xs'
 							id={`bounds-y-${layer.id}`}
 							max={CARD_HEIGHT}
 							min={0}
@@ -105,16 +97,11 @@ function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
 							type='number'
 							value={yPx}
 						/>
-					</div>
-					{/* Width */}
-					<div className='flex flex-col gap-1'>
-						<label
-							className='text-xs text-foreground-500 dark:text-foreground-400'
-							htmlFor={`bounds-w-${layer.id}`}>
-							W
-						</label>
-						<input
-							className='w-full rounded border border-foreground-300 bg-background px-2 py-1 text-sm tabular-nums text-foreground focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-foreground-600'
+					</Label>
+					<Label htmlFor={`bounds-w-${layer.id}`}>
+						W
+						<Input
+							dimension='xs'
 							id={`bounds-w-${layer.id}`}
 							max={CARD_WIDTH}
 							min={0}
@@ -123,16 +110,11 @@ function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
 							type='number'
 							value={wPx}
 						/>
-					</div>
-					{/* Height */}
-					<div className='flex flex-col gap-1'>
-						<label
-							className='text-xs text-foreground-500 dark:text-foreground-400'
-							htmlFor={`bounds-h-${layer.id}`}>
-							H
-						</label>
-						<input
-							className='w-full rounded border border-foreground-300 bg-background px-2 py-1 text-sm tabular-nums text-foreground focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-foreground-600'
+					</Label>
+					<Label htmlFor={`bounds-h-${layer.id}`}>
+						H
+						<Input
+							dimension='xs'
 							id={`bounds-h-${layer.id}`}
 							max={CARD_HEIGHT}
 							min={0}
@@ -141,7 +123,7 @@ function FrameProperties({ layer }: FramePropertiesProps): ReactNode {
 							type='number'
 							value={hPx}
 						/>
-					</div>
+					</Label>
 				</div>
 			</div>
 
