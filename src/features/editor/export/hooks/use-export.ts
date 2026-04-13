@@ -27,33 +27,38 @@ function defaultDownloadBlob(blob: Blob, filename: string): void {
  * Extracted from the hook for testability per Constitution V (dependency injection).
  *
  * @param rendererReference - Ref to the CardRenderer instance
- * @param layers - Current layer stack (empty = show toast)
- * @param showToast - Injectable toast function (default: sonner toast.error)
+ * @param layers - Current layer stack (empty = show error toast)
+ * @param showErrorToast - Injectable error toast function (default: sonner toast.error)
+ * @param showSuccessToast - Injectable success toast function (default: sonner toast.success)
  * @param downloadBlob - Injectable download function (default: DOM anchor download)
  */
 async function exportPNGFromReference(
 	rendererReference: RefObject<CardRendererReference | null> | { current: CardRendererReference },
 	layers: Layer[],
-	showToast: (message: string) => void = (message: string) => {
+	showErrorToast: (message: string) => void = (message: string) => {
 		toast.error(message);
+	},
+	showSuccessToast: (message: string) => void = (message: string) => {
+		toast.success(message);
 	},
 	downloadBlob: (blob: Blob, filename: string) => void = defaultDownloadBlob
 ): Promise<void> {
 	if (layers.length === 0) {
-		showToast('Nothing to export');
+		showErrorToast('Nothing to export');
 
 		return;
 	}
 
 	const reference = rendererReference.current;
 	if (!reference) {
-		showToast('Canvas not available');
+		showErrorToast('Canvas not available');
 
 		return;
 	}
 
 	const blob = await reference.exportPNG();
 	downloadBlob(blob, 'proxycard.png');
+	showSuccessToast('Image downloaded');
 }
 
 interface UseExportOptions {

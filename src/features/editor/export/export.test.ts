@@ -59,14 +59,16 @@ function makeLayers(count: number): CardState['layers'] {
 }
 
 describe('exportPNGFromReference', () => {
-	it('should show a toast and not call exportPNG when layers is empty', async () => {
+	it('should show an error toast and not call exportPNG when layers is empty', async () => {
 		const reference = createMockReference();
-		const toastSpy = mock(voidStub);
+		const errorToastSpy = mock(voidStub);
+		const successToastSpy = mock(voidStub);
 
-		await exportPNGFromReference(reference, [], toastSpy);
+		await exportPNGFromReference(reference, [], errorToastSpy, successToastSpy);
 
-		expect(toastSpy).toHaveBeenCalledTimes(1);
-		expect(toastSpy).toHaveBeenCalledWith('Nothing to export');
+		expect(errorToastSpy).toHaveBeenCalledTimes(1);
+		expect(errorToastSpy).toHaveBeenCalledWith('Nothing to export');
+		expect(successToastSpy).not.toHaveBeenCalled();
 		expect(reference.current.exportPNG).not.toHaveBeenCalled();
 	});
 
@@ -74,27 +76,27 @@ describe('exportPNGFromReference', () => {
 		const blob = new Blob(['png-data'], { type: 'image/png' });
 		const reference = createMockReference(blob);
 		const layers = makeLayers(2);
-		const toastSpy = mock(voidStub);
-		// Mock download so we don't need a DOM
+		const errorToastSpy = mock(voidStub);
+		const successToastSpy = mock(voidStub);
 		const downloadSpy = mock(voidStub);
 
-		await exportPNGFromReference(reference, layers, toastSpy, downloadSpy);
+		await exportPNGFromReference(reference, layers, errorToastSpy, successToastSpy, downloadSpy);
 
 		expect(reference.current.exportPNG).toHaveBeenCalledTimes(1);
-		expect(toastSpy).not.toHaveBeenCalled();
+		expect(errorToastSpy).not.toHaveBeenCalled();
 	});
 
 	it('should trigger download with the returned blob', async () => {
 		const blob = new Blob(['png-data'], { type: 'image/png' });
 		const reference = createMockReference(blob);
 		const layers = makeLayers(1);
-		const toastSpy = mock(voidStub);
+		const errorToastSpy = mock(voidStub);
+		const successToastSpy = mock(voidStub);
 		const downloadSpy = mock(voidStub);
 
-		await exportPNGFromReference(reference, layers, toastSpy, downloadSpy);
+		await exportPNGFromReference(reference, layers, errorToastSpy, successToastSpy, downloadSpy);
 
 		expect(downloadSpy).toHaveBeenCalledTimes(1);
-		// The blob passed to downloadSpy should be the one returned by exportPNG
 		const [calledBlob] = (downloadSpy as ReturnType<typeof mock>).mock.calls[0] as [Blob, string];
 		expect(calledBlob).toBe(blob);
 	});
@@ -103,12 +105,28 @@ describe('exportPNGFromReference', () => {
 		const blob = new Blob(['png-data'], { type: 'image/png' });
 		const reference = createMockReference(blob);
 		const layers = makeLayers(1);
-		const toastSpy = mock(voidStub);
+		const errorToastSpy = mock(voidStub);
+		const successToastSpy = mock(voidStub);
 		const downloadSpy = mock(voidStub);
 
-		await exportPNGFromReference(reference, layers, toastSpy, downloadSpy);
+		await exportPNGFromReference(reference, layers, errorToastSpy, successToastSpy, downloadSpy);
 
 		const [, filename] = (downloadSpy as ReturnType<typeof mock>).mock.calls[0] as [Blob, string];
 		expect(filename).toBe('proxycard.png');
+	});
+
+	it('should show a success toast after a successful download', async () => {
+		const blob = new Blob(['png-data'], { type: 'image/png' });
+		const reference = createMockReference(blob);
+		const layers = makeLayers(1);
+		const errorToastSpy = mock(voidStub);
+		const successToastSpy = mock(voidStub);
+		const downloadSpy = mock(voidStub);
+
+		await exportPNGFromReference(reference, layers, errorToastSpy, successToastSpy, downloadSpy);
+
+		expect(successToastSpy).toHaveBeenCalledTimes(1);
+		expect(successToastSpy).toHaveBeenCalledWith('Image downloaded');
+		expect(errorToastSpy).not.toHaveBeenCalled();
 	});
 });
