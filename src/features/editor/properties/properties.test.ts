@@ -15,11 +15,19 @@
 
 import { beforeEach, describe, expect, it } from 'bun:test';
 
+import {
+	addFrameLayer,
+	createEditorStore,
+	removeLayer,
+	selectLayer,
+	selectLayerById,
+	selectLayers,
+	selectSelectedLayer,
+	selectSelectedLayerId,
+	setLayerBounds,
+	setOpacity,
+} from '../store';
 import { REDO_ACTION, resetUndoState, UNDO_ACTION } from '../store/middlewares/undo.middleware';
-import { addFrameLayer, removeLayer, setLayerBounds, setOpacity } from '../store/slices/card.slice';
-import { selectLayer } from '../store/slices/editor.slice';
-import createEditorStore from '../store/store';
-import { selectLayerById, selectLayers, selectSelectedLayer, selectSelectedLayerId } from '../store/store.selectors';
 
 type EditorStore = ReturnType<typeof createEditorStore>;
 

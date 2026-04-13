@@ -18,11 +18,8 @@
 
 import { beforeEach, describe, expect, it } from 'bun:test';
 
+import { addFrameLayer, createEditorStore, selectIsBottomDrawerOpen, selectLayers, setBottomDrawerOpen } from './store';
 import { resetUndoState } from './store/middlewares/undo.middleware';
-import { addFrameLayer } from './store/slices/card.slice';
-import { setBottomDrawerOpen } from './store/slices/ui.slice';
-import createEditorStore from './store/store';
-import { selectIsBottomDrawerOpen, selectLayers } from './store/store.selectors';
 
 type EditorStore = ReturnType<typeof createEditorStore>;
 

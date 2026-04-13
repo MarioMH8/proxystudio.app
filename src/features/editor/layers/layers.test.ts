@@ -12,25 +12,24 @@
 
 import { beforeEach, describe, expect, it } from 'bun:test';
 
-import { resetUndoState } from '../store/middlewares/undo.middleware';
 import {
 	addFrameLayer,
+	createEditorStore,
 	duplicateLayer,
 	removeLayer,
 	renameLayer,
 	reorderLayer,
-	setOpacity,
-	toggleVisibility,
-} from '../store/slices/card.slice';
-import { selectLayer, toggleLock } from '../store/slices/editor.slice';
-import createEditorStore from '../store/store';
-import {
 	selectIsLayerLocked,
+	selectLayer,
 	selectLayerById,
 	selectLayers,
 	selectSelectedLayerId,
 	selectVisibleLayers,
-} from '../store/store.selectors';
+	setOpacity,
+	toggleLock,
+	toggleVisibility,
+} from '../store';
+import { resetUndoState } from '../store/middlewares/undo.middleware';
 
 type EditorStore = ReturnType<typeof createEditorStore>;
 
