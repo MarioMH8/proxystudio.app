@@ -134,6 +134,7 @@ function LayerItem({
 				isSelected && 'ring-2 ring-primary-500 dark:ring-primary-400',
 				isImageError && 'ring-2 ring-error-400 dark:ring-error-600'
 			)}
+			onClick={onSelect}
 			onKeyDown={handleKeyDown}
 			{...rowProps}>
 			{/* Drag handle — only this element activates DnD (setActivatorNodeRef) */}
