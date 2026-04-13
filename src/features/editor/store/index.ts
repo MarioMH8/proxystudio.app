@@ -32,6 +32,9 @@ export {
 	setFramePickerOpen,
 	setPan,
 	setZoom,
+	ZOOM_DEFAULT,
+	ZOOM_MAX,
+	ZOOM_MIN,
 } from './slices/ui.slice';
 
 // Selectors

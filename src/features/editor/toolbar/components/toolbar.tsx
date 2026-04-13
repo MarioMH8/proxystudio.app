@@ -15,6 +15,9 @@ import {
 	UNDO_ACTION,
 	useEditorDispatch,
 	useEditorSelector,
+	ZOOM_DEFAULT,
+	ZOOM_MAX,
+	ZOOM_MIN,
 } from '../../store';
 
 interface ToolbarProps {
@@ -45,7 +48,7 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 	const zoom = useEditorSelector(selectZoom);
 	const { exportPNG, isExporting } = useExport({ rendererReference });
 
-	const effectiveZoom = zoom ?? 100;
+	const effectiveZoom = zoom ?? ZOOM_DEFAULT;
 	const zoomPercent = `${String(Math.round(effectiveZoom))}%`;
 
 	return (
@@ -102,10 +105,10 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 						<Button
 							aria-label='Zoom out'
 							dimension='sm'
-							disabled={effectiveZoom <= 10}
+							disabled={effectiveZoom <= ZOOM_MIN}
 							icon
 							onClick={() => {
-								dispatch(setZoom({ zoom: Math.max(10, effectiveZoom - 10) }));
+								dispatch(setZoom({ zoom: Math.max(ZOOM_MIN, effectiveZoom - 10) }));
 							}}
 							transparent>
 							<ZoomOut
@@ -133,7 +136,7 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 							{zoomPercent}
 						</Button>
 					</TooltipTrigger>
-					<TooltipContent>Reset zoom (80%)</TooltipContent>
+					<TooltipContent>Reset zoom ({ZOOM_DEFAULT}%)</TooltipContent>
 				</Tooltip>
 
 				<Tooltip>
@@ -141,10 +144,10 @@ function LayerToolbar({ rendererReference }: ToolbarProps): ReactNode {
 						<Button
 							aria-label='Zoom in'
 							dimension='sm'
-							disabled={effectiveZoom >= 400}
+							disabled={effectiveZoom >= ZOOM_MAX}
 							icon
 							onClick={() => {
-								dispatch(setZoom({ zoom: Math.min(400, effectiveZoom + 10) }));
+								dispatch(setZoom({ zoom: Math.min(ZOOM_MAX, effectiveZoom + 10) }));
 							}}
 							transparent>
 							<ZoomIn

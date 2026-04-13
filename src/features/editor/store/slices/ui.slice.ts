@@ -1,6 +1,13 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
+/** Minimum allowed zoom percentage. Configurable via VITE_ZOOM_MIN. */
+const ZOOM_MIN = Number(import.meta.env.VITE_ZOOM_MIN ?? 10);
+/** Maximum allowed zoom percentage. Configurable via VITE_ZOOM_MAX. */
+const ZOOM_MAX = Number(import.meta.env.VITE_ZOOM_MAX ?? 400);
+/** Default zoom percentage applied on editor load and on reset. Configurable via VITE_ZOOM_DEFAULT. */
+const ZOOM_DEFAULT = Number(import.meta.env.VITE_ZOOM_DEFAULT ?? 80);
+
 interface UIState {
 	isBottomDrawerOpen: boolean;
 	isCommandPaletteOpen: boolean;
@@ -8,7 +15,7 @@ interface UIState {
 	panX: number;
 	panY: number;
 	/**
-	 * Current zoom percentage (10-400).
+	 * Current zoom percentage (ZOOM_MIN–ZOOM_MAX).
 	 * `undefined` signals fit-to-viewport; useZoomPan computes actual % on mount.
 	 */
 	zoom: number | undefined;
@@ -20,7 +27,7 @@ const initialState: UIState = {
 	isFramePickerOpen: false,
 	panX: 0,
 	panY: 0,
-	zoom: 80,
+	zoom: ZOOM_DEFAULT,
 };
 
 const uiSlice = createSlice({
@@ -28,7 +35,7 @@ const uiSlice = createSlice({
 	name: 'ui',
 	reducers: {
 		resetZoom(state) {
-			state.zoom = 80;
+			state.zoom = ZOOM_DEFAULT;
 		},
 		setBottomDrawerOpen(state, action: PayloadAction<{ open: boolean }>) {
 			state.isBottomDrawerOpen = action.payload.open;
@@ -44,12 +51,23 @@ const uiSlice = createSlice({
 			state.panY = action.payload.y;
 		},
 		setZoom(state, action: PayloadAction<{ zoom: number }>) {
-			state.zoom = Math.max(10, Math.min(400, action.payload.zoom));
+			state.zoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, action.payload.zoom));
 		},
 	},
 });
 
+const { resetZoom, setBottomDrawerOpen, setCommandPaletteOpen, setFramePickerOpen, setPan, setZoom } = uiSlice.actions;
+
 export type { UIState };
-export const { resetZoom, setBottomDrawerOpen, setCommandPaletteOpen, setFramePickerOpen, setPan, setZoom } =
-	uiSlice.actions;
+export {
+	resetZoom,
+	setBottomDrawerOpen,
+	setCommandPaletteOpen,
+	setFramePickerOpen,
+	setPan,
+	setZoom,
+	ZOOM_DEFAULT,
+	ZOOM_MAX,
+	ZOOM_MIN,
+};
 export default uiSlice;

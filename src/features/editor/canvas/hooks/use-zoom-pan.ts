@@ -1,12 +1,18 @@
 import type { RefObject } from 'react';
 import { useCallback, useEffect, useRef } from 'react';
 
-import { selectPan, selectZoom, setPan, setZoom, useEditorDispatch, useEditorSelector } from '../../store';
+import {
+	selectPan,
+	selectZoom,
+	setPan,
+	setZoom,
+	useEditorDispatch,
+	useEditorSelector,
+	ZOOM_DEFAULT,
+	ZOOM_MAX,
+	ZOOM_MIN,
+} from '../../store';
 
-/** Minimum allowed zoom level (%). */
-const MIN_ZOOM = 10;
-/** Maximum allowed zoom level (%). */
-const MAX_ZOOM = 400;
 /** Zoom step applied per wheel delta unit (lower = gentler). */
 const WHEEL_ZOOM_FACTOR = 0.001;
 
@@ -32,11 +38,11 @@ function useZoomPan({ containerRef }: UseZoomPanOptions): void {
 	const pan = useEditorSelector(selectPan);
 
 	// Store current values in refs so event handlers never go stale
-	const zoomReference = useRef(zoom ?? 80);
+	const zoomReference = useRef(zoom ?? ZOOM_DEFAULT);
 	const panReference = useRef(pan);
 
 	useEffect(() => {
-		zoomReference.current = zoom ?? 80;
+		zoomReference.current = zoom ?? ZOOM_DEFAULT;
 	}, [zoom]);
 
 	useEffect(() => {
@@ -52,7 +58,7 @@ function useZoomPan({ containerRef }: UseZoomPanOptions): void {
 	const lastPinchDistanceReference = useRef<number | undefined>(undefined);
 
 	const clampZoom = useCallback((value: number): number => {
-		return Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, value));
+		return Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, value));
 	}, []);
 
 	// ---- Wheel: zoom ----
