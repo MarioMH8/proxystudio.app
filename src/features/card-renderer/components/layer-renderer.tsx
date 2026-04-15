@@ -1,9 +1,8 @@
 import type { Layer } from '@domain';
-import { memo, useEffect } from 'react';
-import { Image as KonvaImage } from 'react-konva';
+import { memo } from 'react';
 
+import FrameLayerRenderer from './frame-layer-renderer';
 import type { ImageLoadStatus } from './use-layer-image';
-import useLayerImage from './use-layer-image';
 
 interface LayerRendererProps {
 	/** Card height in pixels (for bounds conversion) */
@@ -14,44 +13,6 @@ interface LayerRendererProps {
 	layer: Layer;
 	/** Optional callback when image load status changes (for error indicators in layer panel) */
 	onImageStatusChange?: ((layerId: string, status: ImageLoadStatus) => void) | undefined;
-}
-
-function FrameLayerNode({
-	cardHeight,
-	cardWidth,
-	layer,
-	onImageStatusChange,
-}: {
-	cardHeight: number;
-	cardWidth: number;
-	layer: Extract<Layer, { type: 'frame' }>;
-	onImageStatusChange?: ((layerId: string, status: ImageLoadStatus) => void) | undefined;
-}) {
-	const { image, status } = useLayerImage(layer.src);
-
-	useEffect(() => {
-		onImageStatusChange?.(layer.id, status);
-	}, [layer.id, status, onImageStatusChange]);
-
-	if (!image) {
-		return;
-	}
-
-	const x = layer.bounds ? layer.bounds.x * cardWidth : 0;
-	const y = layer.bounds ? layer.bounds.y * cardHeight : 0;
-	const width = layer.bounds ? layer.bounds.width * cardWidth : cardWidth;
-	const height = layer.bounds ? layer.bounds.height * cardHeight : cardHeight;
-
-	return (
-		<KonvaImage
-			height={height}
-			image={image}
-			opacity={layer.opacity / 100}
-			width={width}
-			x={x}
-			y={y}
-		/>
-	);
 }
 
 /**
@@ -75,7 +36,7 @@ function LayerRendererInner({ cardHeight, cardWidth, layer, onImageStatusChange 
 		}
 		case 'frame': {
 			return (
-				<FrameLayerNode
+				<FrameLayerRenderer
 					cardHeight={cardHeight}
 					cardWidth={cardWidth}
 					layer={layer}
