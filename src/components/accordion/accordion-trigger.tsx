@@ -4,7 +4,7 @@ import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { ChevronDown } from 'lucide-react';
 import { Accordion as RadixAccordion } from 'radix-ui';
-import type { ElementRef } from 'react';
+import type { ComponentRef } from 'react';
 import { forwardRef } from 'react';
 
 const variants = cva({
@@ -32,7 +32,7 @@ type AccordionTriggerProps = FontVariantsProperties &
 	RadixAccordion.AccordionTriggerProps &
 	VariantProperties<typeof variants>;
 
-const AccordionTrigger = forwardRef<ElementRef<typeof RadixAccordion.Trigger>, AccordionTriggerProps>(
+const AccordionTrigger = forwardRef<ComponentRef<typeof RadixAccordion.Trigger>, AccordionTriggerProps>(
 	(
 		{
 			children,
