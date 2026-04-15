@@ -1,9 +1,8 @@
-import Heading from '@components/heading';
-import Span from '@components/span';
 import type { ReactNode } from 'react';
 
-import { selectIsLayerLocked, selectSelectedLayer, useEditorSelector } from '../../store';
+import { selectIsSelectedLayerLocked, selectSelectedLayer, useEditorSelector } from '../../store';
 import FrameProperties from './frame-properties';
+import PropertiesSection from './properties-section';
 
 /**
  * Contextual properties panel.
@@ -17,9 +16,7 @@ import FrameProperties from './frame-properties';
  */
 function PropertiesPanel(): ReactNode {
 	const selectedLayer = useEditorSelector(selectSelectedLayer);
-	const isSelectedLayerLocked = useEditorSelector(state =>
-		selectedLayer ? selectIsLayerLocked(state, selectedLayer.id) : false
-	);
+	const isSelectedLayerLocked = useEditorSelector(selectIsSelectedLayerLocked);
 
 	if (!selectedLayer) {
 		return undefined;
@@ -27,32 +24,12 @@ function PropertiesPanel(): ReactNode {
 
 	if (selectedLayer.type === 'frame') {
 		return (
-			<section
-				aria-label='Layer properties'
-				className='px-4 xl:px-8'>
-				<Heading
-					dimension='xs'
-					heading='h3'
-					tracking='wide'
-					uppercase
-					variant='muted'
-					weight='semibold'>
-					Properties{' '}
-					{isSelectedLayerLocked && (
-						<Span
-							className='opacity-50'
-							dimension='xs'
-							variant='muted'
-							weight='light'>
-							(Locked)
-						</Span>
-					)}
-				</Heading>
+			<PropertiesSection>
 				<FrameProperties
 					isLocked={isSelectedLayerLocked}
 					layer={selectedLayer}
 				/>
-			</section>
+			</PropertiesSection>
 		);
 	}
 

@@ -45,6 +45,7 @@ export {
 	selectIsCommandPaletteOpen,
 	selectIsFramePickerOpen,
 	selectIsLayerLocked,
+	selectIsSelectedLayerLocked,
 	selectLayerById,
 	selectLayers,
 	selectLockedLayerIds,

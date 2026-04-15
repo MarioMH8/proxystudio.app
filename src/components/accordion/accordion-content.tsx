@@ -5,9 +5,8 @@ import type { ReactNode } from 'react';
 
 const variants = cva({
 	base: [
-		'px-1 py-2',
+		'py-3 px-4',
 		'overflow-hidden',
-		'text-sm',
 		'data-[state=closed]:animate-accordion-up',
 		'data-[state=open]:animate-accordion-down',
 	],

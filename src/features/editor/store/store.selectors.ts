@@ -42,6 +42,12 @@ const selectLockedLayerIds = (state: EditorRootState): string[] => state.editor.
 const selectIsLayerLocked = (state: EditorRootState, layerId: string): boolean =>
 	state.editor.lockedLayerIds.includes(layerId);
 
+const selectIsSelectedLayerLocked = createSelector(
+	selectSelectedLayer,
+	selectLockedLayerIds,
+	(layer, lockedIds): boolean => (layer ? lockedIds.includes(layer.id) : false)
+);
+
 const selectImageStatus = (state: EditorRootState, layerId: string): ImageStatus | undefined =>
 	state.editor.imageStatuses[layerId];
 
@@ -76,6 +82,7 @@ export {
 	selectIsCommandPaletteOpen,
 	selectIsFramePickerOpen,
 	selectIsLayerLocked,
+	selectIsSelectedLayerLocked,
 	selectLayerById,
 	selectLayers,
 	selectLockedLayerIds,

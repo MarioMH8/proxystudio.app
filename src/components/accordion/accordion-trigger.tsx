@@ -1,42 +1,68 @@
+import type { FontVariantsProperties } from '@components/font';
+import font from '@components/font';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
+import { ChevronDown } from 'lucide-react';
 import { Accordion as RadixAccordion } from 'radix-ui';
-import type { ReactNode } from 'react';
+import type { ElementRef } from 'react';
+import { forwardRef } from 'react';
 
 const variants = cva({
 	base: [
+		'group',
 		'flex',
 		'flex-1',
+		'cursor-default',
 		'items-center',
 		'justify-between',
-		'py-4',
-		'text-sm',
-		'font-medium',
+		'py-3',
+		'px-4',
+		'outline-none',
 		'transition-all',
-		'cursor-pointer',
-		'[&[data-state=open]>svg]:rotate-180',
 	],
 	compoundVariants: [],
-	defaultVariants: {
-		variant: 'default',
-	},
-	variants: {
-		variant: {
-			default: 'text-foreground-900 dark:text-foreground-100 hover:underline',
-		},
-	},
+	defaultVariants: {},
+	variants: {},
 });
 
-type AccordionTriggerProps = RadixAccordion.AccordionTriggerProps & VariantProperties<typeof variants>;
+type AccordionTriggerProps = FontVariantsProperties &
+	RadixAccordion.AccordionTriggerProps &
+	VariantProperties<typeof variants>;
 
-function AccordionTrigger({ className, variant = 'default', ...properties }: AccordionTriggerProps): ReactNode {
-	return (
-		<RadixAccordion.Trigger
-			className={cn(variants({ className, variant }), className)}
-			{...properties}
-		/>
-	);
-}
+const AccordionTrigger = forwardRef<ElementRef<typeof RadixAccordion.Trigger>, AccordionTriggerProps>(
+	(
+		{
+			children,
+			className,
+			dimension = 'sm',
+			leading,
+			tracking,
+			uppercase,
+			variant = 'default',
+			weight = 'medium',
+			...properties
+		},
+		forwardedReference
+	) => (
+		<RadixAccordion.Header className='flex'>
+			<RadixAccordion.Trigger
+				className={cn(
+					variants({ className }),
+					font({ dimension, leading, tracking, uppercase, variant, weight }),
+					className
+				)}
+				ref={forwardedReference}
+				{...properties}>
+				{children}
+				<ChevronDown
+					aria-hidden
+					className='shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180'
+					size={16}
+				/>
+			</RadixAccordion.Trigger>
+		</RadixAccordion.Header>
+	)
+);
 
 AccordionTrigger.displayName = 'AccordionTrigger';
 

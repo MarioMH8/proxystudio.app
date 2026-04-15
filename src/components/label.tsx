@@ -4,10 +4,10 @@ import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import type { PropertiesWithAsChild } from '@shared/types';
 import { Label as RadixLabel, Slot } from 'radix-ui';
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 const variants = cva({
-	base: 'block',
+	base: 'block flex flex-col gap-2',
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {},
@@ -16,7 +16,7 @@ const variants = cva({
 type LabelProperties = PropertiesWithAsChild<
 	FontVariantsProperties & RadixLabel.LabelProps & VariantProperties<typeof variants>
 > & {
-	children: [string, ReactElement];
+	children: ReactNode;
 };
 
 function Label({
