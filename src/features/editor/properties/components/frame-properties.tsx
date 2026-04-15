@@ -86,7 +86,7 @@ function FrameProperties({ isLocked = false, layer }: FramePropertiesProps): Rea
 					uppercase
 					variant='muted'
 					weight='semibold'>
-					Position &amp; Size
+					Dimensions &amp; Opacity
 				</AccordionTrigger>
 				<AccordionContent>
 					<div className='flex flex-col gap-4'>
