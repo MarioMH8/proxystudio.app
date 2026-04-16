@@ -1,10 +1,10 @@
 import type { Layer } from '@domain';
 import { memo } from 'react';
 
-import FrameLayerRenderer from '../frame-layer/frame-layer-renderer';
-import type { ImageLoadStatus } from '../frame-layer/use-layer-image';
+import FrameLayerRenderer from './frame-layer/frame-layer-renderer';
+import type { ImageLoadStatus } from './frame-layer/use-layer-image';
 
-interface LayerRendererProps {
+interface CardLayerRendererProps {
 	/** Card height in pixels (for bounds conversion) */
 	cardHeight: number;
 	/** Card width in pixels (for bounds conversion) */
@@ -20,7 +20,7 @@ interface LayerRendererProps {
  * For 'frame': renders Konva.Image with opacity.
  * For other types: renders placeholder (not creatable in v1).
  */
-function LayerRendererInner({ cardHeight, cardWidth, layer, onImageStatusChange }: LayerRendererProps) {
+function CardLayerRendererInner({ cardHeight, cardWidth, layer, onImageStatusChange }: CardLayerRendererProps) {
 	if (!layer.visible) {
 		return;
 	}
@@ -47,8 +47,8 @@ function LayerRendererInner({ cardHeight, cardWidth, layer, onImageStatusChange 
 	}
 }
 
-const LayerRenderer = memo(LayerRendererInner);
-LayerRenderer.displayName = 'LayerRenderer';
+const CardLayerRenderer = memo(CardLayerRendererInner);
+CardLayerRenderer.displayName = 'CardLayerRenderer';
 
-export type { LayerRendererProps };
-export default LayerRenderer;
+export type { CardLayerRendererProps };
+export default CardLayerRenderer;
