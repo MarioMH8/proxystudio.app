@@ -1,8 +1,8 @@
 import type { Layer } from '@domain';
 import { memo } from 'react';
 
-import FrameLayerRenderer from './frame-layer-renderer';
-import type { ImageLoadStatus } from './use-layer-image';
+import FrameLayerRenderer from '../frame-layer/frame-layer-renderer';
+import type { ImageLoadStatus } from '../frame-layer/use-layer-image';
 
 interface LayerRendererProps {
 	/** Card height in pixels (for bounds conversion) */

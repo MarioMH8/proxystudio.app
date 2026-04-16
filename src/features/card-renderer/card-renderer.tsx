@@ -4,9 +4,9 @@ import type Konva from 'konva';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import { Layer as KonvaLayer, Stage } from 'react-konva';
 
-import type { CardRendererReference } from '../types';
-import LayerRenderer from './layer-renderer';
-import type { ImageLoadStatus } from './use-layer-image';
+import type { CardRendererReference } from './card-renderer.reference';
+import LayerRenderer from './components/layer-renderer';
+import type { ImageLoadStatus } from './frame-layer/use-layer-image';
 
 interface CardRendererProps {
 	/** Pure domain entity: card data including layers */

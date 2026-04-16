@@ -1,7 +1,7 @@
 import type { FrameLayer, Layer } from '@domain';
 import { describe, expect, it } from 'bun:test';
 
-import { computeRenderOrder } from './components/card-renderer';
+import { computeRenderOrder } from './card-renderer';
 
 /** Helper to create a minimal FrameLayer for testing. */
 function makeFrameLayer(overrides: Partial<FrameLayer> & { id: string }): FrameLayer {

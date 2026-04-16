@@ -1,4 +1,4 @@
-export type { CardRendererProps } from './components/card-renderer';
-export { default as CardRenderer } from './components/card-renderer';
-export type { ImageLoadStatus } from './components/use-layer-image';
-export type { CardRendererReference } from './types';
+export type { CardRendererProps } from './card-renderer';
+export { default as CardRenderer } from './card-renderer';
+export type { CardRendererReference } from './card-renderer.reference';
+export type { ImageLoadStatus } from './frame-layer/use-layer-image';
