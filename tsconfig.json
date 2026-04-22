@@ -1,0 +1,21 @@
+{
+	"extends": "@hexadrop/tsconfig",
+	"compilerOptions": {
+		"emitDecoratorMetadata": false,
+		"baseUrl": ".",
+		"rootDirs": [
+			"."
+		],
+		"paths": {
+			"@components/*": ["./src/components/*"],
+			"@modules/*/application": ["./src/modules/*/application/index.ts"],
+			"@modules/*/domain": ["./src/modules/*/domain/index.ts"],
+			"@modules/*/infrastructure": ["./src/modules/*/infrastructure/index.ts"],
+			"@modules/*/presentation": ["./src/modules/*/presentation/index.ts"],
+			"@modules/*/store": ["./src/modules/*/store/index.ts"],
+			"@pages/*": ["./src/pages/*"],
+			"@shared/*": ["./src/shared/*"]
+		}
+	},
+	"exclude": ["node_modules", "dist"]
+}
