@@ -6,6 +6,8 @@ import type { ReactNode } from 'react';
 import { Fragment } from 'react';
 import { Outlet } from 'react-router';
 
+import UpdateNotifier from './update-notifier';
+
 interface LayoutProps {
 	fullScreen?: boolean;
 }
@@ -26,6 +28,7 @@ function Layout({ fullScreen }: LayoutProps): ReactNode {
 				</Main>
 			</TooltipProvider>
 			<Toaster theme='system' />
+			<UpdateNotifier />
 		</Fragment>
 	);
 }

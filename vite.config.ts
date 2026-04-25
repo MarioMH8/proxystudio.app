@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import type { Plugin, ResolvedConfig } from 'vite';
 import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 import { generateAllThumbs } from './scripts/generate-thumbs.library';
 
@@ -80,7 +81,26 @@ export default defineConfig({
 			},
 		},
 	},
-	plugins: [thumbs(), react(), tailwindcss()],
+	plugins: [
+		thumbs(),
+		react(),
+		tailwindcss(),
+		VitePWA({
+			manifest: {
+				id: 'proxystudio',
+				theme_color: '#8022FE',
+				background_color: '#F1F5F9',
+			},
+			registerType: 'prompt',
+			pwaAssets: {
+				preset: 'minimal-2023',
+				image: 'public/favicon.svg',
+			},
+			workbox: {
+				globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+			},
+		}),
+	],
 	resolve: {
 		tsconfigPaths: true,
 	},

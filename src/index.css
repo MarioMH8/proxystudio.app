@@ -1,3 +1,5 @@
+@import "@fontsource-variable/inter";
+
 @import "tailwindcss";
 
 @variant dark {
@@ -13,6 +15,8 @@
 }
 
 @theme {
+    --font-sans: "Inter Variable", sans-serif;
+
     --color-foreground-50: var(--color-slate-50);
     --color-foreground-100: var(--color-slate-100);
     --color-foreground-200: var(--color-slate-200);
