@@ -1,5 +1,9 @@
+import FlexBox, { flexBoxClassName } from '@components/flex-box';
+import focus from '@components/focus';
 import type { FontVariantsProperties } from '@components/font';
 import font from '@components/font';
+import hover from '@components/hover';
+import rounded from '@components/rounded';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { ChevronDown } from 'lucide-react';
@@ -10,18 +14,13 @@ import { forwardRef } from 'react';
 const variants = cva({
 	base: [
 		'group',
-		'flex',
-		'flex-1',
 		'cursor-default',
-		'items-center',
-		'justify-between',
 		'py-3',
 		'px-4',
-		'outline-none',
 		'transition-colors',
-		'rounded-lg',
+		rounded({ dimension: 'lg' }),
 		'data-[state=open]:rounded-b-none',
-		'hover:bg-foreground-100 dark:hover:bg-foreground-800/50',
+		hover({ strength: 'soft', variant: 'default' }),
 	],
 	compoundVariants: [],
 	defaultVariants: {},
@@ -47,23 +46,27 @@ const AccordionTrigger = forwardRef<ComponentRef<typeof RadixAccordion.Trigger>,
 		},
 		forwardedReference
 	) => (
-		<RadixAccordion.Header className='flex'>
-			<RadixAccordion.Trigger
-				className={cn(
-					variants({ className }),
-					font({ dimension, leading, tracking, uppercase, variant, weight }),
-					className
-				)}
-				ref={forwardedReference}
-				{...properties}>
-				{children}
-				<ChevronDown
-					aria-hidden
-					className='shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180'
-					size={16}
-				/>
-			</RadixAccordion.Trigger>
-		</RadixAccordion.Header>
+		<FlexBox asChild>
+			<RadixAccordion.Header>
+				<RadixAccordion.Trigger
+					className={cn(
+						focus({ variant: 'primary' }),
+						flexBoxClassName({ grow: 1, justify: 'between' }),
+						variants({ className }),
+						font({ dimension, leading, tracking, uppercase, variant, weight }),
+						className
+					)}
+					ref={forwardedReference}
+					{...properties}>
+					{children}
+					<ChevronDown
+						aria-hidden
+						className='shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180'
+						size={16}
+					/>
+				</RadixAccordion.Trigger>
+			</RadixAccordion.Header>
+		</FlexBox>
 	)
 );
 

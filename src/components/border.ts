@@ -2,15 +2,48 @@ import type { VariantProperties } from '@shared/cva';
 import { cva } from '@shared/cva';
 
 const variants = cva({
-	base: 'border-foreground-300/70 dark:border-foreground-700/70',
-	compoundVariants: [],
+	base: '',
+	compoundVariants: [
+		{
+			className: 'border-foreground-300/70 dark:border-foreground-700/70',
+			strength: 'soft',
+			variant: 'default',
+		},
+		{
+			className: 'border-foreground-300 dark:border-foreground-700',
+			strength: 'default',
+			variant: 'default',
+		},
+		{
+			className: 'border-primary-300/70 dark:border-primary-800/70',
+			strength: 'soft',
+			variant: 'primary',
+		},
+		{
+			className: 'border-primary-300 dark:border-primary-700',
+			strength: 'default',
+			variant: 'primary',
+		},
+	],
 	defaultVariants: {
 		side: 'all',
+		strength: 'soft',
+		variant: 'default',
 	},
 	variants: {
 		side: {
 			all: 'border',
 			bottom: 'border-b',
+			none: 'border-0',
+			top: 'border-t',
+		},
+		strength: {
+			default: '',
+			soft: '',
+		},
+		variant: {
+			default: '',
+			primary: '',
 		},
 	},
 });

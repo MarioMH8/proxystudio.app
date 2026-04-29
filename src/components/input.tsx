@@ -1,5 +1,8 @@
+import background from '@components/background';
+import border from '@components/border';
 import focus from '@components/focus';
 import font from '@components/font';
+import rounded from '@components/rounded';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import type { PropertiesWithAsChild } from '@shared/types';
@@ -8,7 +11,9 @@ import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 const variants = cva({
 	base: [
-		'w-full border rounded-lg',
+		'w-full',
+		rounded({ dimension: 'lg' }),
+		border({ strength: 'default', variant: 'default' }),
 		'motion-safe:transition-colors',
 		'disabled:opacity-50',
 		'placeholder-foreground-800/30 dark:placeholder-foreground-200/30',
@@ -30,7 +35,7 @@ const variants = cva({
 			transparent: true,
 		},
 		{
-			className: 'border-0 bg-transparent p-0 px-0 py-0',
+			className: cn(border({ side: 'none' }), background({ variant: 'transparent' }), 'p-0 px-0 py-0'),
 			inputType: 'range',
 		},
 	],
@@ -43,11 +48,16 @@ const variants = cva({
 		},
 		inputType: {
 			default: '',
-			range: 'h-2 rounded-full border-0 bg-foreground-200 p-0 accent-primary-600 disabled:cursor-not-allowed dark:bg-foreground-700 dark:accent-primary-400',
+			range: cn(
+				'h-2 p-0 accent-primary-600 disabled:cursor-not-allowed dark:accent-primary-400',
+				background({ variant: 'default' }),
+				rounded({ dimension: 'full' }),
+				border({ side: 'none' })
+			),
 		},
 		transparent: {
-			false: 'bg-foreground-50 border-foreground-300 dark:bg-foreground-950 dark:border-foreground-700',
-			true: 'border-0 bg-foreground-100 dark:bg-foreground-950',
+			false: background({ strength: 'soft', variant: 'default' }),
+			true: cn(border({ side: 'none' }), background({ strength: 'soft', variant: 'default' })),
 		},
 	},
 });

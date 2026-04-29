@@ -1,5 +1,6 @@
 import type { ButtonProperties } from '@components/button';
 import Button from '@components/button';
+import hover from '@components/hover';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import type { ReactNode } from 'react';
@@ -21,7 +22,7 @@ type SegmentControlItemProperties = ButtonProperties & VariantProperties<typeof 
 function SegmentControlItem({ dimension = 'xs', isActive, ...properties }: SegmentControlItemProperties): ReactNode {
 	return (
 		<Button
-			className={cn(!isActive && 'opacity-60 dark:hover:bg-inherit hover:bg-inherit hover:opacity-100')}
+			className={cn(!isActive && cn('opacity-60 hover:opacity-100', hover({ variant: 'inherit' })))}
 			dimension={dimension}
 			transparent={!isActive}
 			{...properties}

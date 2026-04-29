@@ -1,3 +1,4 @@
+import background from '@components/background';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { Dialog as RadixDialog } from 'radix-ui';
@@ -11,7 +12,7 @@ const variants = cva({
 	},
 	variants: {
 		variant: {
-			default: 'bg-black/40 backdrop-blur-sm',
+			default: cn(background({ variant: 'overlay' }), 'backdrop-blur-sm'),
 		},
 	},
 });

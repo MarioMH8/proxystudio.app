@@ -1,3 +1,7 @@
+import background from '@components/background';
+import border from '@components/border';
+import rounded from '@components/rounded';
+import shadow from '@components/shadow';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { DropdownMenu as RadixDropdownMenu } from 'radix-ui';
@@ -8,8 +12,8 @@ const variants = cva({
 		'min-w-36',
 		'p-1',
 		'space-y-1',
-		'shadow-lg',
-		'rounded-md',
+		shadow({ depth: 'lg' }),
+		rounded({ dimension: 'md' }),
 		'will-change-[transform,opacity]',
 		'data-[side=bottom]:animate-slide-down',
 		'data-[side=left]:animate-slide-right',
@@ -21,14 +25,14 @@ const variants = cva({
 	variants: {
 		variant: {
 			default: [
-				'bg-foreground-200 dark:bg-foreground-800',
-				'border border-foreground-300 dark:border-foreground-700',
-				'shadow-foreground-300/70 dark:shadow-foreground-700/70',
+				background({ variant: 'default' }),
+				border({ strength: 'default', variant: 'default' }),
+				shadow({ depth: 'lg', strength: 'default', variant: 'default' }),
 			],
 			primary: [
-				'bg-primary-200 dark:bg-primary-800',
-				'border border-primary-500/30 dark:border-primary-500/30',
-				'shadow-primary-200/60 dark:shadow-primary-800/60',
+				background({ strength: 'soft', variant: 'primary' }),
+				border({ strength: 'soft', variant: 'primary' }),
+				shadow({ depth: 'lg', strength: 'soft', variant: 'primary' }),
 			],
 		},
 	},

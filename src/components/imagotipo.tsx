@@ -1,6 +1,8 @@
+import { flexBoxClassName } from '@components/flex-box';
 import focus from '@components/focus';
 import Isotipo from '@components/isotipo';
 import Logotipo from '@components/logotipo';
+import rounded from '@components/rounded';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import type { PropertiesWithAsChild } from '@shared/types';
@@ -9,7 +11,7 @@ import type { ComponentPropsWithRef, ReactNode } from 'react';
 import { cloneElement, Fragment, isValidElement } from 'react';
 
 const variants = cva({
-	base: 'flex items-center gap-2',
+	base: cn('gap-2', rounded()),
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {},
@@ -22,7 +24,10 @@ function Imagotipo({ asChild = false, children, className, ...properties }: Imag
 
 	const content = (
 		<Fragment>
-			<Isotipo />
+			<Isotipo
+				alt=''
+				aria-hidden='true'
+			/>
 			<Logotipo />
 		</Fragment>
 	);
@@ -30,7 +35,7 @@ function Imagotipo({ asChild = false, children, className, ...properties }: Imag
 	if (asChild && isValidElement(children)) {
 		return (
 			<Comp
-				className={cn(focus({ variant: 'primary' }), variants({ className }), className)}
+				className={cn(focus({ variant: 'primary' }), flexBoxClassName({}), variants({ className }), className)}
 				{...properties}>
 				{cloneElement(children, {}, content)}
 			</Comp>
@@ -39,7 +44,7 @@ function Imagotipo({ asChild = false, children, className, ...properties }: Imag
 
 	return (
 		<Comp
-			className={cn(focus({ variant: 'primary' }), variants({ className }), className)}
+			className={cn(focus({ variant: 'primary' }), flexBoxClassName({}), variants({ className }), className)}
 			{...properties}>
 			{content}
 		</Comp>

@@ -1,3 +1,8 @@
+import background from '@components/background';
+import border from '@components/border';
+import rounded from '@components/rounded';
+import shadow from '@components/shadow';
+import { cn } from '@shared/cva';
 import { Command } from 'cmdk';
 import type { ReactNode } from 'react';
 
@@ -16,10 +21,16 @@ interface CommandPaletteDialogProps {
 function CommandPaletteDialog({ children, onOpenChange, open }: CommandPaletteDialogProps): ReactNode {
 	return (
 		<Command.Dialog
-			contentClassName='fixed inset-x-4 top-[20%] z-50 mx-auto max-w-xl overflow-hidden rounded-xl border border-foreground-200 bg-foreground-50 shadow-2xl dark:border-foreground-700 dark:bg-foreground-900'
+			contentClassName={cn(
+				'fixed inset-x-4 top-[20%] z-50 mx-auto max-w-xl overflow-hidden',
+				background({ strength: 'soft', variant: 'default' }),
+				rounded({ dimension: 'xl' }),
+				shadow({ depth: '2xl' }),
+				border({ strength: 'default', variant: 'default' })
+			)}
 			onOpenChange={onOpenChange}
 			open={open}
-			overlayClassName='fixed inset-0 z-50 bg-black/40 backdrop-blur-sm'>
+			overlayClassName={cn('fixed inset-0 z-50 backdrop-blur-sm', background({ variant: 'overlay' }))}>
 			{children}
 		</Command.Dialog>
 	);

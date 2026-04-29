@@ -1,3 +1,4 @@
+import FlexBox from '@components/flex-box';
 import { cn } from '@shared/cva';
 import type { ElementType, ReactNode } from 'react';
 
@@ -10,7 +11,9 @@ interface EmptyStateProps {
 
 function EmptyState({ className, icon: Icon, iconSize = 32, message }: EmptyStateProps): ReactNode {
 	return (
-		<div className={cn('flex flex-col items-center gap-3 py-8 text-center text-foreground-500', className)}>
+		<FlexBox
+			className={cn('gap-3 py-8 text-center text-foreground-500', className)}
+			direction='column'>
 			{Icon ? (
 				<Icon
 					aria-hidden='true'
@@ -18,7 +21,7 @@ function EmptyState({ className, icon: Icon, iconSize = 32, message }: EmptyStat
 				/>
 			) : undefined}
 			<p>{message}</p>
-		</div>
+		</FlexBox>
 	);
 }
 

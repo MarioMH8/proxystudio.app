@@ -1,5 +1,7 @@
+import focus from '@components/focus';
 import type { FontVariantsProperties } from '@components/font';
 import font from '@components/font';
+import hover from '@components/hover';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { Slot } from 'radix-ui';
@@ -9,8 +11,8 @@ import { Link as RRLink } from 'react-router';
 
 const variants = cva({
 	base: [
-		'hover:text-primary-400 dark:hover:text-primary-600',
-		'outline-none focus-visible:text-primary-400 dark:focus-visible:hover:text-primary-600',
+		hover({ effect: 'text', variant: 'primary' }),
+		'focus-visible:text-primary-400 dark:focus-visible:hover:text-primary-600',
 		'focus-visible:underline focus-visible:underline-offset-4',
 	],
 	compoundVariants: [],
@@ -33,7 +35,7 @@ function Link({
 	weight,
 	...properties
 }: LinkProperties): ReactNode {
-	const classes = cn(font({ dimension, tracking, variant, weight }), variants(), className);
+	const classes = cn(font({ dimension, tracking, variant, weight }), focus(), variants(), className);
 
 	if (asChild) {
 		return (

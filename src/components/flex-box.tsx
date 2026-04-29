@@ -18,9 +18,18 @@ const variants = cva({
 			column: 'flex-col',
 			row: 'flex-row',
 		},
+		grow: {
+			1: 'flex-1',
+			auto: 'flex-auto',
+			none: 'flex-none',
+		},
 		items: {
 			baseline: 'items-baseline',
 			center: 'items-center',
+			end: 'items-end',
+			none: '',
+			start: 'items-start',
+			stretch: 'items-stretch',
 		},
 		justify: {
 			between: 'justify-between',
@@ -35,7 +44,17 @@ const variants = cva({
 	},
 });
 
-type FlexBoxProperties = PropertiesWithAsChild<ComponentPropsWithRef<'div'> & VariantProperties<typeof variants>>;
+type FlexBoxVariantProperties = VariantProperties<typeof variants>;
+
+type FlexBoxProperties = PropertiesWithAsChild<ComponentPropsWithRef<'div'> & FlexBoxVariantProperties>;
+
+type FlexBoxClassNameProperties = FlexBoxVariantProperties & {
+	className?: string | undefined;
+};
+
+function flexBoxClassName({ className, direction, items, justify, variant }: FlexBoxClassNameProperties): string {
+	return cn(variants({ className, direction, items, justify, variant }), className);
+}
 
 function FlexBox({
 	asChild,
@@ -50,12 +69,16 @@ function FlexBox({
 
 	return (
 		<Comp
-			className={cn(variants({ className, direction, items, justify, variant }), className)}
+			className={flexBoxClassName({ className, direction, items, justify, variant })}
 			{...properties}
 		/>
 	);
 }
 
 FlexBox.displayName = 'FlexBox';
+
+export type { FlexBoxVariantProperties };
+
+export { flexBoxClassName };
 
 export default FlexBox;

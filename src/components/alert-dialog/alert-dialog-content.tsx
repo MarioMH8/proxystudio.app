@@ -1,3 +1,5 @@
+import background from '@components/background';
+import rounded from '@components/rounded';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { AlertDialog as RadixAlertDialog } from 'radix-ui';
@@ -13,7 +15,7 @@ const variants = cva({
 		'max-w-md',
 		'-tranforeground-x-1/2',
 		'-tranforeground-y-1/2',
-		'rounded-lg',
+		rounded({ dimension: 'lg' }),
 		'p-6',
 	],
 	compoundVariants: [],
@@ -22,7 +24,7 @@ const variants = cva({
 	},
 	variants: {
 		variant: {
-			default: 'bg-foreground-100 dark:bg-foreground-950',
+			default: background({ strength: 'soft', variant: 'default' }),
 		},
 	},
 });

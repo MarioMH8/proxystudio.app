@@ -1,3 +1,4 @@
+import { flexBoxClassName } from '@components/flex-box';
 import type { FontVariantsProperties } from '@components/font';
 import font from '@components/font';
 import type { VariantProperties } from '@shared/cva';
@@ -11,11 +12,8 @@ const variants = cva({
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {
-		bordered: {
-			true: 'pb-3 border-b border-foreground-300 dark:border-foreground-800',
-		},
 		icon: {
-			true: 'flex items-center gap-2',
+			true: 'gap-2',
 		},
 	},
 });
@@ -30,7 +28,6 @@ type HeadingProperties = PropertiesWithAsChild<
 
 function Heading({
 	asChild = false,
-	bordered,
 	className,
 	dimension,
 	heading,
@@ -48,7 +45,8 @@ function Heading({
 		<Comp
 			className={cn(
 				font({ dimension, leading, tracking, uppercase, variant, weight }),
-				variants({ bordered, className, icon }),
+				icon ? flexBoxClassName({}) : undefined,
+				variants({ className, icon }),
 				className
 			)}
 			{...properties}

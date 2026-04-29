@@ -1,4 +1,8 @@
+import background from '@components/background';
+import { flexBoxClassName } from '@components/flex-box';
 import focus from '@components/focus';
+import hover from '@components/hover';
+import rounded from '@components/rounded';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import type { PropertiesWithAsChild } from '@shared/types';
@@ -6,7 +10,7 @@ import { Slot } from 'radix-ui';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 const variants = cva({
-	base: 'motion-safe:transition-all flex items-center justify-center gap-2 tracking-wide',
+	base: 'motion-safe:transition-all gap-2 tracking-wide',
 	compoundVariants: [
 		{
 			className: 'p-3 w-12 h-12',
@@ -14,7 +18,7 @@ const variants = cva({
 			icon: true,
 		},
 		{
-			className: 'px-6 py-3 rounded-lg',
+			className: cn('px-6 py-3', rounded({ dimension: 'lg' })),
 			dimension: 'base',
 			icon: false,
 		},
@@ -24,7 +28,7 @@ const variants = cva({
 			icon: true,
 		},
 		{
-			className: 'px-4 py-2 rounded',
+			className: cn('px-4 py-2', rounded()),
 			dimension: 'sm',
 			icon: false,
 		},
@@ -34,42 +38,42 @@ const variants = cva({
 			icon: true,
 		},
 		{
-			className: 'px-3 py-1 rounded',
+			className: cn('px-3 py-1', rounded()),
 			dimension: 'xs',
 			icon: false,
 		},
 		{
-			className: 'bg-foreground-300/50 dark:bg-foreground-700/50',
+			className: background({ strength: 'default', variant: 'default' }),
 			transparent: false,
 			variant: 'default',
 		},
 		{
-			className: 'bg-primary-600',
+			className: background({ variant: 'primary' }),
 			transparent: false,
 			variant: 'primary',
 		},
 		{
-			className: 'bg-error-600',
+			className: background({ variant: 'danger' }),
 			transparent: false,
 			variant: 'danger',
 		},
 		{
-			className: 'bg-success-600',
+			className: background({ variant: 'success' }),
 			transparent: false,
 			variant: 'success',
 		},
 		{
-			className: 'text-primary-600 hover:text-white',
+			className: cn('text-primary-600', hover({ effect: 'text', variant: 'inverse' })),
 			transparent: true,
 			variant: 'primary',
 		},
 		{
-			className: 'text-error-600 hover:bg-error-600/10 dark:text-error-400 dark:hover:bg-error-400/10',
+			className: cn('text-error-600 dark:text-error-400', hover({ strength: 'soft', variant: 'danger' })),
 			transparent: true,
 			variant: 'danger',
 		},
 		{
-			className: 'text-success-600 hover:bg-success-600/10 dark:text-success-400 dark:hover:bg-success-400/10',
+			className: cn('text-success-600 dark:text-success-400', hover({ strength: 'soft', variant: 'success' })),
 			transparent: true,
 			variant: 'success',
 		},
@@ -92,18 +96,20 @@ const variants = cva({
 		},
 		icon: {
 			false: '',
-			true: 'rounded-full',
+			true: rounded({ dimension: 'full' }),
 		},
 		transparent: {
 			false: '',
-			true: 'rounded-full',
+			true: rounded({ dimension: 'full' }),
 		},
 		variant: {
-			danger: 'text-white hover:bg-error-600 dark:hover:bg-error-400',
-			default:
-				'text-foreground-950 hover:bg-foreground-400/40 dark:text-foreground-50 dark:hover:bg-foreground-700',
-			primary: 'text-white hover:bg-primary-500',
-			success: 'text-white hover:bg-success-600 dark:hover:bg-success-400',
+			danger: cn('text-white', hover({ variant: 'danger' })),
+			default: cn(
+				'text-foreground-950 dark:text-foreground-50',
+				hover({ strength: 'default', variant: 'default' })
+			),
+			primary: cn('text-white', hover({ variant: 'primary' })),
+			success: cn('text-white', hover({ variant: 'success' })),
 		},
 		weight: {
 			bold: 'font-bold',
@@ -134,6 +140,7 @@ function Button({
 		<Comp
 			className={cn(
 				focus({ variant }),
+				flexBoxClassName({ justify: 'center' }),
 				variants({ className, dimension, disabled, icon, transparent, variant, weight }),
 				className
 			)}

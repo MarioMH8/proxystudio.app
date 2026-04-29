@@ -21,11 +21,12 @@ function Layout(): ReactNode {
 		<Fragment>
 			<NavigationMenu>
 				<NavigationMenuSlot position='center'>
-					<SegmentControl>
+					<SegmentControl aria-label='Primary navigation'>
 						<SegmentControlItem
 							asChild
 							isActive={isEditor}>
 							<Link
+								aria-current={isEditor ? 'page' : undefined}
 								to='/editor'
 								viewTransition>
 								<PencilRulerIcon
@@ -39,6 +40,7 @@ function Layout(): ReactNode {
 							asChild
 							isActive={isGallery}>
 							<Link
+								aria-current={isGallery ? 'page' : undefined}
 								to='/gallery'
 								viewTransition>
 								<ImagesIcon
