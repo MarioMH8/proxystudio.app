@@ -17,7 +17,6 @@ const variants = cva({
 		'cursor-default',
 		'py-3',
 		'px-4',
-		'transition-colors',
 		rounded({ dimension: 'lg' }),
 		'data-[state=open]:rounded-b-none',
 		hover({ strength: 'soft', variant: 'default' }),
@@ -61,7 +60,7 @@ const AccordionTrigger = forwardRef<ComponentRef<typeof RadixAccordion.Trigger>,
 					{children}
 					<ChevronDown
 						aria-hidden
-						className='shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)] group-data-[state=open]:rotate-180'
+						className='shrink-0 transition-transform group-data-[state=open]:rotate-180'
 						size={16}
 					/>
 				</RadixAccordion.Trigger>

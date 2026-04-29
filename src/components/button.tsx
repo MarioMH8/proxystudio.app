@@ -10,7 +10,7 @@ import { Slot } from 'radix-ui';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 const variants = cva({
-	base: 'motion-safe:transition-all gap-2 tracking-wide',
+	base: 'gap-2 tracking-wide',
 	compoundVariants: [
 		{
 			className: 'p-3 w-12 h-12',

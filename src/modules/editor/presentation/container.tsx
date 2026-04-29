@@ -8,6 +8,7 @@ import type { ComponentPropsWithRef, ReactNode } from 'react';
 const variants = cva({
 	base: [
 		'h-full',
+		'motion-safe:transition-all',
 		'bg-foreground-100 dark:bg-foreground-950',
 		'bg-[radial-gradient(circle,oklch(0.9_0.006_240)_1px,transparent_1px)]',
 		'dark:bg-[radial-gradient(circle,oklch(0.28_0.012_260)_1px,transparent_1px)]',

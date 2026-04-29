@@ -14,7 +14,6 @@ const variants = cva({
 		'w-full',
 		rounded({ dimension: 'lg' }),
 		border({ strength: 'default', variant: 'default' }),
-		'motion-safe:transition-colors',
 		'disabled:opacity-50',
 		'placeholder-foreground-800/30 dark:placeholder-foreground-200/30',
 	],

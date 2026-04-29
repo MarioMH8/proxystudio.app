@@ -67,8 +67,11 @@
     --color-error-950: var(--color-red-950);
     
     --default-transition-duration: 300ms;
+    --default-transition-timing-function: ease;
+    --default-animation-duration: 300ms;
+    --default-animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 
-    --animate-slide-down: slideDown 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    --animate-slide-down: slideDown var(--default-animation-duration) var(--default-animation-timing-function);
 
     @keyframes slideDown {
         0% {
@@ -81,7 +84,7 @@
         }
     }
 
-    --animate-slide-top: slideTop 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    --animate-slide-top: slideTop var(--default-animation-duration) var(--default-animation-timing-function);
 
     @keyframes slideTop {
         0% {
@@ -94,7 +97,7 @@
         }
     }
 
-    --animate-slide-right: slideRight 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    --animate-slide-right: slideRight var(--default-animation-duration) var(--default-animation-timing-function);
 
     @keyframes slideRight {
         0% {
@@ -107,7 +110,7 @@
         }
     }
 
-    --animate-slide-left: slideLeft 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    --animate-slide-left: slideLeft var(--default-animation-duration) var(--default-animation-timing-function);
 
     @keyframes slideLeft {
         0% {
@@ -181,12 +184,39 @@
         @apply h-screen overflow-auto scroll-smooth;
     }
 
+    :where(
+        body,
+        main,
+        aside,
+        section,
+        article,
+        nav,
+        header,
+        footer,
+        button,
+        input,
+        textarea,
+        select,
+        label,
+        div,
+        a,
+        svg,
+        path,
+        [role='button'],
+        [data-radix-popper-content-wrapper],
+        [data-slot],
+        [class*='bg-'],
+        [class*='text-'],
+        [class*='border-'],
+        [class*='shadow-']
+    ) {
+        @apply motion-safe:transition-[background-color,border-color,box-shadow,color,fill,opacity,stroke];
+        transition-duration: var(--default-transition-duration);
+        transition-timing-function: var(--default-transition-timing-function);
+    }
+
     body {
-        @apply motion-safe:transition-colors bg-foreground-100 dark:bg-foreground-950  text-foreground-800 dark:text-foreground-200 font-sans;
-        /*@apply bg-[radial-gradient(circle,oklch(0.9_0.006_240)_1px,transparent_1px)];*/
-        /*@apply dark:bg-[radial-gradient(circle,oklch(0.28_0.012_260)_1px,transparent_1px)];*/
-        /*background-size: 22px 22px;*/
-        /*background-position: 0 0;*/
+        @apply bg-foreground-100 dark:bg-foreground-950 text-foreground-800 dark:text-foreground-200 font-sans;
     }
 
     body[data-scroll-locked] {
