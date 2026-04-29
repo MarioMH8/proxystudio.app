@@ -14,6 +14,9 @@ const variants = cva({
 		variant: 'default',
 	},
 	variants: {
+		content: {
+			stretch: 'content-stretch',
+		},
 		direction: {
 			column: 'flex-col',
 			row: 'flex-row',

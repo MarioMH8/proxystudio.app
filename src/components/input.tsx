@@ -74,7 +74,11 @@ function className(
 ): string {
 	return cn(
 		font({ dimension, variant: transparent ? 'muted' : 'default' }),
-		focus({ noBorder: true, variant: 'default' }),
+		focus({
+			dimension,
+			noBorder: true,
+			variant: 'default',
+		}),
 		variants({ className, dimension, inputType, transparent }),
 		className
 	);

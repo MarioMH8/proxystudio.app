@@ -5,14 +5,14 @@ import { Slot } from 'radix-ui';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 const variants = cva({
-	base: 'font-normal text-sm',
+	base: 'font-medium text-sm',
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {},
 });
 
 const accentVariants = cva({
-	base: 'font-light opacity-60',
+	base: 'font-normal opacity-60',
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {},

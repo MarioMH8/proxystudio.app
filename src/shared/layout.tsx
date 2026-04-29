@@ -54,7 +54,7 @@ function Layout(): ReactNode {
 				</NavigationMenuSlot>
 			</NavigationMenu>
 			<TooltipProvider>
-				<Main>
+				<Main className='h-full'>
 					<Outlet />
 				</Main>
 			</TooltipProvider>

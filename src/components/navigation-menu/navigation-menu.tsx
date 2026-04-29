@@ -1,3 +1,4 @@
+import background from '@components/background';
 import border from '@components/border';
 import FlexBox from '@components/flex-box';
 import Imagotipo from '@components/imagotipo';
@@ -12,7 +13,7 @@ import type { NavigationMenuSlotProperties } from './navigation-menu-slot';
 import NavigationMenuSlot from './navigation-menu-slot';
 
 const variants = cva({
-	base: 'w-full px-4 py-2 bg-white dark:bg-foreground-900',
+	base: cn('w-full px-4 py-2', background({ variant: 'surfaces' })),
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {},

@@ -5,7 +5,7 @@ import { lazy, StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 
-const Creator = lazy(() => import('@pages/creator'));
+const Editor = lazy(() => import('@pages/editor'));
 const Gallery = lazy(() => import('@pages/gallery'));
 
 const root = document.querySelector('#root');
@@ -30,7 +30,7 @@ createRoot(root).render(
 						element={<Layout />}
 						path='/'>
 						<Route
-							element={<Creator />}
+							element={<Editor />}
 							index
 						/>
 					</Route>

@@ -65,6 +65,7 @@ const variants = cva({
 			overlay: '',
 			primary: '',
 			success: '',
+			surfaces: 'bg-white dark:bg-foreground-900',
 			transparent: '',
 		},
 	},

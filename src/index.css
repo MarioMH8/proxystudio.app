@@ -183,10 +183,10 @@
 
     body {
         @apply motion-safe:transition-colors bg-foreground-100 dark:bg-foreground-950  text-foreground-800 dark:text-foreground-200 font-sans;
-        @apply bg-[radial-gradient(circle,oklch(0.9_0.006_240)_1px,transparent_1px)];
-        @apply dark:bg-[radial-gradient(circle,oklch(0.28_0.012_260)_1px,transparent_1px)];
-        background-size: 22px 22px;
-        background-position: 0 0;
+        /*@apply bg-[radial-gradient(circle,oklch(0.9_0.006_240)_1px,transparent_1px)];*/
+        /*@apply dark:bg-[radial-gradient(circle,oklch(0.28_0.012_260)_1px,transparent_1px)];*/
+        /*background-size: 22px 22px;*/
+        /*background-position: 0 0;*/
     }
 
     body[data-scroll-locked] {

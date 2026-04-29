@@ -35,7 +35,14 @@ function Link({
 	weight,
 	...properties
 }: LinkProperties): ReactNode {
-	const classes = cn(font({ dimension, tracking, variant, weight }), focus(), variants(), className);
+	const focusDimension = dimension === 'sm' || dimension === 'xs' || dimension === 'lg' ? dimension : 'base';
+
+	const classes = cn(
+		font({ dimension, tracking, variant, weight }),
+		focus({ dimension: focusDimension }),
+		variants(),
+		className
+	);
 
 	if (asChild) {
 		return (

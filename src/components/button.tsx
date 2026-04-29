@@ -139,7 +139,7 @@ function Button({
 	return (
 		<Comp
 			className={cn(
-				focus({ variant }),
+				focus({ dimension, variant }),
 				flexBoxClassName({ justify: 'center' }),
 				variants({ className, dimension, disabled, icon, transparent, variant, weight }),
 				className

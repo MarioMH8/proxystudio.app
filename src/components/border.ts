@@ -34,7 +34,9 @@ const variants = cva({
 		side: {
 			all: 'border',
 			bottom: 'border-b',
+			left: 'border-l',
 			none: 'border-0',
+			right: 'border-r',
 			top: 'border-t',
 		},
 		strength: {
