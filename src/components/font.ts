@@ -6,6 +6,7 @@ const variants = cva({
 	compoundVariants: [],
 	defaultVariants: {
 		dimension: 'base',
+		tracking: 'wide',
 		weight: 'normal',
 	},
 	variants: {

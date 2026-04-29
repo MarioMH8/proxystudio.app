@@ -3,7 +3,7 @@ import './index.css';
 import Layout from '@shared/layout';
 import { lazy, StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 
 const Creator = lazy(() => import('@pages/creator'));
 const Gallery = lazy(() => import('@pages/gallery'));
@@ -14,13 +14,20 @@ if (!root) {
 	throw new Error('#root not found');
 }
 
+const redirect = (
+	<Navigate
+		replace
+		to='/'
+	/>
+);
+
 createRoot(root).render(
 	<StrictMode>
 		<BrowserRouter>
-			<Suspense fallback={<div className='flex h-screen items-center justify-center'>Loading…</div>}>
+			<Suspense>
 				<Routes>
 					<Route
-						element={<Layout fullScreen />}
+						element={<Layout />}
 						path='/'>
 						<Route
 							element={<Creator />}
@@ -32,9 +39,13 @@ createRoot(root).render(
 						path='/gallery'>
 						<Route
 							element={<Gallery />}
-							path='/gallery'
+							index
 						/>
 					</Route>
+					<Route
+						element={redirect}
+						path='*'
+					/>
 				</Routes>
 			</Suspense>
 		</BrowserRouter>

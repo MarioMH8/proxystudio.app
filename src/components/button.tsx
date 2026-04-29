@@ -6,7 +6,7 @@ import { Slot } from 'radix-ui';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 const variants = cva({
-	base: 'motion-safe:transition-all flex items-center justify-center gap-2',
+	base: 'motion-safe:transition-all flex items-center justify-center gap-2 tracking-wide',
 	compoundVariants: [
 		{
 			className: 'p-3 w-12 h-12',
@@ -78,7 +78,7 @@ const variants = cva({
 		dimension: 'base',
 		transparent: false,
 		variant: 'default',
-		weight: 'bold',
+		weight: 'normal',
 	},
 	variants: {
 		dimension: {
@@ -107,6 +107,7 @@ const variants = cva({
 		},
 		weight: {
 			bold: 'font-bold',
+			light: 'font-light',
 			medium: 'font-medium',
 			normal: 'font-normal',
 			semibold: 'font-semibold',
@@ -124,7 +125,7 @@ function Button({
 	icon = false,
 	transparent = false,
 	variant,
-	weight = 'medium',
+	weight = 'normal',
 	...properties
 }: ButtonProperties): ReactNode {
 	const Comp = asChild ? Slot.Slot : 'button';

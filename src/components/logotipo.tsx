@@ -5,21 +5,14 @@ import { Slot } from 'radix-ui';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 const variants = cva({
-	base: 'font-bold text-2xl tracking-tight',
+	base: 'font-normal text-sm',
 	compoundVariants: [],
-	defaultVariants: {
-		dimension: 'base',
-	},
-	variants: {
-		dimension: {
-			base: 'text-2xl',
-			small: 'text-xl',
-		},
-	},
+	defaultVariants: {},
+	variants: {},
 });
 
 const accentVariants = cva({
-	base: 'font-bold text-primary-500',
+	base: 'font-light opacity-60',
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {},
@@ -27,12 +20,12 @@ const accentVariants = cva({
 
 type LogotipoProperties = PropertiesWithAsChild<ComponentPropsWithRef<'button'> & VariantProperties<typeof variants>>;
 
-function Logotipo({ asChild = false, className, dimension, ...properties }: LogotipoProperties): ReactNode {
+function Logotipo({ asChild = false, className, ...properties }: LogotipoProperties): ReactNode {
 	const Comp = asChild ? Slot.Slot : 'span';
 
 	return (
 		<Comp
-			className={cn(variants({ className, dimension }), className)}
+			className={cn(variants({ className }), className)}
 			{...properties}>
 			Proxy<span className={cn(accentVariants())}>Studio</span>
 		</Comp>

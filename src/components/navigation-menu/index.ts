@@ -1,2 +1,2 @@
 export { default as NavigationMenu } from './navigation-menu';
-export { default as NavigationMenuLink } from './navigation-menu-link';
+export { default as NavigationMenuSlot } from './navigation-menu-slot';
