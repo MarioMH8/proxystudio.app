@@ -4,19 +4,20 @@ import SegmentControlItem from '@components/segment-control/segment-control-item
 import { MenuSettings } from '@modules/settings/presentation';
 import { ImagesIcon, PencilRulerIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router';
 
 function NavigationMenu(): ReactNode {
 	const { pathname } = useLocation();
+	const { t } = useTranslation();
 
-	const isEditor = useMemo(() => pathname === '/', [pathname]);
-	const isGallery = useMemo(() => pathname === '/gallery', [pathname]);
+	const isEditor = pathname === '/';
+	const isGallery = pathname === '/gallery';
 
 	return (
 		<SharedNavigationMenu>
 			<NavigationMenuSlot position='center'>
-				<SegmentControl aria-label='Primary navigation'>
+				<SegmentControl aria-label={t('navigation.primaryAriaLabel')}>
 					<SegmentControlItem
 						asChild
 						isActive={isEditor}>
@@ -28,7 +29,7 @@ function NavigationMenu(): ReactNode {
 								size={15}
 								strokeWidth={1}
 							/>
-							Editor
+							{t('navigation.editor')}
 						</Link>
 					</SegmentControlItem>
 					<SegmentControlItem
@@ -42,7 +43,7 @@ function NavigationMenu(): ReactNode {
 								size={15}
 								strokeWidth={1}
 							/>
-							Gallery
+							{t('navigation.gallery')}
 						</Link>
 					</SegmentControlItem>
 				</SegmentControl>

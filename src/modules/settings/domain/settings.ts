@@ -5,6 +5,7 @@ interface UISettings {
 }
 
 interface Settings {
+	lang: string;
 	ui: UISettings;
 }
 
@@ -13,6 +14,7 @@ const Settings = {
 		const settings = partial ?? {};
 
 		return {
+			lang: 'en',
 			...settings,
 			ui: {
 				theme: 'system',
@@ -23,7 +25,14 @@ const Settings = {
 	isDarkMode: (settings: Settings): boolean => settings.ui.theme === 'dark',
 	isLightMode: (settings: Settings): boolean => settings.ui.theme === 'light',
 	key: 'settings',
+	lang: ['es', 'en'],
 	matchSystem: (settings: Settings): boolean => settings.ui.theme === 'system',
+	setLang: (settings: Settings, lang: string): Settings => {
+		return {
+			...settings,
+			lang,
+		};
+	},
 	setTheme: (settings: Settings, theme: UITheme): Settings => {
 		return {
 			...settings,

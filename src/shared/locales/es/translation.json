@@ -1,0 +1,38 @@
+{
+	"brand": {
+		"isotipoAlt": "Isotipo de ProxyStudio"
+	},
+	"commandPalette": {
+		"empty": "No se encontraron acciones.",
+		"searchAriaLabel": "Buscar acciones",
+		"searchPlaceholder": "Buscar acciones..."
+	},
+	"navigation": {
+		"editor": "Editor",
+		"gallery": "Galería",
+		"primaryAriaLabel": "Navegación primaria"
+	},
+	"settings": {
+		"lang": {
+			"title": "Idioma"
+		},
+		"theme": {
+			"options": {
+				"dark": "Oscuro",
+				"light": "Claro",
+				"system": "Sistema"
+			},
+			"title": "Tema"
+		},
+		"title": "Configuración"
+	},
+	"updateNotifier": {
+		"dismiss": "Descartar",
+		"message": "Hay una actualización disponible.",
+		"reload": "Recargar"
+	},
+	"lang": {
+		"en": "Ingles",
+		"es": "Español"
+	}
+}

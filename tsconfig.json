@@ -13,6 +13,7 @@
 			"@modules/*/infrastructure": ["./src/modules/*/infrastructure/index.ts"],
 			"@modules/*/presentation": ["./src/modules/*/presentation/index.ts"],
 			"@modules/*/store": ["./src/modules/*/store/index.ts"],
+			"@locales/*": ["./locales/*"],
 			"@pages/*": ["./src/pages/*"],
 			"@shared/*": ["./src/shared/*"]
 		}

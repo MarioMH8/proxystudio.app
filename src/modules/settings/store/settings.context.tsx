@@ -2,11 +2,13 @@ import { FindSettingsUseCase, SaveSettingsUseCase } from '@modules/settings/appl
 import type { UITheme } from '@modules/settings/domain';
 import { Settings } from '@modules/settings/domain';
 import { useMutationUseCase, useQueryUseCase } from '@shared/hexagonal';
+import i18next from 'i18next';
 import { useInjection } from 'inversify-react';
 import type { FC, ReactNode } from 'react';
 import { createContext, useCallback, useContext, useEffect } from 'react';
 
 interface SettingsState {
+	setLang: (theme: string) => void;
 	setTheme: (theme: UITheme) => void;
 	settings: Settings;
 }
@@ -31,11 +33,21 @@ const SettingsProvider: FC<SettingsProviderProperties> = ({ children }) => {
 		[settings, saveSettings]
 	);
 
+	const setLang = useCallback(
+		(lang: string) => saveSettings(Settings.setLang(settings, lang)),
+		[settings, saveSettings]
+	);
+
 	useEffect(() => {
 		document.body.className = settings.ui.theme;
 	}, [settings.ui.theme]);
 
-	return <SettingsContext.Provider value={{ setTheme, settings }}>{children}</SettingsContext.Provider>;
+	useEffect(() => {
+		document.documentElement.lang = settings.lang;
+		void i18next.changeLanguage(settings.lang);
+	}, [settings.lang]);
+
+	return <SettingsContext.Provider value={{ setLang, setTheme, settings }}>{children}</SettingsContext.Provider>;
 };
 
 export { SettingsProvider, useSettingsContext };

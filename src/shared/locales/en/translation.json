@@ -1,0 +1,38 @@
+{
+	"brand": {
+		"isotipoAlt": "ProxyStudio isotipo"
+	},
+	"commandPalette": {
+		"empty": "No actions found.",
+		"searchAriaLabel": "Search actions",
+		"searchPlaceholder": "Search actions..."
+	},
+	"navigation": {
+		"editor": "Editor",
+		"gallery": "Gallery",
+		"primaryAriaLabel": "Primary navigation"
+	},
+	"settings": {
+		"lang": {
+			"title": "Language"
+		},
+		"theme": {
+			"options": {
+				"dark": "Dark",
+				"light": "Light",
+				"system": "System"
+			},
+			"title": "Theme"
+		},
+		"title": "Settings"
+	},
+	"updateNotifier": {
+		"dismiss": "Dismiss",
+		"message": "There is an update available.",
+		"reload": "Reload"
+	},
+	"lang": {
+		"en": "English",
+		"es": "Spanish"
+	}
+}

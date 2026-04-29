@@ -4,10 +4,14 @@ import Heading from '@components/heading';
 import { Popover, PopoverContent, PopoverTrigger } from '@components/popover';
 import { CogIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import LangSettings from './lang-settings';
 import ThemeSettings from './theme-settings';
 
 function MenuSettings(): ReactNode {
+	const { t } = useTranslation();
+
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
@@ -21,7 +25,8 @@ function MenuSettings(): ReactNode {
 			<PopoverContent>
 				<FlexBox
 					className='gap-2'
-					direction='column'>
+					direction='column'
+					items='stretch'>
 					<Heading
 						className='mb-2'
 						dimension='xs'
@@ -30,9 +35,10 @@ function MenuSettings(): ReactNode {
 						uppercase
 						variant='muted'
 						weight='medium'>
-						Settings
+						{t('settings.title')}
 					</Heading>
 					<ThemeSettings />
+					<LangSettings />
 				</FlexBox>
 			</PopoverContent>
 		</Popover>

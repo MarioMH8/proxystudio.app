@@ -6,12 +6,14 @@ import { Settings } from '@modules/settings/domain';
 import { useSettingsContext } from '@modules/settings/store';
 import { MonitorDotIcon, MoonIcon, SunIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ICON_SIZE = 15;
 const STROKE_WIDTH = 1;
 
 function ThemeSettings(): ReactNode {
 	const { setTheme, settings } = useSettingsContext();
+	const { t } = useTranslation();
 
 	return (
 		<FlexBox
@@ -23,7 +25,7 @@ function ThemeSettings(): ReactNode {
 				heading='h4'
 				variant='muted'
 				weight='light'>
-				Theme
+				{t('settings.theme.title')}
 			</Heading>
 			<SegmentControl>
 				<SegmentControlItem
@@ -33,7 +35,7 @@ function ThemeSettings(): ReactNode {
 						size={ICON_SIZE}
 						strokeWidth={STROKE_WIDTH}
 					/>
-					System
+					{t('settings.theme.options.system')}
 				</SegmentControlItem>
 				<SegmentControlItem
 					isActive={Settings.isLightMode(settings)}
@@ -42,7 +44,7 @@ function ThemeSettings(): ReactNode {
 						size={ICON_SIZE}
 						strokeWidth={STROKE_WIDTH}
 					/>
-					Light
+					{t('settings.theme.options.light')}
 				</SegmentControlItem>
 				<SegmentControlItem
 					isActive={Settings.isDarkMode(settings)}
@@ -51,7 +53,7 @@ function ThemeSettings(): ReactNode {
 						size={ICON_SIZE}
 						strokeWidth={STROKE_WIDTH}
 					/>
-					Dark
+					{t('settings.theme.options.dark')}
 				</SegmentControlItem>
 			</SegmentControl>
 		</FlexBox>

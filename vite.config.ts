@@ -10,6 +10,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { generateAllThumbs } from './scripts/generate-thumbs.library';
 
 const CHUNKS: Record<string, string[]> = {
+	i18n: ['i18n'],
 	canvas: ['konva'],
 	dnd: ['dnd'],
 	lucide: ['lucide'],

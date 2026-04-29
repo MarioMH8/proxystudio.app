@@ -6,15 +6,18 @@ import rounded from '@components/rounded';
 import { cn } from '@shared/cva';
 import { Command } from 'cmdk';
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Styled search input for the command palette.
  */
 function CommandPaletteInput(): ReactNode {
+	const { t } = useTranslation();
+
 	return (
 		<FlexBox className={cn(border({ side: 'bottom', strength: 'default', variant: 'default' }), 'px-3')}>
 			<Command.Input
-				aria-label='Search actions'
+				aria-label={t('commandPalette.searchAriaLabel')}
 				className={cn(
 					'flex-1 py-3 text-sm text-foreground-900',
 					background({ variant: 'transparent' }),
@@ -23,7 +26,7 @@ function CommandPaletteInput(): ReactNode {
 					focus(),
 					'focus-visible:ring-offset-foreground-50 dark:focus-visible:ring-offset-foreground-900'
 				)}
-				placeholder='Search actions…'
+				placeholder={t('commandPalette.searchPlaceholder')}
 			/>
 		</FlexBox>
 	);

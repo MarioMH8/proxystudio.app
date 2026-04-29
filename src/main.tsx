@@ -1,5 +1,6 @@
 import './index.css';
 import 'reflect-metadata';
+import '@shared/i18n';
 
 import { TooltipProvider } from '@components/tooltip';
 import container from '@shared/container';
