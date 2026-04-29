@@ -20,7 +20,7 @@ const variants = cva({
 });
 
 type NavigationMenuProperties = PropertiesWithAsChild<ComponentPropsWithRef<'nav'>> & {
-	children?: ReactElement<NavigationMenuSlotProperties>;
+	children?: ReactElement<NavigationMenuSlotProperties> | ReactElement<NavigationMenuSlotProperties>[];
 };
 
 function NavigationMenu({ asChild = false, children, className, ...properties }: NavigationMenuProperties): ReactNode {

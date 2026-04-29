@@ -10,7 +10,7 @@ const variants = cva({
 	compoundVariants: [],
 	defaultVariants: {
 		direction: 'row',
-		items: 'center',
+		items: 'start',
 		variant: 'default',
 	},
 	variants: {

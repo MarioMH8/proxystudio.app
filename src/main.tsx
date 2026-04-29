@@ -1,12 +1,16 @@
 import './index.css';
+import 'reflect-metadata';
 
-import Layout from '@shared/layout';
-import { lazy, StrictMode, Suspense } from 'react';
+import { TooltipProvider } from '@components/tooltip';
+import container from '@shared/container';
+import queryClient from '@shared/query-client';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { Provider } from 'inversify-react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 
-const Editor = lazy(() => import('@pages/editor'));
-const Gallery = lazy(() => import('@pages/gallery'));
+import { SettingsProvider } from './modules/settings/store';
+import Router from './router';
 
 const root = document.querySelector('#root');
 
@@ -14,40 +18,16 @@ if (!root) {
 	throw new Error('#root not found');
 }
 
-const redirect = (
-	<Navigate
-		replace
-		to='/'
-	/>
-);
-
 createRoot(root).render(
 	<StrictMode>
-		<BrowserRouter>
-			<Suspense>
-				<Routes>
-					<Route
-						element={<Layout />}
-						path='/'>
-						<Route
-							element={<Editor />}
-							index
-						/>
-					</Route>
-					<Route
-						element={<Layout />}
-						path='/gallery'>
-						<Route
-							element={<Gallery />}
-							index
-						/>
-					</Route>
-					<Route
-						element={redirect}
-						path='*'
-					/>
-				</Routes>
-			</Suspense>
-		</BrowserRouter>
+		<Provider container={container}>
+			<QueryClientProvider client={queryClient}>
+				<TooltipProvider>
+					<SettingsProvider>
+						<Router />
+					</SettingsProvider>
+				</TooltipProvider>
+			</QueryClientProvider>
+		</Provider>
 	</StrictMode>
 );

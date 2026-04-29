@@ -22,6 +22,7 @@ function LayersPanel(properties: LayerPanelProperties): ReactNode {
 			{...properties}>
 			<Panel
 				collapsible
+				id='editor-layers-panel'
 				maxSize='35%'
 				minSize='15%'
 			/>

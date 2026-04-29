@@ -4,13 +4,13 @@ import rounded from '@components/rounded';
 import shadow from '@components/shadow';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
-import { DropdownMenu as RadixDropdownMenu } from 'radix-ui';
+import { Popover as RadixPopover } from 'radix-ui';
 import type { ReactNode } from 'react';
 
 const variants = cva({
 	base: [
 		'min-w-36',
-		'p-1',
+		'p-4',
 		'space-y-1',
 		shadow({ depth: 'lg' }),
 		rounded({ dimension: 'md' }),
@@ -38,27 +38,27 @@ const variants = cva({
 	},
 });
 
-type DropdownMenuContentProps = RadixDropdownMenu.DropdownMenuContentProps & VariantProperties<typeof variants>;
+type PopoverContentProps = RadixPopover.PopoverContentProps & VariantProperties<typeof variants>;
 
-function DropdownMenuContent({
+function PopoverContent({
 	className,
 	sideOffset = 5,
 	variant = 'default',
 	...properties
-}: DropdownMenuContentProps): ReactNode {
+}: PopoverContentProps): ReactNode {
 	return (
-		<RadixDropdownMenu.Portal>
-			<RadixDropdownMenu.Content
+		<RadixPopover.Portal>
+			<RadixPopover.Content
 				className={cn(variants({ className, variant }), className)}
 				sideOffset={sideOffset}
 				{...properties}
 			/>
-		</RadixDropdownMenu.Portal>
+		</RadixPopover.Portal>
 	);
 }
 
-DropdownMenuContent.displayName = 'DropdownMenuContent';
+PopoverContent.displayName = 'PopoverContent';
 
 export { variants };
 
-export default DropdownMenuContent;
+export default PopoverContent;

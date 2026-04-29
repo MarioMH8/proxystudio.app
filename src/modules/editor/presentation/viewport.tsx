@@ -17,6 +17,7 @@ function EditorViewport({ className, ...properties }: EditorViewportProperties):
 	return (
 		<Panel
 			className={cn(variants({ className }), className)}
+			id='editor-viewport'
 			{...properties}
 		/>
 	);

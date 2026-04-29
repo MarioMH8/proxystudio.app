@@ -4,7 +4,7 @@ import { EditorContainer, EditorViewport, LayersPanel } from '@modules/editor/pr
 import type { ReactNode } from 'react';
 import { Group, useDefaultLayout } from 'react-resizable-panels';
 
-const EDITOR_LAYOUT_ID = 'editor-layout';
+const EDITOR_LAYOUT_ID = 'editor';
 
 function Editor(): ReactNode {
 	const { defaultLayout, onLayoutChanged } = useDefaultLayout({

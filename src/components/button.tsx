@@ -23,7 +23,7 @@ const variants = cva({
 			icon: false,
 		},
 		{
-			className: 'p-2 w-8 h-8',
+			className: 'p-1.5 w-8 h-8',
 			dimension: 'sm',
 			icon: true,
 		},
@@ -33,7 +33,7 @@ const variants = cva({
 			icon: false,
 		},
 		{
-			className: 'p-2 w-6 h-6',
+			className: 'p-0.5 w-6 h-6',
 			dimension: 'xs',
 			icon: true,
 		},
@@ -140,7 +140,7 @@ function Button({
 		<Comp
 			className={cn(
 				focus({ dimension, variant }),
-				flexBoxClassName({ justify: 'center' }),
+				flexBoxClassName({ items: 'center', justify: 'center' }),
 				variants({ className, dimension, disabled, icon, transparent, variant, weight }),
 				className
 			)}
