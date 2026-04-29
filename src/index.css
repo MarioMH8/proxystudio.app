@@ -181,12 +181,37 @@
         @apply h-screen overflow-auto scroll-smooth;
     }
 
+    :where(
+        body,
+        main,
+        aside,
+        section,
+        article,
+        nav,
+        header,
+        footer,
+        button,
+        input,
+        textarea,
+        select,
+        label,
+        a,
+        svg,
+        path,
+        [role='button'],
+        [data-radix-popper-content-wrapper],
+        [data-slot],
+        [class*='bg-'],
+        [class*='text-'],
+        [class*='border-'],
+        [class*='shadow-']
+    ) {
+        @apply motion-safe:transition-[background-color,border-color,box-shadow,color,fill,opacity,stroke] duration-300;
+        transition-timing-function: ease;
+    }
+
     body {
-        @apply motion-safe:transition-colors bg-foreground-100 dark:bg-foreground-950  text-foreground-800 dark:text-foreground-200 font-sans;
-        /*@apply bg-[radial-gradient(circle,oklch(0.9_0.006_240)_1px,transparent_1px)];*/
-        /*@apply dark:bg-[radial-gradient(circle,oklch(0.28_0.012_260)_1px,transparent_1px)];*/
-        /*background-size: 22px 22px;*/
-        /*background-position: 0 0;*/
+        @apply bg-foreground-100 dark:bg-foreground-950 text-foreground-800 dark:text-foreground-200 font-sans;
     }
 
     body[data-scroll-locked] {

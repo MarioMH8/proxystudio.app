@@ -2,7 +2,7 @@ import type { VariantProperties } from '@shared/cva';
 import { cva } from '@shared/cva';
 
 const variants = cva({
-	base: 'motion-safe:transition-colors',
+	base: '',
 	compoundVariants: [],
 	defaultVariants: {
 		dimension: 'base',
