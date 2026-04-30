@@ -5,7 +5,7 @@ import { Slot } from 'radix-ui';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 const variants = cva({
-	base: 'font-medium text-sm',
+	base: 'font-medium text-base',
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {},

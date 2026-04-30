@@ -16,6 +16,7 @@ const variants = cva({
 			none: 'rounded-none',
 			sm: 'rounded-sm',
 			xl: 'rounded-xl',
+			xs: 'rounded-xs',
 		},
 	},
 });

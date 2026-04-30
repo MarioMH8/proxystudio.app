@@ -44,6 +44,7 @@ const variants = cva({
 		weight: {
 			bold: 'font-bold',
 			extrabold: 'font-extrabold',
+			extralight: 'font-extralight',
 			light: 'font-light',
 			medium: 'font-medium',
 			normal: 'font-normal',

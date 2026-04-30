@@ -2,6 +2,12 @@
 
 @import "tailwindcss";
 
+@plugin "tailwindcss-flow-type" {
+    fontSizeMax: 0.875;
+    fontSizeMin: 0.575;
+    override: true
+}
+
 @variant dark {
     &:where(.dark *, .dark) {
         @slot;

@@ -5,7 +5,7 @@ const variants = cva({
 	base: '',
 	compoundVariants: [
 		{
-			className: 'hover:bg-foreground-100 dark:hover:bg-foreground-800/50',
+			className: 'hover:bg-foreground-100 dark:hover:bg-foreground-950',
 			effect: 'bg',
 			strength: 'soft',
 			variant: 'default',

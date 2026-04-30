@@ -80,7 +80,7 @@ function FlexBox({
 
 FlexBox.displayName = 'FlexBox';
 
-export type { FlexBoxVariantProperties };
+export type { FlexBoxProperties, FlexBoxVariantProperties };
 
 export { flexBoxClassName };
 

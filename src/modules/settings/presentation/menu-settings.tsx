@@ -24,13 +24,12 @@ function MenuSettings(): ReactNode {
 			</PopoverTrigger>
 			<PopoverContent>
 				<FlexBox
-					className='gap-2'
+					className='gap-4'
 					direction='column'
 					items='stretch'>
 					<Heading
-						className='mb-2'
-						dimension='xs'
-						heading='h4'
+						dimension='sm'
+						heading='h3'
 						tracking='tight'
 						uppercase
 						variant='muted'

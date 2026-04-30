@@ -7,10 +7,14 @@
 		"searchAriaLabel": "Buscar acciones",
 		"searchPlaceholder": "Buscar acciones..."
 	},
+	"layers": {
+		"title": "Capas",
+		"add": "Añadir capas"
+	},
 	"navigation": {
 		"editor": "Editor",
 		"gallery": "Galería",
-		"primaryAriaLabel": "Navegación primaria"
+		"primaryAriaLabel": "Navegación principal"
 	},
 	"settings": {
 		"lang": {
@@ -32,7 +36,7 @@
 		"reload": "Recargar"
 	},
 	"lang": {
-		"en": "Ingles",
+		"en": "Inglés",
 		"es": "Español"
 	}
 }

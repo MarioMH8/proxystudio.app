@@ -7,6 +7,10 @@
 		"searchAriaLabel": "Search actions",
 		"searchPlaceholder": "Search actions..."
 	},
+	"layers": {
+		"title": "Layers",
+		"add": "Add layers"
+	},
 	"navigation": {
 		"editor": "Editor",
 		"gallery": "Gallery",

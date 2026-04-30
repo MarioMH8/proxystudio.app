@@ -13,32 +13,32 @@ const variants = cva({
 	base: 'gap-2 tracking-wide',
 	compoundVariants: [
 		{
-			className: 'p-3 w-12 h-12',
+			className: 'p-3.5 w-12 h-12',
 			dimension: 'base',
 			icon: true,
 		},
 		{
-			className: cn('px-6 py-3', rounded({ dimension: 'lg' })),
+			className: 'px-5 py-2',
 			dimension: 'base',
+			icon: false,
+		},
+		{
+			className: 'p-2.5 w-10 h-10',
+			dimension: 'sm',
+			icon: true,
+		},
+		{
+			className: 'px-3.5 py-1.5',
+			dimension: 'sm',
 			icon: false,
 		},
 		{
 			className: 'p-1.5 w-8 h-8',
-			dimension: 'sm',
-			icon: true,
-		},
-		{
-			className: cn('px-4 py-2', rounded()),
-			dimension: 'sm',
-			icon: false,
-		},
-		{
-			className: 'p-0.5 w-6 h-6',
 			dimension: 'xs',
 			icon: true,
 		},
 		{
-			className: cn('px-3 py-1', rounded()),
+			className: 'px-2 py-1',
 			dimension: 'xs',
 			icon: false,
 		},
@@ -61,6 +61,11 @@ const variants = cva({
 			className: background({ variant: 'success' }),
 			transparent: false,
 			variant: 'success',
+		},
+		{
+			className: cn('text-foreground-600', hover({ strength: 'soft', variant: 'default' })),
+			transparent: true,
+			variant: 'default',
 		},
 		{
 			className: cn('text-primary-600', hover({ effect: 'text', variant: 'inverse' })),
@@ -86,9 +91,9 @@ const variants = cva({
 	},
 	variants: {
 		dimension: {
-			base: 'text-base',
-			sm: 'text-sm',
-			xs: 'text-xs',
+			base: ['text-base', rounded({ dimension: 'lg' })],
+			sm: ['text-sm', rounded({ dimension: 'base' })],
+			xs: ['text-xs', rounded({ dimension: 'sm' })],
 		},
 		disabled: {
 			false: [],
@@ -96,18 +101,15 @@ const variants = cva({
 		},
 		icon: {
 			false: '',
-			true: rounded({ dimension: 'full' }),
+			true: '',
 		},
 		transparent: {
 			false: '',
-			true: rounded({ dimension: 'full' }),
+			true: '',
 		},
 		variant: {
 			danger: cn('text-white', hover({ variant: 'danger' })),
-			default: cn(
-				'text-foreground-950 dark:text-foreground-50',
-				hover({ strength: 'default', variant: 'default' })
-			),
+			default: cn('text-foreground-950 dark:text-foreground-50', hover({ variant: 'default' })),
 			primary: cn('text-white', hover({ variant: 'primary' })),
 			success: cn('text-white', hover({ variant: 'success' })),
 		},

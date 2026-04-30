@@ -20,14 +20,14 @@ function LangSettings(): ReactNode {
 			direction='row'
 			items='center'>
 			<Heading
-				dimension='xs'
+				dimension='sm'
 				heading='h4'
 				variant='muted'
 				weight='light'>
 				{t('settings.lang.title')}
 			</Heading>
 			<Select
-				dimension='xs'
+				dimension='sm'
 				onChange={event => setLang(event.target.value)}
 				value={settings.lang}>
 				{options.map(([lang, value]) => (

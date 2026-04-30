@@ -19,7 +19,7 @@ const variants = cva({
 
 type SegmentControlItemProperties = ButtonProperties & VariantProperties<typeof variants>;
 
-function SegmentControlItem({ dimension = 'xs', isActive, ...properties }: SegmentControlItemProperties): ReactNode {
+function SegmentControlItem({ dimension = 'sm', isActive, ...properties }: SegmentControlItemProperties): ReactNode {
 	return (
 		<Button
 			className={cn(!isActive && cn('opacity-60 hover:opacity-100', hover({ variant: 'inherit' })))}

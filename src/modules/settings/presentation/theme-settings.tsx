@@ -21,7 +21,7 @@ function ThemeSettings(): ReactNode {
 			direction='column'
 			items='start'>
 			<Heading
-				dimension='xs'
+				dimension='sm'
 				heading='h4'
 				variant='muted'
 				weight='light'>
