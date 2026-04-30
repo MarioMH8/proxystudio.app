@@ -3,6 +3,8 @@
 		"isotipoAlt": "Isotipo de ProxyStudio"
 	},
 	"commandPalette": {
+		"dialogDescription": "Busca acciones disponibles y ejecútalas desde este diálogo de paleta de comandos.",
+		"dialogTitle": "Paleta de comandos",
 		"empty": "No se encontraron acciones.",
 		"searchAriaLabel": "Buscar acciones",
 		"searchPlaceholder": "Buscar acciones..."

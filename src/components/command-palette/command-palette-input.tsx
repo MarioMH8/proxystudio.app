@@ -23,8 +23,7 @@ function CommandPaletteInput(): ReactNode {
 					background({ variant: 'transparent' }),
 					rounded({ dimension: 'md' }),
 					'placeholder:text-foreground-400 dark:text-foreground-50 dark:placeholder:text-foreground-500',
-					focus(),
-					'focus-visible:ring-offset-foreground-50 dark:focus-visible:ring-offset-foreground-900'
+					focus({ variant: 'default' })
 				)}
 				placeholder={t('commandPalette.searchPlaceholder')}
 			/>

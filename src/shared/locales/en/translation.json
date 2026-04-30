@@ -3,6 +3,8 @@
 		"isotipoAlt": "ProxyStudio isotipo"
 	},
 	"commandPalette": {
+		"dialogDescription": "Search available actions and execute them from this command palette dialog.",
+		"dialogTitle": "Command palette",
 		"empty": "No actions found.",
 		"searchAriaLabel": "Search actions",
 		"searchPlaceholder": "Search actions..."
