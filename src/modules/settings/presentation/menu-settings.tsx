@@ -16,6 +16,7 @@ function MenuSettings(): ReactNode {
 		<Popover>
 			<PopoverTrigger asChild>
 				<Button
+					aria-label={t('settings.title')}
 					dimension='sm'
 					icon
 					transparent>
