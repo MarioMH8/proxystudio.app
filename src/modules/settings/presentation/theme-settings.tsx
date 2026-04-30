@@ -27,8 +27,11 @@ function ThemeSettings(): ReactNode {
 				weight='light'>
 				{t('settings.theme.title')}
 			</Heading>
-			<SegmentControl>
+			<SegmentControl
+				aria-label={t('settings.theme.title')}
+				role='group'>
 				<SegmentControlItem
+					aria-pressed={Settings.matchSystem(settings)}
 					isActive={Settings.matchSystem(settings)}
 					onClick={() => setTheme(Settings.themes.SYSTEM)}>
 					<MonitorDotIcon
@@ -38,6 +41,7 @@ function ThemeSettings(): ReactNode {
 					{t('settings.theme.options.system')}
 				</SegmentControlItem>
 				<SegmentControlItem
+					aria-pressed={Settings.isLightMode(settings)}
 					isActive={Settings.isLightMode(settings)}
 					onClick={() => setTheme(Settings.themes.LIGHT)}>
 					<SunIcon
@@ -47,6 +51,7 @@ function ThemeSettings(): ReactNode {
 					{t('settings.theme.options.light')}
 				</SegmentControlItem>
 				<SegmentControlItem
+					aria-pressed={Settings.isDarkMode(settings)}
 					isActive={Settings.isDarkMode(settings)}
 					onClick={() => setTheme(Settings.themes.DARK)}>
 					<MoonIcon
