@@ -24,8 +24,29 @@ function isMac(): boolean {
  *  - macOS → "⌘" (Command symbol)
  *  - Other → "Ctrl"
  */
-function modifierKey(): string {
-	return isMac() ? '⌘' : 'Ctrl';
+const MODIFIER_KIND = {
+	SYMBOL: 'symbol',
+	TEXT: 'text',
+} as const;
+
+type ModifierKind = (typeof MODIFIER_KIND)[keyof typeof MODIFIER_KIND];
+
+interface ModifierKey {
+	kind: ModifierKind;
+	label: string;
 }
 
-export { isMac, modifierKey };
+function modifierKey(): ModifierKey {
+	return isMac()
+		? {
+				kind: MODIFIER_KIND.SYMBOL,
+				label: '⌘',
+			}
+		: {
+				kind: MODIFIER_KIND.TEXT,
+				label: 'Ctrl',
+			};
+}
+
+export { isMac, MODIFIER_KIND, modifierKey };
+export type { ModifierKey, ModifierKind };

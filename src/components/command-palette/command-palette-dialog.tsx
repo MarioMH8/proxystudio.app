@@ -8,20 +8,19 @@ import type { ReactNode } from 'react';
 import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface CommandPaletteDialogProps {
+import { useCommandPaletteContext } from './command-palette-context';
+
+interface CommandPaletteDialogProperties {
 	children: ReactNode;
-	/** Called when the dialog requests open state change. */
-	onOpenChange: (open: boolean) => void;
-	/** Whether the dialog is currently open. */
-	open: boolean;
 }
 
 /**
  * Styled wrapper for the cmdk Command.Dialog.
  * Renders a modal overlay + centered panel above all other content (z-50).
  */
-function CommandPaletteDialog({ children, onOpenChange, open }: CommandPaletteDialogProps): ReactNode {
+function CommandPaletteDialog({ children }: CommandPaletteDialogProperties): ReactNode {
 	const descriptionId = useId();
+	const { open, setOpen } = useCommandPaletteContext();
 	const { t } = useTranslation();
 
 	return (
@@ -35,7 +34,7 @@ function CommandPaletteDialog({ children, onOpenChange, open }: CommandPaletteDi
 				shadow({ depth: '2xl' }),
 				border({ strength: 'default', variant: 'default' })
 			)}
-			onOpenChange={onOpenChange}
+			onOpenChange={setOpen}
 			open={open}
 			overlayClassName={cn('fixed inset-0 z-50 backdrop-blur-sm', background({ variant: 'overlay' }))}>
 			<span
@@ -50,5 +49,5 @@ function CommandPaletteDialog({ children, onOpenChange, open }: CommandPaletteDi
 
 CommandPaletteDialog.displayName = 'CommandPaletteDialog';
 
-export type { CommandPaletteDialogProps };
+export type { CommandPaletteDialogProperties };
 export default CommandPaletteDialog;

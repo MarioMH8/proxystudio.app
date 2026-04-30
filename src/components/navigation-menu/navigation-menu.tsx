@@ -47,7 +47,9 @@ function NavigationMenu({ asChild = false, children, className, ...properties }:
 			<Comp
 				className={cn(variants({ className }), border({ side: 'bottom' }), className)}
 				{...properties}>
-				<FlexBox>
+				<FlexBox
+					className='gap-2'
+					items='center'>
 					<Imagotipo asChild>
 						<Link
 							to='/'
@@ -56,8 +58,16 @@ function NavigationMenu({ asChild = false, children, className, ...properties }:
 					</Imagotipo>
 					{renderSlot('left')}
 				</FlexBox>
-				<FlexBox>{renderSlot('center')}</FlexBox>
-				<FlexBox>{renderSlot('right')}</FlexBox>
+				<FlexBox
+					className='gap-2'
+					items='center'>
+					{renderSlot('center')}
+				</FlexBox>
+				<FlexBox
+					className='gap-2'
+					items='center'>
+					{renderSlot('right')}
+				</FlexBox>
 			</Comp>
 		</FlexBox>
 	);

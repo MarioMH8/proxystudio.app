@@ -27,6 +27,7 @@ const variants = cva({
 			tight: 'leading-tight',
 		},
 		tracking: {
+			normal: 'tracking-normal',
 			tight: 'tracking-tight',
 			wide: 'tracking-wide',
 			wider: 'tracking-wider',
