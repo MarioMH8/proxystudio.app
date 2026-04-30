@@ -93,12 +93,14 @@ const modifierVariants = cva({
 });
 
 type KeyboardShortcutProperties = Omit<ComponentPropsWithRef<'kbd'>, 'children'> & {
+	ariaKey: string;
 	dimension?: FontDimension;
 	keyLabel: string;
 	modifiers: ModifierKey[];
 };
 
 function KeyboardShortcut({
+	ariaKey,
 	className,
 	dimension = 'base',
 	keyLabel,
@@ -106,9 +108,11 @@ function KeyboardShortcut({
 	...properties
 }: KeyboardShortcutProperties): ReactNode {
 	const keyDimension = KEY_DIMENSIONS[dimension];
+	const ariaKeyShortcuts = [...modifiers.map(modifier => modifier.ariaKeyShortcuts), ariaKey].join(' ');
 
 	return (
 		<kbd
+			aria-keyshortcuts={ariaKeyShortcuts}
 			className={cn(variants({ className }), className)}
 			{...properties}>
 			{modifiers.map(modifier => {

@@ -32,6 +32,7 @@ const MODIFIER_KIND = {
 type ModifierKind = (typeof MODIFIER_KIND)[keyof typeof MODIFIER_KIND];
 
 interface ModifierKey {
+	ariaKeyShortcuts: string;
 	kind: ModifierKind;
 	label: string;
 }
@@ -39,10 +40,12 @@ interface ModifierKey {
 function modifierKey(): ModifierKey {
 	return isMac()
 		? {
+				ariaKeyShortcuts: 'Meta',
 				kind: MODIFIER_KIND.SYMBOL,
 				label: '⌘',
 			}
 		: {
+				ariaKeyShortcuts: 'Control',
 				kind: MODIFIER_KIND.TEXT,
 				label: 'Ctrl',
 			};
