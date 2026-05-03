@@ -3,13 +3,21 @@
 		"isotipoAlt": "ProxyStudio isotipo"
 	},
 	"commandPalette": {
+		"actions": {
+			"goEditor": "Go to editor",
+			"goGallery": "Go to gallery"
+		},
 		"dialogDescription": "Search available actions and execute them from this command palette dialog.",
 		"dialogTitle": "Command palette",
 		"empty": "No actions found.",
 		"searchAriaLabel": "Search actions",
 		"searchPlaceholder": "Search actions..."
 	},
+	"gallery": {
+		"empty": "The gallery is still empty."
+	},
 	"layers": {
+		"open": "Open layer groups",
 		"title": "Layers",
 		"add": "Add layers"
 	},

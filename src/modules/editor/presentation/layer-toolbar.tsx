@@ -48,15 +48,23 @@ function LayerToolbar({ className, ...properties }: LayerPanelProperties): React
 				className='gap-2'
 				items='center'>
 				<Button
+					aria-label={t('layers.open')}
 					dimension='xs'
 					icon
 					transparent>
-					<FolderIcon size={14} />
+					<FolderIcon
+						aria-hidden='true'
+						size={14}
+					/>
 				</Button>
 				<Button
 					dimension='xs'
 					variant='primary'>
-					<PlusIcon size={14} /> {t('layers.add')}
+					<PlusIcon
+						aria-hidden='true'
+						size={14}
+					/>{' '}
+					{t('layers.add')}
 				</Button>
 			</FlexBox>
 		</FlexBox>

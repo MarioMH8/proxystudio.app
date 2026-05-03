@@ -1,5 +1,13 @@
 import Button from '@components/button';
-import { CommandPalette, CommandPaletteTrigger } from '@components/command-palette';
+import {
+	CommandPalette,
+	CommandPaletteDialog,
+	CommandPaletteEmpty,
+	CommandPaletteInput,
+	CommandPaletteItem,
+	CommandPaletteList,
+	CommandPaletteTrigger,
+} from '@components/command-palette';
 import KeyboardShortcut from '@components/keyboard-shortcut';
 import { modifierKey } from '@shared/platform';
 import { SearchIcon } from 'lucide-react';
@@ -7,10 +15,12 @@ import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 const key = modifierKey();
 
 function InternalCommandPalette(): ReactNode {
+	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const [open, setOpen] = useState(false);
 
@@ -26,6 +36,11 @@ function InternalCommandPalette(): ReactNode {
 		},
 		[]
 	);
+
+	function handleSelect(action: () => void): void {
+		setOpen(false);
+		action();
+	}
 
 	return (
 		<CommandPalette
@@ -52,6 +67,32 @@ function InternalCommandPalette(): ReactNode {
 					/>
 				</Button>
 			</CommandPaletteTrigger>
+			<CommandPaletteDialog>
+				<CommandPaletteInput />
+				<CommandPaletteList>
+					<CommandPaletteEmpty />
+					<CommandPaletteItem
+						id='go-editor'
+						label={t('commandPalette.actions.goEditor')}
+						onSelect={() => {
+							handleSelect(() => {
+								void navigate('/editor');
+							});
+						}}
+						shortcut={{ ariaKey: 'E', keyLabel: 'E', modifiers: [key] }}
+					/>
+					<CommandPaletteItem
+						id='go-gallery'
+						label={t('commandPalette.actions.goGallery')}
+						onSelect={() => {
+							handleSelect(() => {
+								void navigate('/gallery');
+							});
+						}}
+						shortcut={{ ariaKey: 'G', keyLabel: 'G', modifiers: [key] }}
+					/>
+				</CommandPaletteList>
+			</CommandPaletteDialog>
 		</CommandPalette>
 	);
 }

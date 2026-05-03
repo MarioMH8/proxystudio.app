@@ -4,8 +4,8 @@ import rounded from '@components/rounded';
 import shadow from '@components/shadow';
 import { cn } from '@shared/cva';
 import { Command } from 'cmdk';
+import { Dialog } from 'radix-ui';
 import type { ReactNode } from 'react';
-import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useCommandPaletteContext } from './command-palette-context';
@@ -19,13 +19,11 @@ interface CommandPaletteDialogProperties {
  * Renders a modal overlay + centered panel above all other content (z-50).
  */
 function CommandPaletteDialog({ children }: CommandPaletteDialogProperties): ReactNode {
-	const descriptionId = useId();
 	const { open, setOpen } = useCommandPaletteContext();
 	const { t } = useTranslation();
 
 	return (
 		<Command.Dialog
-			aria-describedby={descriptionId}
 			aria-label={t('commandPalette.dialogTitle')}
 			contentClassName={cn(
 				'fixed inset-x-4 top-[20%] z-50 mx-auto max-w-xl overflow-hidden',
@@ -37,11 +35,8 @@ function CommandPaletteDialog({ children }: CommandPaletteDialogProperties): Rea
 			onOpenChange={setOpen}
 			open={open}
 			overlayClassName={cn('fixed inset-0 z-50 backdrop-blur-sm', background({ variant: 'overlay' }))}>
-			<span
-				className='sr-only'
-				id={descriptionId}>
-				{t('commandPalette.dialogDescription')}
-			</span>
+			<Dialog.Title className='sr-only'>{t('commandPalette.dialogTitle')}</Dialog.Title>
+			<Dialog.Description className='sr-only'>{t('commandPalette.dialogDescription')}</Dialog.Description>
 			{children}
 		</Command.Dialog>
 	);

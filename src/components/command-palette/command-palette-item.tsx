@@ -1,10 +1,16 @@
-import background from '@components/background';
 import FlexBox from '@components/flex-box';
-import rounded from '@components/rounded';
+import KeyboardShortcut from '@components/keyboard-shortcut';
 import Span from '@components/span';
 import { cn } from '@shared/cva';
+import type { ModifierKey } from '@shared/platform';
 import { Command } from 'cmdk';
 import type { ReactNode } from 'react';
+
+interface CommandPaletteItemShortcut {
+	ariaKey: string;
+	keyLabel: string;
+	modifiers: ModifierKey[];
+}
 
 interface CommandPaletteItemProps {
 	/** Whether the item is disabled. */
@@ -15,8 +21,8 @@ interface CommandPaletteItemProps {
 	label: string;
 	/** Called when the item is selected. */
 	onSelect: () => void;
-	/** Optional keyboard shortcut hint, e.g. "⌘+Z". */
-	shortcut?: string | undefined;
+	/** Optional keyboard shortcut hint. */
+	shortcut?: CommandPaletteItemShortcut | undefined;
 }
 
 /**
@@ -29,25 +35,27 @@ function CommandPaletteItem({ disabled = false, id, label, onSelect, shortcut }:
 			asChild
 			justify='between'>
 			<Command.Item
-				className='cursor-pointer px-3 py-2 text-sm aria-selected:bg-foreground-100 dark:aria-selected:bg-foreground-800 aria-disabled:pointer-events-none aria-disabled:opacity-40'
+				className={cn(
+					'px-3 py-2',
+					'cursor-pointer text-sm',
+					'aria-selected:bg-foreground-200 dark:aria-selected:bg-foreground-800',
+					'aria-disabled:pointer-events-none aria-disabled:opacity-40'
+				)}
 				disabled={disabled}
 				key={id}
 				onSelect={onSelect}
 				value={label}>
-				<Span
-					className='font-medium text-foreground-900 dark:text-foreground-50'
-					dimension='sm'>
-					{label}
-				</Span>
+				<Span dimension='sm'>{label}</Span>
 				{shortcut !== undefined && (
-					<kbd
-						className={cn(
-							'ml-auto px-1.5 py-0.5 font-mono text-xs text-foreground-500 dark:text-foreground-400',
-							background({ variant: 'default' }),
-							rounded()
-						)}>
-						{shortcut}
-					</kbd>
+					<KeyboardShortcut
+						aria-hidden='true'
+						ariaKey={shortcut.ariaKey}
+						className='ml-auto'
+						dimension='xs'
+						keyLabel={shortcut.keyLabel}
+						modifiers={shortcut.modifiers}
+						variant='surface'
+					/>
 				)}
 			</Command.Item>
 		</FlexBox>
@@ -56,5 +64,5 @@ function CommandPaletteItem({ disabled = false, id, label, onSelect, shortcut }:
 
 CommandPaletteItem.displayName = 'CommandPaletteItem';
 
-export type { CommandPaletteItemProps };
+export type { CommandPaletteItemProps, CommandPaletteItemShortcut };
 export default CommandPaletteItem;

@@ -23,7 +23,7 @@ function MenuSettings(): ReactNode {
 					<CogIcon strokeWidth={1} />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent>
+			<PopoverContent aria-label={t('settings.title')}>
 				<FlexBox
 					className='gap-4'
 					direction='column'

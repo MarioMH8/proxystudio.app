@@ -61,8 +61,15 @@ const keyVariants = cva({
 const variants = cva({
 	base: 'inline-flex items-center leading-none opacity-55',
 	compoundVariants: [],
-	defaultVariants: {},
-	variants: {},
+	defaultVariants: {
+		variant: 'default',
+	},
+	variants: {
+		variant: {
+			default: '',
+			surface: 'rounded-xs bg-foreground-200/70 px-1.5 py-0.5 dark:bg-foreground-800/80',
+		},
+	},
 });
 
 const modifierVariants = cva({
@@ -96,7 +103,8 @@ type KeyboardShortcutProperties = Omit<ComponentPropsWithRef<'kbd'>, 'children'>
 	ariaKey: string;
 	dimension?: FontDimension;
 	keyLabel: string;
-	modifiers: ModifierKey[];
+	modifiers?: ModifierKey[];
+	variant?: 'default' | 'surface';
 };
 
 function KeyboardShortcut({
@@ -104,7 +112,8 @@ function KeyboardShortcut({
 	className,
 	dimension = 'base',
 	keyLabel,
-	modifiers,
+	modifiers = [],
+	variant = 'default',
 	...properties
 }: KeyboardShortcutProperties): ReactNode {
 	const keyDimension = KEY_DIMENSIONS[dimension];
@@ -113,7 +122,7 @@ function KeyboardShortcut({
 	return (
 		<kbd
 			aria-keyshortcuts={ariaKeyShortcuts}
-			className={cn(variants({ className }), className)}
+			className={cn(variants({ className, variant }), className)}
 			{...properties}>
 			{modifiers.map(modifier => {
 				const modifierDimension =

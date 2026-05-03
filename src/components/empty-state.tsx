@@ -13,7 +13,8 @@ function EmptyState({ className, icon: Icon, iconSize = 32, message }: EmptyStat
 	return (
 		<FlexBox
 			className={cn('gap-3 py-8 text-center text-foreground-500', className)}
-			direction='column'>
+			direction='column'
+			items='center'>
 			{Icon ? (
 				<Icon
 					aria-hidden='true'

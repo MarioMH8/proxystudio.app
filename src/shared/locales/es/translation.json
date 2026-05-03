@@ -3,13 +3,21 @@
 		"isotipoAlt": "Isotipo de ProxyStudio"
 	},
 	"commandPalette": {
+		"actions": {
+			"goEditor": "Ir al editor",
+			"goGallery": "Ir a la galería"
+		},
 		"dialogDescription": "Busca acciones disponibles y ejecútalas desde este diálogo de paleta de comandos.",
 		"dialogTitle": "Paleta de comandos",
 		"empty": "No se encontraron acciones.",
 		"searchAriaLabel": "Buscar acciones",
 		"searchPlaceholder": "Buscar acciones..."
 	},
+	"gallery": {
+		"empty": "La galería aún está vacía."
+	},
 	"layers": {
+		"open": "Abrir grupos de capas",
 		"title": "Capas",
 		"add": "Añadir capas"
 	},
