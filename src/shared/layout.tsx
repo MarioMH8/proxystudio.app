@@ -16,7 +16,7 @@ function Layout(): ReactNode {
 		<Fragment>
 			<NavigationMenu />
 			<TooltipProvider>
-				<Main className='h-full'>
+				<Main className='min-h-0 flex-1'>
 					<Outlet />
 				</Main>
 			</TooltipProvider>
