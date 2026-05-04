@@ -4,8 +4,10 @@ import { cva } from 'cva';
 import type { HTMLAttributes, ReactNode } from 'react';
 import { Panel } from 'react-resizable-panels';
 
+import EditorViewportToolbar from './viewport-toolbar';
+
 const variants = cva({
-	base: '',
+	base: 'relative',
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {},
@@ -13,13 +15,15 @@ const variants = cva({
 
 type EditorViewportProperties = Omit<HTMLAttributes<HTMLDivElement>, 'onResize'> & VariantProperties<typeof variants>;
 
-function EditorViewport({ className, ...properties }: EditorViewportProperties): ReactNode {
+function EditorViewport({ children, className, ...properties }: EditorViewportProperties): ReactNode {
 	return (
 		<Panel
 			className={cn(variants({ className }), className)}
 			id='editor-viewport'
-			{...properties}
-		/>
+			{...properties}>
+			{children}
+			<EditorViewportToolbar />
+		</Panel>
 	);
 }
 

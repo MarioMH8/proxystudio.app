@@ -22,6 +22,24 @@
 		"title": "Layers",
 		"add": "Add layers"
 	},
+	"editor": {
+		"viewportToolbar": {
+			"ariaLabel": "Viewport toolbar",
+			"fullscreen": "Fullscreen",
+			"grid": "Grid",
+			"guides": "Guides",
+			"help": "Help",
+			"panTool": "Pan tool",
+			"redo": "Redo",
+			"search": "Search",
+			"selectTool": "Selection tool",
+			"tools": "Viewport tools",
+			"undo": "Undo",
+			"zoomIn": "Zoom in",
+			"zoomOut": "Zoom out",
+			"zoomReset": "Reset zoom"
+		}
+	},
 	"navigation": {
 		"editor": "Editor",
 		"gallery": "Gallery",

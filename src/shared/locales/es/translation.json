@@ -22,6 +22,24 @@
 		"title": "Capas",
 		"add": "Añadir capas"
 	},
+	"editor": {
+		"viewportToolbar": {
+			"ariaLabel": "Barra de herramientas del viewport",
+			"fullscreen": "Pantalla completa",
+			"grid": "Cuadricula",
+			"guides": "Guias",
+			"help": "Ayuda",
+			"panTool": "Herramienta mano",
+			"redo": "Rehacer",
+			"search": "Buscar",
+			"selectTool": "Herramienta seleccion",
+			"tools": "Herramientas del viewport",
+			"undo": "Deshacer",
+			"zoomIn": "Ampliar",
+			"zoomOut": "Reducir",
+			"zoomReset": "Restablecer zoom"
+		}
+	},
 	"navigation": {
 		"editor": "Editor",
 		"gallery": "Galería",
