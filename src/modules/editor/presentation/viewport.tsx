@@ -1,9 +1,11 @@
+import { CardRenderer } from '@modules/card/presentation';
 import type { VariantProperties } from '@shared/cva';
 import { cn } from '@shared/cva';
 import { cva } from 'cva';
 import type { HTMLAttributes, ReactNode } from 'react';
 import { Panel } from 'react-resizable-panels';
 
+import { useEditorContext } from '../store';
 import EditorViewportToolbar from './viewport-toolbar';
 
 const variants = cva({
@@ -16,12 +18,14 @@ const variants = cva({
 type EditorViewportProperties = Omit<HTMLAttributes<HTMLDivElement>, 'onResize'> & VariantProperties<typeof variants>;
 
 function EditorViewport({ children, className, ...properties }: EditorViewportProperties): ReactNode {
+	const { card } = useEditorContext();
+
 	return (
 		<Panel
 			className={cn(variants({ className }), className)}
 			id='editor-viewport'
 			{...properties}>
-			{children}
+			<CardRenderer card={card} />
 			<EditorViewportToolbar />
 		</Panel>
 	);
