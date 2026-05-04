@@ -3,14 +3,15 @@ import SegmentControlItem from '@components/segment-control/segment-control-item
 import { ImagesIcon, PencilRulerIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router';
+import { Link, useMatch } from 'react-router';
 
 function NavigationTabs(): ReactNode {
-	const { pathname } = useLocation();
 	const { t } = useTranslation();
+	const editorMatch = useMatch('/:card/editor');
+	const galleryMatch = useMatch('/gallery');
 
-	const isEditor = pathname === '/';
-	const isGallery = pathname === '/gallery';
+	const isEditor = editorMatch !== null;
+	const isGallery = galleryMatch !== null;
 
 	return (
 		<SegmentControl aria-label={t('navigation.primaryAriaLabel')}>

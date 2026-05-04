@@ -35,7 +35,12 @@ function Imagotipo({ asChild = false, children, className, ...properties }: Imag
 	if (asChild && isValidElement(children)) {
 		return (
 			<Comp
-				className={cn(focus({ variant: 'primary' }), flexBoxClassName({}), variants({ className }), className)}
+				className={cn(
+					focus({ variant: 'primary' }),
+					flexBoxClassName({ items: 'center' }),
+					variants({ className }),
+					className
+				)}
 				{...properties}>
 				{cloneElement(children, {}, content)}
 			</Comp>
@@ -44,7 +49,12 @@ function Imagotipo({ asChild = false, children, className, ...properties }: Imag
 
 	return (
 		<Comp
-			className={cn(focus({ variant: 'primary' }), flexBoxClassName({}), variants({ className }), className)}
+			className={cn(
+				focus({ variant: 'primary' }),
+				flexBoxClassName({ items: 'center' }),
+				variants({ className }),
+				className
+			)}
 			{...properties}>
 			{content}
 		</Comp>

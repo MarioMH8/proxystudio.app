@@ -24,11 +24,45 @@ function InternalCommandPalette(): ReactNode {
 	const { t } = useTranslation();
 	const [open, setOpen] = useState(false);
 
+	function goEditor(): void {
+		void navigate('/editor');
+	}
+
+	function goGallery(): void {
+		void navigate('/gallery');
+	}
+
 	useHotkeys(
 		'meta+k,ctrl+k',
 		event => {
 			event.preventDefault();
 			setOpen(true);
+		},
+		{
+			enableOnFormTags: true,
+			preventDefault: true,
+		},
+		[]
+	);
+
+	useHotkeys(
+		'meta+e,ctrl+e',
+		event => {
+			event.preventDefault();
+			goEditor();
+		},
+		{
+			enableOnFormTags: true,
+			preventDefault: true,
+		},
+		[]
+	);
+
+	useHotkeys(
+		'meta+g,ctrl+g',
+		event => {
+			event.preventDefault();
+			goGallery();
 		},
 		{
 			enableOnFormTags: true,
@@ -76,7 +110,7 @@ function InternalCommandPalette(): ReactNode {
 						label={t('commandPalette.actions.goEditor')}
 						onSelect={() => {
 							handleSelect(() => {
-								void navigate('/editor');
+								goEditor();
 							});
 						}}
 						shortcut={{ ariaKey: 'E', keyLabel: 'E', modifiers: [key] }}
@@ -86,7 +120,7 @@ function InternalCommandPalette(): ReactNode {
 						label={t('commandPalette.actions.goGallery')}
 						onSelect={() => {
 							handleSelect(() => {
-								void navigate('/gallery');
+								goGallery();
 							});
 						}}
 						shortcut={{ ariaKey: 'G', keyLabel: 'G', modifiers: [key] }}

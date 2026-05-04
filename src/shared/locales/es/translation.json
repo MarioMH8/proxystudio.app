@@ -5,7 +5,8 @@
 	"commandPalette": {
 		"actions": {
 			"goEditor": "Ir al editor",
-			"goGallery": "Ir a la galería"
+			"goGallery": "Ir a la galería",
+			"saveCard": "Guardar"
 		},
 		"dialogDescription": "Busca acciones disponibles y ejecútalas desde este diálogo de paleta de comandos.",
 		"dialogTitle": "Paleta de comandos",
