@@ -59,6 +59,4 @@ function PopoverContent({
 
 PopoverContent.displayName = 'PopoverContent';
 
-export { variants };
-
 export default PopoverContent;

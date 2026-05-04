@@ -37,6 +37,4 @@ ToolbarGroup.displayName = 'ToolbarGroup';
 
 export type { ToolbarGroupProperties };
 
-export { variants };
-
 export default ToolbarGroup;

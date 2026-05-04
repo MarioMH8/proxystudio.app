@@ -35,6 +35,4 @@ ToolbarToggleGroup.displayName = 'ToolbarToggleGroup';
 
 export type { ToolbarToggleGroupProperties };
 
-export { variants };
-
 export default ToolbarToggleGroup;

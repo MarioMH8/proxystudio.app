@@ -200,6 +200,4 @@ Button.displayName = 'Button';
 
 export type { ButtonProperties };
 
-export { variants };
-
 export default Button;

@@ -65,6 +65,4 @@ Imagotipo.displayName = 'Imagotipo';
 
 export type { ImagotipoProperties };
 
-export { variants };
-
 export default Imagotipo;

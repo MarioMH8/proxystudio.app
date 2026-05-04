@@ -1,21 +1,12 @@
 import type { AsideProperties } from '@components/aside';
 import Aside from '@components/aside';
 import FlexBox from '@components/flex-box';
-import type { VariantProperties } from '@shared/cva';
-import { cva } from 'cva';
 import type { ReactNode } from 'react';
 import { Panel } from 'react-resizable-panels';
 
 import LayerToolbar from './layer-toolbar';
 
-const variants = cva({
-	base: 'min-w-xs',
-	compoundVariants: [],
-	defaultVariants: {},
-	variants: {},
-});
-
-type LayerPanelProperties = Omit<AsideProperties, 'asChild' | 'side'> & VariantProperties<typeof variants>;
+type LayerPanelProperties = Omit<AsideProperties, 'asChild' | 'side'>;
 
 function LayersPanel(properties: LayerPanelProperties): ReactNode {
 	return (

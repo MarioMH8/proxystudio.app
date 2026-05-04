@@ -44,4 +44,5 @@ function DropdownMenuItem({ className, ...properties }: DropdownMenuItemProps): 
 DropdownMenuItem.displayName = 'DropdownMenuItem';
 
 export { variants };
+
 export default DropdownMenuItem;

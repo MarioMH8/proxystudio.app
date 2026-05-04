@@ -38,6 +38,4 @@ ToolbarSeparator.displayName = 'ToolbarSeparator';
 
 export type { ToolbarSeparatorProperties };
 
-export { variants };
-
 export default ToolbarSeparator;
