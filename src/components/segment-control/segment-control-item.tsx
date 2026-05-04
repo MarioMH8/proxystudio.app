@@ -2,23 +2,12 @@ import type { ButtonProperties } from '@components/button';
 import Button from '@components/button';
 import hover from '@components/hover';
 import rounded from '@components/rounded';
-import type { VariantProperties } from '@shared/cva';
-import { cn, cva } from '@shared/cva';
+import { cn } from '@shared/cva';
 import type { ReactNode } from 'react';
 
-const variants = cva({
-	base: '',
-	compoundVariants: [],
-	defaultVariants: {},
-	variants: {
-		isActive: {
-			false: '',
-			true: '',
-		},
-	},
-});
-
-type SegmentControlItemProperties = ButtonProperties & VariantProperties<typeof variants>;
+type SegmentControlItemProperties = ButtonProperties & {
+	isActive?: boolean;
+};
 
 function SegmentControlItem({ dimension = 'sm', isActive, ...properties }: SegmentControlItemProperties): ReactNode {
 	return (
