@@ -5,13 +5,17 @@ const NAME = 'proxystudio.app';
 
 const database = await openDB(NAME, VERSION, {
 	upgrade(database) {
-		// Create a store of objects
 		database.createObjectStore('settings', {
-			// If it isn't explicitly set, create a value by auto incrementing.
 			autoIncrement: true,
-			// The 'id' property of the object will be the key.
 			keyPath: 'id',
 		});
+		const cardStore = database.createObjectStore('card', {
+			autoIncrement: true,
+			keyPath: 'id',
+		});
+		cardStore.createIndex('metadata.createdAt', 'metadata.createdAt');
+		cardStore.createIndex('metadata.updatedAt', 'metadata.updatedAt');
+		cardStore.createIndex('metadata.name', 'metadata.name');
 	},
 });
 

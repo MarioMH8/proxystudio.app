@@ -1,4 +1,5 @@
 import { Settings, SettingsRepository } from '@modules/settings/domain';
+import type { DeepPartial } from '@shared/types';
 import type { DBSchema, IDBPDatabase } from 'idb';
 import { inject, injectable } from 'inversify';
 
@@ -20,7 +21,7 @@ export class IndexedDBDatabaseSettingsRepository extends SettingsRepository {
 		super();
 	}
 
-	override async find(): Promise<Partial<Settings | undefined>> {
+	override async find(): Promise<DeepPartial<Settings | undefined>> {
 		const settings = await this.database.getAll(STORE_NAME, undefined, 1);
 
 		return settings.at(0);

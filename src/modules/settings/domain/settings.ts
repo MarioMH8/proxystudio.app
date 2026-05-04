@@ -1,3 +1,5 @@
+import type { DeepPartial } from '@shared/types';
+
 type UITheme = 'dark' | 'light' | 'system';
 
 interface UISettings {
@@ -10,7 +12,7 @@ interface Settings {
 }
 
 const Settings = {
-	default: (partial?: Partial<Settings>): Settings => {
+	default: (partial?: DeepPartial<Settings>): Settings => {
 		const settings = partial ?? {};
 
 		return {
