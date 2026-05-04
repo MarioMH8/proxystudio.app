@@ -19,7 +19,7 @@ const variants = cva({
 		'select-none',
 		'whitespace-nowrap',
 		'cursor-default',
-		'data-disabled:pointer-events-none data-disabled:opacity-50',
+		'disabled:pointer-events-none disabled:opacity-50',
 	],
 	compoundVariants: [
 		{
