@@ -82,6 +82,4 @@ ToolbarToggleItem.displayName = 'ToolbarToggleItem';
 
 export type { ToolbarToggleItemProperties };
 
-export { variants };
-
 export default ToolbarToggleItem;

@@ -81,6 +81,4 @@ ToolbarButton.displayName = 'ToolbarButton';
 
 export type { ToolbarButtonProperties };
 
-export { variants };
-
 export default ToolbarButton;

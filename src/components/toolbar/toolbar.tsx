@@ -49,6 +49,4 @@ Toolbar.displayName = 'Toolbar';
 
 export type { ToolbarProperties };
 
-export { variants };
-
 export default Toolbar;

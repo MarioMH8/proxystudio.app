@@ -71,6 +71,4 @@ ToolbarLink.displayName = 'ToolbarLink';
 
 export type { ToolbarLinkProperties };
 
-export { variants };
-
 export default ToolbarLink;
