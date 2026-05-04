@@ -35,29 +35,6 @@ const KEY_DIMENSIONS: Record<FontDimension, FontDimension> = {
 	xs: 'xs',
 };
 
-const keyVariants = cva({
-	base: '',
-	compoundVariants: [],
-	defaultVariants: {
-		dimension: 'base',
-	},
-	variants: {
-		dimension: {
-			'2xl': 'ml-2',
-			'3xl': 'ml-2',
-			'4xl': 'ml-2.5',
-			'5xl': 'ml-2.5',
-			'6xl': 'ml-3',
-			'7xl': 'ml-3',
-			base: 'ml-1.25',
-			lg: 'ml-1.5',
-			sm: 'ml-1',
-			xl: 'ml-1.75',
-			xs: 'ml-0.75',
-		},
-	},
-});
-
 const variants = cva({
 	base: 'inline-flex items-center leading-none opacity-55',
 	compoundVariants: [],
@@ -65,6 +42,19 @@ const variants = cva({
 		variant: 'default',
 	},
 	variants: {
+		dimension: {
+			'2xl': 'space-x-2',
+			'3xl': 'space-x-2',
+			'4xl': 'space-x-2.5',
+			'5xl': 'space-x-2.5',
+			'6xl': 'space-x-3',
+			'7xl': 'space-x-3',
+			base: 'space-x-1.25',
+			lg: 'space-x-1.5',
+			sm: 'space-x-1',
+			xl: 'space-x-1.75',
+			xs: 'space-x-0.75',
+		},
 		variant: {
 			default: '',
 			surface: 'rounded-xs bg-foreground-200/70 px-1.5 py-0.5 dark:bg-foreground-800/80',
@@ -90,7 +80,7 @@ const modifierVariants = cva({
 			lg: 'mr-0.625',
 			sm: 'mr-0.375',
 			xl: 'mr-0.75',
-			xs: 'mr-0.25',
+			xs: 'mr-px',
 		},
 		kind: {
 			symbol: 'translate-y-[0.02em]',
@@ -122,7 +112,7 @@ function KeyboardShortcut({
 	return (
 		<kbd
 			aria-keyshortcuts={ariaKeyShortcuts}
-			className={cn(variants({ className, variant }), className)}
+			className={cn(variants({ className, dimension, variant }), className)}
 			{...properties}>
 			{modifiers.map(modifier => {
 				const modifierDimension =
@@ -153,8 +143,7 @@ function KeyboardShortcut({
 						tracking: 'tight',
 						variant: 'muted',
 						weight: 'light',
-					}),
-					keyVariants({ dimension })
+					})
 				)}>
 				{keyLabel}
 			</span>
