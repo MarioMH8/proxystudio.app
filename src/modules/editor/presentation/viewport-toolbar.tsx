@@ -15,15 +15,17 @@ import {
 	HandIcon,
 	MousePointer2Icon,
 	Redo2Icon,
-	SearchIcon,
 	Undo2Icon,
 	ZoomInIcon,
+	ZoomOutIcon,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
+const ICON_SIZE = 14;
+
 const variants = cva({
-	base: 'absolute top-3 left-1/2 z-10 -translate-x-1/2',
+	base: 'absolute bottom-3 left-1/2 z-10 -translate-x-1/2',
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {},
@@ -51,7 +53,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 						value='select'>
 						<MousePointer2Icon
 							aria-hidden='true'
-							size={14}
+							size={ICON_SIZE}
 						/>
 					</ToolbarToggleItem>
 					<ToolbarToggleItem
@@ -60,7 +62,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 						value='pan'>
 						<HandIcon
 							aria-hidden='true'
-							size={14}
+							size={ICON_SIZE}
 						/>
 					</ToolbarToggleItem>
 				</ToolbarToggleGroup>
@@ -72,7 +74,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 					icon>
 					<Undo2Icon
 						aria-hidden='true'
-						size={14}
+						size={ICON_SIZE}
 					/>
 				</ToolbarButton>
 				<ToolbarButton
@@ -80,7 +82,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 					icon>
 					<Redo2Icon
 						aria-hidden='true'
-						size={14}
+						size={ICON_SIZE}
 					/>
 				</ToolbarButton>
 			</ToolbarGroup>
@@ -89,9 +91,9 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 				<ToolbarButton
 					aria-label={t('editor.viewportToolbar.search')}
 					icon>
-					<SearchIcon
+					<ZoomOutIcon
 						aria-hidden='true'
-						size={14}
+						size={ICON_SIZE}
 					/>
 				</ToolbarButton>
 				<Span
@@ -107,7 +109,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 					icon>
 					<ZoomInIcon
 						aria-hidden='true'
-						size={14}
+						size={ICON_SIZE}
 					/>
 				</ToolbarButton>
 				<ToolbarButton
@@ -115,7 +117,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 					icon>
 					<ExpandIcon
 						aria-hidden='true'
-						size={14}
+						size={ICON_SIZE}
 					/>
 				</ToolbarButton>
 			</ToolbarGroup>
@@ -126,7 +128,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 					icon>
 					<CircleHelpIcon
 						aria-hidden='true'
-						size={14}
+						size={ICON_SIZE}
 					/>
 				</ToolbarButton>
 			</ToolbarGroup>

@@ -3,11 +3,42 @@ import { cva } from '@shared/cva';
 
 const variants = cva({
 	base: '',
-	compoundVariants: [],
+	compoundVariants: [
+		{
+			className: 'rounded-lg',
+			context: 'inner',
+			dimension: 'xl',
+		},
+		{
+			className: 'rounded-md',
+			context: 'inner',
+			dimension: 'lg',
+		},
+		{
+			className: 'rounded',
+			context: 'inner',
+			dimension: 'md',
+		},
+		{
+			className: 'rounded-sm',
+			context: 'inner',
+			dimension: 'base',
+		},
+		{
+			className: 'rounded-xs',
+			context: 'inner',
+			dimension: 'sm',
+		},
+	],
 	defaultVariants: {
+		context: 'default',
 		dimension: 'base',
 	},
 	variants: {
+		context: {
+			default: '',
+			inner: '',
+		},
 		dimension: {
 			base: 'rounded',
 			full: 'rounded-full',

@@ -57,7 +57,7 @@ function ToolbarLink({ className, dimension, icon, ...properties }: ToolbarLinkP
 	return (
 		<RadixToolbar.Link
 			className={cn(
-				font({ dimension: 'sm', tracking: 'normal', variant: 'strong', weight: 'medium' }),
+				font({ dimension: 'sm', tracking: 'normal', variant: 'default', weight: 'medium' }),
 				focus({ dimension, noBorder: true, variant: 'primary' }),
 				variants({ className, dimension, icon }),
 				className

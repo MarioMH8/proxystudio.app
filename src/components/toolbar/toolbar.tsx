@@ -11,7 +11,7 @@ import type { ReactNode } from 'react';
 const variants = cva({
 	base: [
 		'select-none',
-		'gap-1 p-1',
+		'gap-1 px-1 py-1.5',
 		'w-fit',
 		'backdrop-blur-md',
 		background({ variant: 'surfaces' }),
@@ -26,9 +26,9 @@ const variants = cva({
 	},
 	variants: {
 		dimension: {
-			base: 'h-10',
-			lg: 'h-12',
-			sm: 'h-9',
+			base: 'h-9',
+			lg: 'h-11',
+			sm: 'h-8',
 			xs: 'h-8',
 		},
 	},

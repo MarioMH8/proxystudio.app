@@ -14,7 +14,7 @@ const variants = cva({
 		'relative',
 		flexBoxClassName({ items: 'center', justify: 'center', variant: 'inline' }),
 		'leading-none',
-		rounded({ dimension: 'md' }),
+		rounded({ context: 'inner', dimension: 'xl' }),
 		hover({ strength: 'soft', variant: 'default' }),
 		'select-none',
 		'whitespace-nowrap',
@@ -29,12 +29,12 @@ const variants = cva({
 			icon: true,
 		},
 		{
-			className: 'w-7 px-0',
+			className: 'w-7.5 px-0',
 			dimension: 'sm',
 			icon: true,
 		},
 		{
-			className: 'w-8 px-0',
+			className: 'w-8.5 px-0',
 			dimension: 'base',
 			icon: true,
 		},
@@ -50,9 +50,9 @@ const variants = cva({
 	},
 	variants: {
 		dimension: {
-			base: 'h-8 px-3',
+			base: 'h-8.5 px-3',
 			lg: 'h-9 px-3.5',
-			sm: 'h-7 px-2.5',
+			sm: 'h-7.5 px-2.5',
 			xs: 'h-6 px-2',
 		},
 		icon: {
