@@ -9,18 +9,6 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 import { generateAllThumbs } from './scripts/generate-thumbs.library';
 
-const CHUNKS: Record<string, string[]> = {
-	i18n: ['i18n'],
-	canvas: ['konva'],
-	dnd: ['dnd'],
-	lucide: ['lucide'],
-	radix: ['radix'],
-	redux: ['redux'],
-	sonner: ['sonner'],
-	vaul: ['vaul'],
-	react: ['react', 'react-dom'],
-};
-
 const PUBLIC_ROOT = path.resolve(import.meta.dirname, 'public');
 
 /*
@@ -76,9 +64,6 @@ export default defineConfig({
 				entryFileNames: 'assets/[name]-[hash].js',
 				// Hashed filenames for CSS and other static assets.
 				assetFileNames: 'assets/[name]-[hash][extname]',
-				manualChunks(id) {
-					return Object.entries(CHUNKS).find(([, deps]) => deps.some(dep => id.includes(dep)))?.[0];
-				},
 			},
 		},
 	},
