@@ -1,6 +1,6 @@
 import FlexBox from '@components/flex-box';
 import SeparatorGrab from '@components/separator-grab';
-import { CardHeader, EditorContainer, EditorViewport, LayersPanel } from '@modules/editor/presentation';
+import { CardHeader, EDITOR_ID, EditorContainer, EditorViewport, LayersPanel } from '@modules/editor/presentation';
 import { editorSlice, selectCard, useFindCardQuery, useSaveCardMutation } from '@modules/editor/store';
 import useElementById from '@shared/hooks/use-element-by-id';
 import { useAppDispatch, useAppSelector } from '@shared/store';
@@ -49,6 +49,7 @@ function EditorPage(): ReactNode {
 				<EditorContainer asChild>
 					<Group
 						defaultLayout={defaultLayout}
+						id={EDITOR_ID}
 						onLayoutChanged={onLayoutChanged}>
 						<LayersPanel className='z-10' />
 						<SeparatorGrab orientation='horizontal' />
