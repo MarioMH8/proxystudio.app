@@ -9,13 +9,10 @@ interface StoreOptions {
 	reducers?: Record<string, Reducer>;
 }
 
-// Return type is intentionally inferred to preserve full dispatch type information
-// eslint-disable-next-line typescript/explicit-module-boundary-types
 function createAppStore(options: StoreOptions = {}) {
 	const { middlewares = [], reducers = {} } = options;
 
 	return configureStore({
-		// eslint-disable-next-line unicorn/prefer-spread
 		middleware: getDefaultMiddleware => getDefaultMiddleware().concat(middlewares),
 		reducer: reducers,
 	});

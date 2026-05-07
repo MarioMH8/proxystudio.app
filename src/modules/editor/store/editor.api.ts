@@ -27,7 +27,6 @@ const editorApi = createApi({
 				}
 			},
 		}),
-		// eslint-disable-next-line typescript/no-invalid-void-type
 		findLastCard: build.query<Card, void>({
 			queryFn: async () => {
 				try {

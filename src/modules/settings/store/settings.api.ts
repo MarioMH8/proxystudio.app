@@ -9,7 +9,6 @@ const saveSettingsUseCase = container.get(SaveSettingsUseCase);
 const settingsApi = createApi({
 	baseQuery: fakeBaseQuery(),
 	endpoints: build => ({
-		// eslint-disable-next-line typescript/no-invalid-void-type
 		findSettings: build.query<Settings, void>({
 			keepUnusedDataFor: Infinity,
 			queryFn: async () => {
