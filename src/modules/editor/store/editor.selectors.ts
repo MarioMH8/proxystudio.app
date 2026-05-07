@@ -1,7 +1,7 @@
 import { Card } from '@modules/card/domain';
 
 import { editorApi } from './editor.api';
-import type { EditorSliceState, EditorStatus } from './editor.slice';
+import type { EditorSliceState, EditorStatus, EditorTool, ViewportOffset } from './editor.slice';
 import { EDITOR_STATUS } from './editor.slice';
 
 type EditorApiState = Record<typeof editorApi.reducerPath, ReturnType<typeof editorApi.reducer>>;
@@ -28,6 +28,22 @@ function selectSavedCardId(state: EditorStoreState): string | undefined {
 	return state.editor.savedCardId;
 }
 
+function selectViewportHasInteracted(state: EditorStoreState): boolean {
+	return state.editor.viewport.hasInteracted;
+}
+
+function selectViewportOffset(state: EditorStoreState): ViewportOffset {
+	return state.editor.viewport.offset;
+}
+
+function selectViewportTool(state: EditorStoreState): EditorTool {
+	return state.editor.viewport.tool;
+}
+
+function selectViewportZoom(state: EditorStoreState): number {
+	return state.editor.viewport.zoom;
+}
+
 function selectEditorStatus(state: EditorStoreState): EditorStatus {
 	const { card, savedCardId } = state.editor;
 	const isSaving = selectSaveMutationResult(state).isLoading;
@@ -40,4 +56,14 @@ function selectEditorStatus(state: EditorStoreState): EditorStatus {
 }
 
 export type { EditorStoreState };
-export { selectCanRedo, selectCanUndo, selectCard, selectEditorStatus, selectSavedCardId };
+export {
+	selectCanRedo,
+	selectCanUndo,
+	selectCard,
+	selectEditorStatus,
+	selectSavedCardId,
+	selectViewportHasInteracted,
+	selectViewportOffset,
+	selectViewportTool,
+	selectViewportZoom,
+};
