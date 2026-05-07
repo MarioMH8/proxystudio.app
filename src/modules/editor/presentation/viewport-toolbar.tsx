@@ -9,7 +9,6 @@ import {
 	ToolbarToggleItem,
 } from '@components/toolbar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/tooltip';
-import { useEditorContext } from '@modules/editor/store';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { MODIFIER_KIND, modifierKey } from '@shared/platform';
@@ -34,7 +33,6 @@ type EditorViewportToolbarProperties = VariantProperties<typeof variants> & {
 
 function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): ReactNode {
 	const { t } = useTranslation();
-	const { canRedo, canUndo, redo, undo } = useEditorContext();
 
 	return (
 		<Toolbar
@@ -102,9 +100,8 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 						<div>
 							<ToolbarButton
 								aria-label={t('editor.viewportToolbar.undo')}
-								disabled={!canUndo}
-								icon
-								onClick={undo}>
+								disabled
+								icon>
 								<Undo2Icon
 									aria-hidden='true'
 									size={ICON_SIZE}
@@ -128,9 +125,8 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 						<div>
 							<ToolbarButton
 								aria-label={t('editor.viewportToolbar.redo')}
-								disabled={!canRedo}
-								icon
-								onClick={redo}>
+								disabled
+								icon>
 								<Redo2Icon
 									aria-hidden='true'
 									size={ICON_SIZE}

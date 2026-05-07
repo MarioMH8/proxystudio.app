@@ -1,7 +1,8 @@
 import KeyboardShortcut from '@components/keyboard-shortcut';
 import Span from '@components/span';
-import { useEditorContext } from '@modules/editor/store';
+import { selectCard } from '@modules/editor/store';
 import { modifierKey } from '@shared/platform';
+import { useAppSelector } from '@shared/store';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
 
@@ -10,7 +11,7 @@ import CardStatus from './card-status';
 const key = modifierKey();
 
 function CardHeader(): ReactNode {
-	const { card } = useEditorContext();
+	const card = useAppSelector(selectCard);
 
 	return (
 		<Fragment>

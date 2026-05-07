@@ -1,11 +1,12 @@
-import { useEditorContext } from '@modules/editor/store';
+import { selectEditorStatus } from '@modules/editor/store';
+import { useAppSelector } from '@shared/store';
 import { CircleCheckBigIcon, CircleDashedIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 const ICON_SIZE = 14;
 
 function CardStatus(): ReactNode {
-	const { status } = useEditorContext();
+	const status = useAppSelector(selectEditorStatus);
 
 	switch (status) {
 		case 'DRAFT': {
