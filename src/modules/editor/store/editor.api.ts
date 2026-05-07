@@ -1,11 +1,15 @@
 import { FindCardUseCase, FindLastCardUseCase, SaveCardUseCase } from '@modules/card/application';
 import { Card } from '@modules/card/domain';
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
-import { getContainer } from '@shared/store/inversify-middleware';
+import container from '@shared/container';
 
 interface FindCardParameters {
 	id: string | undefined;
 }
+
+const findCardUseCase = container.get(FindCardUseCase);
+const saveCardUseCase = container.get(SaveCardUseCase);
+const findLastCardUseCase = container.get(FindLastCardUseCase);
 
 const editorApi = createApi({
 	baseQuery: fakeBaseQuery(),
@@ -15,8 +19,7 @@ const editorApi = createApi({
 				const resolvedId = id ?? '';
 
 				try {
-					const useCase = getContainer().get(FindCardUseCase);
-					const data = await useCase.execute({ id: resolvedId });
+					const data = await findCardUseCase.execute({ id: resolvedId });
 
 					return { data: data ?? Card.default({ id: resolvedId }) };
 				} catch {
@@ -28,8 +31,7 @@ const editorApi = createApi({
 		findLastCard: build.query<Card, void>({
 			queryFn: async () => {
 				try {
-					const useCase = getContainer().get(FindLastCardUseCase);
-					const data = await useCase.execute();
+					const data = await findLastCardUseCase.execute();
 
 					return { data: data ?? Card.default() };
 				} catch {
@@ -49,8 +51,7 @@ const editorApi = createApi({
 			},
 			queryFn: async card => {
 				try {
-					const useCase = getContainer().get(SaveCardUseCase);
-					await useCase.execute(card);
+					await saveCardUseCase.execute(card);
 
 					return { data: undefined };
 				} catch (error) {
