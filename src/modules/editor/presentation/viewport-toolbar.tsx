@@ -9,7 +9,14 @@ import {
 	ToolbarToggleItem,
 } from '@components/toolbar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/tooltip';
-import { editorSlice, selectCanRedo, selectCanUndo } from '@modules/editor/store';
+import {
+	EDITOR_TOOL,
+	editorSlice,
+	selectCanRedo,
+	selectCanUndo,
+	selectViewportTool,
+	selectViewportZoom,
+} from '@modules/editor/store';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { MODIFIER_KIND, modifierKey } from '@shared/platform';
@@ -17,7 +24,6 @@ import { useAppDispatch, useAppSelector } from '@shared/store';
 import { toggleFullscreen } from '@shared/toggle-fullscreen';
 import { ExpandIcon, HandIcon, MousePointer2Icon, Redo2Icon, Undo2Icon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
 
 import { EDITOR_ID } from './const';
@@ -42,42 +48,8 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 	const dispatch = useAppDispatch();
 	const canUndo = useAppSelector(selectCanUndo);
 	const canRedo = useAppSelector(selectCanRedo);
-
-	useHotkeys(
-		'meta+z,ctrl+z',
-		event => {
-			event.preventDefault();
-
-			if (canUndo) {
-				dispatch(editorSlice.actions.cardUndo());
-			}
-		},
-		{ enableOnFormTags: true, preventDefault: true },
-		[canUndo, dispatch]
-	);
-
-	useHotkeys(
-		'meta+shift+z,ctrl+shift+z',
-		event => {
-			event.preventDefault();
-
-			if (canRedo) {
-				dispatch(editorSlice.actions.cardRedo());
-			}
-		},
-		{ enableOnFormTags: true, preventDefault: true },
-		[canRedo, dispatch]
-	);
-
-	useHotkeys(
-		'f',
-		event => {
-			event.preventDefault();
-			toggleFullscreen(EDITOR_ID);
-		},
-		{ preventDefault: true },
-		[]
-	);
+	const tool = useAppSelector(selectViewportTool);
+	const zoom = useAppSelector(selectViewportZoom);
 
 	return (
 		<Toolbar
@@ -86,15 +58,24 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 			<ToolbarGroup>
 				<ToolbarToggleGroup
 					aria-label={t('editor.viewportToolbar.tools')}
-					defaultValue='select'
-					type='single'>
+					onValueChange={value => {
+						if (value) {
+							dispatch(
+								editorSlice.actions.viewportToolSet(
+									value as (typeof EDITOR_TOOL)[keyof typeof EDITOR_TOOL]
+								)
+							);
+						}
+					}}
+					type='single'
+					value={tool}>
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<div>
 								<ToolbarToggleItem
 									aria-label={t('editor.viewportToolbar.selectTool')}
 									icon
-									value='select'>
+									value={EDITOR_TOOL.SELECT}>
 									<MousePointer2Icon
 										aria-hidden='true'
 										size={ICON_SIZE}
@@ -118,7 +99,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 								<ToolbarToggleItem
 									aria-label={t('editor.viewportToolbar.panTool')}
 									icon
-									value='pan'>
+									value={EDITOR_TOOL.PAN}>
 									<HandIcon
 										aria-hidden='true'
 										size={ICON_SIZE}
@@ -145,8 +126,11 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 						<div>
 							<ToolbarButton
 								aria-label={t('editor.viewportToolbar.undo')}
-								disabled
-								icon>
+								disabled={!canUndo}
+								icon
+								onClick={() => {
+									dispatch(editorSlice.actions.cardUndo());
+								}}>
 								<Undo2Icon
 									aria-hidden='true'
 									size={ICON_SIZE}
@@ -170,8 +154,11 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 						<div>
 							<ToolbarButton
 								aria-label={t('editor.viewportToolbar.redo')}
-								disabled
-								icon>
+								disabled={!canRedo}
+								icon
+								onClick={() => {
+									dispatch(editorSlice.actions.cardRedo());
+								}}>
 								<Redo2Icon
 									aria-hidden='true'
 									size={ICON_SIZE}
@@ -198,7 +185,10 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 						<div>
 							<ToolbarButton
 								aria-label={t('editor.viewportToolbar.zoomOut')}
-								icon>
+								icon
+								onClick={() => {
+									dispatch(editorSlice.actions.viewportZoomOut());
+								}}>
 								<ZoomOutIcon
 									aria-hidden='true'
 									size={ICON_SIZE}
@@ -222,14 +212,17 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 					tracking='normal'
 					variant='default'
 					weight='medium'>
-					100%
+					{`${Math.round(zoom * 100).toFixed(0)}%`}
 				</Span>
 				<Tooltip>
 					<TooltipTrigger asChild>
 						<div>
 							<ToolbarButton
 								aria-label={t('editor.viewportToolbar.zoomIn')}
-								icon>
+								icon
+								onClick={() => {
+									dispatch(editorSlice.actions.viewportZoomIn());
+								}}>
 								<ZoomInIcon
 									aria-hidden='true'
 									size={ICON_SIZE}
@@ -252,7 +245,10 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 						<div>
 							<ToolbarButton
 								aria-label={t('editor.viewportToolbar.fullscreen')}
-								icon>
+								icon
+								onClick={() => {
+									toggleFullscreen(EDITOR_ID);
+								}}>
 								<ExpandIcon
 									aria-hidden='true'
 									size={ICON_SIZE}
