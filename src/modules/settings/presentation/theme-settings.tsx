@@ -3,7 +3,8 @@ import Heading from '@components/heading';
 import SegmentControl from '@components/segment-control/segment-control';
 import SegmentControlItem from '@components/segment-control/segment-control-item';
 import { Settings } from '@modules/settings/domain';
-import { useSettingsContext } from '@modules/settings/store';
+import { selectSettings, useSaveSettingsMutation } from '@modules/settings/store';
+import { useAppSelector } from '@shared/store';
 import { MonitorDotIcon, MoonIcon, SunIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +13,8 @@ const ICON_SIZE = 15;
 const STROKE_WIDTH = 1;
 
 function ThemeSettings(): ReactNode {
-	const { setTheme, settings } = useSettingsContext();
+	const settings = useAppSelector(selectSettings);
+	const [saveSettings] = useSaveSettingsMutation();
 	const { t } = useTranslation();
 
 	return (
@@ -33,7 +35,7 @@ function ThemeSettings(): ReactNode {
 				<SegmentControlItem
 					aria-pressed={Settings.matchSystem(settings)}
 					isActive={Settings.matchSystem(settings)}
-					onClick={() => setTheme(Settings.themes.SYSTEM)}>
+					onClick={() => void saveSettings(Settings.setTheme(settings, Settings.themes.SYSTEM))}>
 					<MonitorDotIcon
 						size={ICON_SIZE}
 						strokeWidth={STROKE_WIDTH}
@@ -43,7 +45,7 @@ function ThemeSettings(): ReactNode {
 				<SegmentControlItem
 					aria-pressed={Settings.isLightMode(settings)}
 					isActive={Settings.isLightMode(settings)}
-					onClick={() => setTheme(Settings.themes.LIGHT)}>
+					onClick={() => void saveSettings(Settings.setTheme(settings, Settings.themes.LIGHT))}>
 					<SunIcon
 						size={ICON_SIZE}
 						strokeWidth={STROKE_WIDTH}
@@ -53,7 +55,7 @@ function ThemeSettings(): ReactNode {
 				<SegmentControlItem
 					aria-pressed={Settings.isDarkMode(settings)}
 					isActive={Settings.isDarkMode(settings)}
-					onClick={() => setTheme(Settings.themes.DARK)}>
+					onClick={() => void saveSettings(Settings.setTheme(settings, Settings.themes.DARK))}>
 					<MoonIcon
 						size={ICON_SIZE}
 						strokeWidth={STROKE_WIDTH}

@@ -2,13 +2,15 @@ import FlexBox from '@components/flex-box';
 import Label from '@components/label';
 import Select from '@components/select';
 import { Settings } from '@modules/settings/domain';
-import { useSettingsContext } from '@modules/settings/store';
+import { selectSettings, useSaveSettingsMutation } from '@modules/settings/store';
+import { useAppSelector } from '@shared/store';
 import type { ReactNode } from 'react';
 import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 
 function LangSettings(): ReactNode {
-	const { setLang, settings } = useSettingsContext();
+	const settings = useAppSelector(selectSettings);
+	const [saveSettings] = useSaveSettingsMutation();
 	const { t } = useTranslation();
 	const selectId = useId();
 
@@ -31,7 +33,7 @@ function LangSettings(): ReactNode {
 			<Select
 				dimension='sm'
 				id={selectId}
-				onChange={event => setLang(event.target.value)}
+				onChange={event => void saveSettings(Settings.setLang(settings, event.target.value))}
 				value={settings.lang}>
 				{options.map(([lang, value]) => (
 					<option
