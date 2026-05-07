@@ -1,7 +1,5 @@
-import { Card, CardRepository } from '@modules/card/domain';
+import { Card, CardCriteria, CardRepository } from '@modules/card/domain';
 import { inject, injectable } from 'inversify';
-
-import { CardCriteria } from '../domain/card.criteria';
 
 class FindLastCardUseCaseError extends Error {}
 

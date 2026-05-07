@@ -9,14 +9,13 @@ import {
 	ToolbarToggleItem,
 } from '@components/toolbar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/tooltip';
+import { useEditorContext } from '@modules/editor/store';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { MODIFIER_KIND, modifierKey } from '@shared/platform';
 import { ExpandIcon, HandIcon, MousePointer2Icon, Redo2Icon, Undo2Icon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { useEditorContext } from '../store';
 
 const ICON_SIZE = 14;
 const key = modifierKey();

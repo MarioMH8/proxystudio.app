@@ -1,8 +1,6 @@
-import { Card, CardRepository } from '@modules/card/domain';
+import { Card, CardCriteria, CardRepository } from '@modules/card/domain';
 import type { DeepPartial } from '@shared/types';
 import { inject, injectable } from 'inversify';
-
-import { CardCriteria } from '../domain/card.criteria';
 
 type SearchCardUseCaseParameters = DeepPartial<CardCriteria> | undefined;
 

@@ -15,6 +15,8 @@
 			"@modules/*/store": ["./src/modules/*/store/index.ts"],
 			"@locales/*": ["./locales/*"],
 			"@pages/*": ["./src/pages/*"],
+			"@router": ["./src/router.tsx"],
+			"@styles": ["./src/index.css"],
 			"@shared/*": ["./src/shared/*"]
 		}
 	},

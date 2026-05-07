@@ -1,13 +1,11 @@
 import FlexBox from '@components/flex-box';
 import SeparatorGrab from '@components/separator-grab';
-import { EditorContainer, EditorViewport, LayersPanel } from '@modules/editor/presentation';
+import { CardHeader, EditorContainer, EditorViewport, LayersPanel } from '@modules/editor/presentation';
+import { EditorProvider } from '@modules/editor/store';
 import useElementById from '@shared/hooks/use-element-by-id';
 import { Portal } from 'radix-ui';
 import type { ReactNode } from 'react';
 import { Group, useDefaultLayout } from 'react-resizable-panels';
-
-import CardHeader from '../modules/editor/presentation/card-header';
-import { EditorProvider } from '../modules/editor/store';
 
 const EDITOR_LAYOUT_ID = 'editor';
 

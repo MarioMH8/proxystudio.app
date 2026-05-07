@@ -3,11 +3,10 @@ import Toaster from '@components/toaster';
 import { TooltipProvider } from '@components/tooltip';
 import { NavigationMenu } from '@modules/navigation-menu/presentation';
 import { useSettingsContext } from '@modules/settings/store';
+import UpdateNotifier from '@shared/update-notifier';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
 import { Outlet } from 'react-router';
-
-import UpdateNotifier from './update-notifier';
 
 function Layout(): ReactNode {
 	const { settings } = useSettingsContext();

@@ -1,9 +1,8 @@
+import type { CardCriteria } from '@modules/card/domain';
 import { Card, CardRepository } from '@modules/card/domain';
 import type { DeepPartial } from '@shared/types';
 import type { DBSchema, IDBPDatabase } from 'idb';
 import { inject, injectable } from 'inversify';
-
-import type { CardCriteria } from '../domain/card.criteria';
 
 const STORE_NAME = 'card';
 
