@@ -13,7 +13,15 @@ type EditorStoreState = EditorApiState & {
 const selectSaveMutationResult = editorApi.endpoints.saveCard.select('save-card');
 
 function selectCard(state: EditorStoreState): Card {
-	return state.editor.card;
+	return state.editor.card.present;
+}
+
+function selectCanRedo(state: EditorStoreState): boolean {
+	return state.editor.card.future.length > 0;
+}
+
+function selectCanUndo(state: EditorStoreState): boolean {
+	return state.editor.card.past.length > 0;
 }
 
 function selectSavedCardId(state: EditorStoreState): string | undefined {
@@ -28,8 +36,8 @@ function selectEditorStatus(state: EditorStoreState): EditorStatus {
 		return EDITOR_STATUS.SAVING;
 	}
 
-	return card.id === savedCardId ? EDITOR_STATUS.SAVED : EDITOR_STATUS.DRAFT;
+	return card.present.id === savedCardId ? EDITOR_STATUS.SAVED : EDITOR_STATUS.DRAFT;
 }
 
 export type { EditorStoreState };
-export { selectCard, selectEditorStatus, selectSavedCardId };
+export { selectCanRedo, selectCanUndo, selectCard, selectEditorStatus, selectSavedCardId };

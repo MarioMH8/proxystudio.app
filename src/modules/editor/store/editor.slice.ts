@@ -10,15 +10,27 @@ const EDITOR_STATUS = {
 	SAVING: 'SAVING',
 } as const;
 
+const CARD_HISTORY_LIMIT = 50;
+
 type EditorStatus = (typeof EDITOR_STATUS)[keyof typeof EDITOR_STATUS];
 
+interface CardHistoryState {
+	future: Card[];
+	past: Card[];
+	present: Card;
+}
+
 interface EditorSliceState {
-	card: Card;
+	card: CardHistoryState;
 	savedCardId: string | undefined;
 }
 
+function createCardHistoryState(card: Card): CardHistoryState {
+	return { future: [], past: [], present: card };
+}
+
 const initialState: EditorSliceState = {
-	card: Card.default(),
+	card: createCardHistoryState(Card.default()),
 	savedCardId: undefined,
 };
 
@@ -26,7 +38,7 @@ const editorSlice = createSlice({
 	extraReducers: builder => {
 		builder
 			.addMatcher(editorApi.endpoints.findCard.matchFulfilled, (state, action) => {
-				state.card = action.payload;
+				state.card = createCardHistoryState(action.payload);
 				state.savedCardId = action.payload.id;
 			})
 			.addMatcher(editorApi.endpoints.saveCard.matchFulfilled, (state, action) => {
@@ -36,15 +48,51 @@ const editorSlice = createSlice({
 	initialState,
 	name: 'editor',
 	reducers: {
+		cardRedo: state => {
+			const nextCard = state.card.future.shift();
+
+			if (!nextCard) {
+				return;
+			}
+
+			state.card.past.push(state.card.present);
+
+			if (state.card.past.length > CARD_HISTORY_LIMIT) {
+				state.card.past.shift();
+			}
+
+			state.card.present = nextCard;
+		},
 		cardReset: (state, action: PayloadAction<string | undefined>) => {
-			state.card = Card.default(action.payload ? { id: action.payload } : undefined);
-			state.savedCardId = undefined;
+			state.card = createCardHistoryState(Card.default(action.payload ? { id: action.payload } : undefined));
+			state.savedCardId = action.payload;
+		},
+		cardUndo: state => {
+			const previousCard = state.card.past.pop();
+
+			if (!previousCard) {
+				return;
+			}
+
+			state.card.future.unshift(state.card.present);
+			state.card.present = previousCard;
 		},
 		setCard: (state, action: PayloadAction<Card>) => {
-			state.card = action.payload;
+			if (state.card.present === action.payload) {
+				return;
+			}
+
+			state.card.past.push(state.card.present);
+
+			if (state.card.past.length > CARD_HISTORY_LIMIT) {
+				state.card.past.shift();
+			}
+
+			state.card.present = action.payload;
+			state.card.future = [];
 		},
 	},
 });
 
-export type { EditorSliceState, EditorStatus };
+export type { CardHistoryState, EditorSliceState, EditorStatus };
 export { EDITOR_STATUS, editorSlice };
