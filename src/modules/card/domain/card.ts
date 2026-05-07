@@ -3,8 +3,8 @@ import type { DeepPartial } from '@shared/types';
 import { Layer } from './layer/layer';
 
 interface CardMetadata {
-	createdAt: Date;
-	updatedAt: Date;
+	createdAt: number;
+	updatedAt: number;
 }
 
 interface CardDimensions {
@@ -33,8 +33,8 @@ const Card = {
 			id,
 			layers: layers.filter(layer => Layer.isLayer(layer)).map(partial => Layer.default(partial)),
 			metadata: {
-				createdAt: new Date(),
-				updatedAt: new Date(),
+				createdAt: Date.now(),
+				updatedAt: Date.now(),
 				...metadata,
 			},
 			name: id,

@@ -8,7 +8,7 @@ const STORE_NAME = 'card';
 
 interface CardDatabaseSchema extends DBSchema {
 	[STORE_NAME]: {
-		indexes: { 'metadata.createdAt': Date; 'metadata.name': string; 'metadata.updatedAt': Date };
+		indexes: { 'metadata.createdAt': number; 'metadata.name': string; 'metadata.updatedAt': number };
 		key: string;
 		value: Card;
 	};
