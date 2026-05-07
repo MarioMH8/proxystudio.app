@@ -9,12 +9,18 @@ import {
 	ToolbarToggleItem,
 } from '@components/toolbar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/tooltip';
+import { editorSlice, selectCanRedo, selectCanUndo } from '@modules/editor/store';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { MODIFIER_KIND, modifierKey } from '@shared/platform';
+import { useAppDispatch, useAppSelector } from '@shared/store';
+import { toggleFullscreen } from '@shared/toggle-fullscreen';
 import { ExpandIcon, HandIcon, MousePointer2Icon, Redo2Icon, Undo2Icon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
+
+import { EDITOR_ID } from './const';
 
 const ICON_SIZE = 14;
 const key = modifierKey();
@@ -33,6 +39,45 @@ type EditorViewportToolbarProperties = VariantProperties<typeof variants> & {
 
 function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): ReactNode {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
+	const canUndo = useAppSelector(selectCanUndo);
+	const canRedo = useAppSelector(selectCanRedo);
+
+	useHotkeys(
+		'meta+z,ctrl+z',
+		event => {
+			event.preventDefault();
+
+			if (canUndo) {
+				dispatch(editorSlice.actions.cardUndo());
+			}
+		},
+		{ enableOnFormTags: true, preventDefault: true },
+		[canUndo, dispatch]
+	);
+
+	useHotkeys(
+		'meta+shift+z,ctrl+shift+z',
+		event => {
+			event.preventDefault();
+
+			if (canRedo) {
+				dispatch(editorSlice.actions.cardRedo());
+			}
+		},
+		{ enableOnFormTags: true, preventDefault: true },
+		[canRedo, dispatch]
+	);
+
+	useHotkeys(
+		'f',
+		event => {
+			event.preventDefault();
+			toggleFullscreen(EDITOR_ID);
+		},
+		{ preventDefault: true },
+		[]
+	);
 
 	return (
 		<Toolbar
