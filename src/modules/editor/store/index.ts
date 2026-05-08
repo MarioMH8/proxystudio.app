@@ -7,6 +7,7 @@ export {
 	selectCanUndo,
 	selectCard,
 	selectEditorStatus,
+	selectHasPendingChanges,
 	selectIsCardLoading,
 	selectSavedCardId,
 	selectViewportHasInteracted,

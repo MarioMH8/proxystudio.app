@@ -7,6 +7,7 @@ import {
 	EditorContainer,
 	EditorViewport,
 	LayersPanel,
+	useEditorBeforeUnload,
 	useEditorHotkeys,
 } from '@modules/editor/presentation';
 import { editorSlice, selectCard, useFindCardQuery } from '@modules/editor/store';
@@ -31,6 +32,7 @@ function EditorPage(): ReactNode {
 	const card = useAppSelector(selectCard);
 
 	useEditorHotkeys();
+	useEditorBeforeUnload();
 
 	useFindCardQuery(
 		{ id: cardId },

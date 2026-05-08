@@ -65,12 +65,19 @@ function selectEditorStatus(state: EditorStoreState): EditorStatus {
 	return isSaved ? EDITOR_STATUS.SAVED : EDITOR_STATUS.DRAFT;
 }
 
+function selectHasPendingChanges(state: EditorStoreState): boolean {
+	const status = selectEditorStatus(state);
+
+	return status === EDITOR_STATUS.DRAFT || status === EDITOR_STATUS.SAVING;
+}
+
 export type { EditorStoreState };
 export {
 	selectCanRedo,
 	selectCanUndo,
 	selectCard,
 	selectEditorStatus,
+	selectHasPendingChanges,
 	selectIsCardLoading,
 	selectSavedCardId,
 	selectViewportHasInteracted,
