@@ -1,3 +1,4 @@
+import { selectAutoSave } from '@modules/settings/store';
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 
 import { editorApi } from './editor.api';
@@ -9,8 +10,16 @@ const editorListenerMiddleware = createListenerMiddleware();
 
 editorListenerMiddleware.startListening({
 	actionCreator: editorSlice.actions.setCard,
-	effect: (action, { dispatch }) => {
-		void dispatch(editorApi.endpoints.saveCard.initiate(action.payload, { fixedCacheKey: SAVE_CARD_CACHE_KEY }));
+	effect: (action, api) => {
+		const isAutoSaveEnabled = selectAutoSave(api.getState() as Parameters<typeof selectAutoSave>[0]);
+
+		if (!isAutoSaveEnabled) {
+			return;
+		}
+
+		void api.dispatch(
+			editorApi.endpoints.saveCard.initiate(action.payload, { fixedCacheKey: SAVE_CARD_CACHE_KEY })
+		);
 	},
 });
 
