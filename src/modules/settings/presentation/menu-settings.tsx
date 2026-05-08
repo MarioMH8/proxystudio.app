@@ -6,6 +6,7 @@ import { CogIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import AutosaveSettings from './autosave-settings';
 import LangSettings from './lang-settings';
 import ThemeSettings from './theme-settings';
 
@@ -38,6 +39,7 @@ function MenuSettings(): ReactNode {
 						{t('settings.title')}
 					</Heading>
 					<ThemeSettings />
+					<AutosaveSettings />
 					<LangSettings />
 				</FlexBox>
 			</PopoverContent>
