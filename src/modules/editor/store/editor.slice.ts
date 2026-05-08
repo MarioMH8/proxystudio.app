@@ -18,7 +18,7 @@ const EDITOR_TOOL = {
 const CARD_HISTORY_LIMIT = 50;
 const VIEWPORT_ZOOM_MAX = 4;
 const VIEWPORT_ZOOM_MIN = 0.1;
-const VIEWPORT_ZOOM_STEP = 0.1;
+const VIEWPORT_ZOOM_STEP = 0.01;
 
 type EditorStatus = (typeof EDITOR_STATUS)[keyof typeof EDITOR_STATUS];
 type EditorTool = (typeof EDITOR_TOOL)[keyof typeof EDITOR_TOOL];
