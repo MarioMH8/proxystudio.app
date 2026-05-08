@@ -44,6 +44,6 @@ export class IndexedDBDatabaseCardRepository extends CardRepository {
 	}
 
 	override async upsert(card: Card): Promise<void> {
-		await this.database.add('card', card);
+		await this.database.put('card', card);
 	}
 }
