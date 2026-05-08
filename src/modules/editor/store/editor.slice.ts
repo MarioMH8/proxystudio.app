@@ -138,6 +138,10 @@ const editorSlice = createSlice({
 			state.viewport.offset.x += action.payload.x;
 			state.viewport.offset.y += action.payload.y;
 		},
+		viewportPanSet: (state, action: PayloadAction<ViewportOffset>) => {
+			state.viewport.hasInteracted = true;
+			state.viewport.offset = action.payload;
+		},
 		viewportReset: (state, action: PayloadAction<undefined | ViewportResetPayload>) => {
 			state.viewport.hasInteracted = action.payload?.markAsInteracted ?? false;
 			state.viewport.offset = { x: 0, y: 0 };

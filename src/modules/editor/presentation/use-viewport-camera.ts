@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '@shared/store';
 import type { PointerEvent as ReactPointerEvent, WheelEvent as ReactWheelEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-const VIEWPORT_PADDING = 32;
+const VIEWPORT_PADDING = 64;
 const VIEWPORT_WHEEL_ZOOM_FACTOR = 0.001;
 
 function calculateFitZoom(
@@ -46,6 +46,35 @@ interface UseViewportCameraResult {
 	offsetY: string;
 	tool: (typeof EDITOR_TOOL)[keyof typeof EDITOR_TOOL];
 	zoom: string;
+}
+
+interface ViewportPoint {
+	x: number;
+	y: number;
+}
+
+function calculateCursorOffset(
+	cursorPoint: ViewportPoint,
+	offsetPoint: ViewportPoint,
+	viewportPoint: ViewportPoint,
+	zoom: number
+): ViewportPoint {
+	return {
+		x: (cursorPoint.x - viewportPoint.x - offsetPoint.x) / zoom,
+		y: (cursorPoint.y - viewportPoint.y - offsetPoint.y) / zoom,
+	};
+}
+
+function calculateZoomOffset(
+	cursorPoint: ViewportPoint,
+	scenePoint: ViewportPoint,
+	viewportPoint: ViewportPoint,
+	zoom: number
+): ViewportPoint {
+	return {
+		x: cursorPoint.x - viewportPoint.x - scenePoint.x * zoom,
+		y: cursorPoint.y - viewportPoint.y - scenePoint.y * zoom,
+	};
 }
 
 function useViewportCamera(): UseViewportCameraResult {
@@ -121,7 +150,36 @@ function useViewportCamera(): UseViewportCameraResult {
 		}
 
 		event.preventDefault();
-		dispatch(editorSlice.actions.viewportZoomSet(zoom - event.deltaY * VIEWPORT_WHEEL_ZOOM_FACTOR));
+
+		const container = containerRef.current;
+
+		if (!container) {
+			dispatch(editorSlice.actions.viewportZoomSet(zoom - event.deltaY * VIEWPORT_WHEEL_ZOOM_FACTOR));
+
+			return;
+		}
+
+		const viewportRectangle = container.getBoundingClientRect();
+		const viewportCenter = {
+			x: viewportRectangle.width / 2,
+			y: viewportRectangle.height / 2,
+		};
+		const cursorPoint = {
+			x: event.clientX - viewportRectangle.left,
+			y: event.clientY - viewportRectangle.top,
+		};
+		const currentOffset = { x: offset.x, y: offset.y };
+		const nextZoom = Math.min(Math.max(zoom - event.deltaY * VIEWPORT_WHEEL_ZOOM_FACTOR, 0.1), 4);
+
+		if (nextZoom === zoom) {
+			return;
+		}
+
+		const scenePoint = calculateCursorOffset(cursorPoint, currentOffset, viewportCenter, zoom);
+		const nextOffset = calculateZoomOffset(cursorPoint, scenePoint, viewportCenter, nextZoom);
+
+		dispatch(editorSlice.actions.viewportPanSet(nextOffset));
+		dispatch(editorSlice.actions.viewportZoomSet(nextZoom));
 	}
 
 	return {
