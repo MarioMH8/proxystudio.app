@@ -36,6 +36,11 @@ interface ViewportState {
 	zoom: number;
 }
 
+interface LayerPanelState {
+	expandedGroupIds: string[];
+	selectedLayerIds: string[];
+}
+
 interface CardHistoryState {
 	future: Card[];
 	past: Card[];
@@ -45,6 +50,7 @@ interface CardHistoryState {
 interface EditorSliceState {
 	card: CardHistoryState;
 	isCardLoading: boolean;
+	layerPanel: LayerPanelState;
 	savedCardId: string | undefined;
 	savedCardUpdatedAt: number | undefined;
 	viewport: ViewportState;
@@ -72,9 +78,33 @@ function createViewportState(): ViewportState {
 	};
 }
 
+function createLayerPanelState(): LayerPanelState {
+	return {
+		expandedGroupIds: [],
+		selectedLayerIds: [],
+	};
+}
+
+function hasGroupWithId(card: Card, groupId: string): boolean {
+	return card.layers.some(layer => {
+		return layer.type === 'group' && layer.id === groupId;
+	});
+}
+
+function hasLayerWithId(card: Card, layerId: string): boolean {
+	return card.layers.some(layer => {
+		if (layer.id === layerId) {
+			return true;
+		}
+
+		return layer.type === 'group' && layer.children.some(child => child.id === layerId);
+	});
+}
+
 const initialState: EditorSliceState = {
 	card: createCardHistoryState(Card.default()),
 	isCardLoading: true,
+	layerPanel: createLayerPanelState(),
 	savedCardId: undefined,
 	savedCardUpdatedAt: undefined,
 	viewport: createViewportState(),
@@ -108,6 +138,7 @@ const editorSlice = createSlice({
 			reducer: (state, action: PayloadAction<string>) => {
 				state.card = createCardHistoryState(Card.default({ id: action.payload }));
 				state.isCardLoading = false;
+				state.layerPanel = createLayerPanelState();
 				state.savedCardId = undefined;
 				state.savedCardUpdatedAt = undefined;
 				state.viewport = createViewportState();
@@ -131,6 +162,7 @@ const editorSlice = createSlice({
 		cardReset: (state, action: PayloadAction<string | undefined>) => {
 			state.card = createCardHistoryState(Card.default(action.payload ? { id: action.payload } : undefined));
 			state.isCardLoading = true;
+			state.layerPanel = createLayerPanelState();
 			state.savedCardId = action.payload;
 			state.savedCardUpdatedAt = undefined;
 			state.viewport = createViewportState();
@@ -145,6 +177,37 @@ const editorSlice = createSlice({
 			state.card.future.unshift(state.card.present);
 			state.card.present = previousCard;
 		},
+		layerPanelExpandedGroupsSet: (state, action: PayloadAction<string[]>) => {
+			state.layerPanel.expandedGroupIds = [...action.payload];
+		},
+		layerPanelGroupExpandToggle: (state, action: PayloadAction<string>) => {
+			const expandedGroupIndex = state.layerPanel.expandedGroupIds.indexOf(action.payload);
+
+			if (expandedGroupIndex !== -1) {
+				state.layerPanel.expandedGroupIds.splice(expandedGroupIndex, 1);
+
+				return;
+			}
+
+			state.layerPanel.expandedGroupIds.push(action.payload);
+		},
+		layerPanelSelectionClear: state => {
+			state.layerPanel.selectedLayerIds = [];
+		},
+		layerPanelSelectionSet: (state, action: PayloadAction<string[]>) => {
+			state.layerPanel.selectedLayerIds = [...action.payload];
+		},
+		layerPanelSelectionToggle: (state, action: PayloadAction<string>) => {
+			const selectedLayerIndex = state.layerPanel.selectedLayerIds.indexOf(action.payload);
+
+			if (selectedLayerIndex !== -1) {
+				state.layerPanel.selectedLayerIds.splice(selectedLayerIndex, 1);
+
+				return;
+			}
+
+			state.layerPanel.selectedLayerIds.push(action.payload);
+		},
 		setCard: (state, action: PayloadAction<Card>) => {
 			if (state.card.present === action.payload) {
 				return;
@@ -158,6 +221,12 @@ const editorSlice = createSlice({
 
 			state.card.present = action.payload;
 			state.card.future = [];
+			state.layerPanel.selectedLayerIds = state.layerPanel.selectedLayerIds.filter(layerId => {
+				return hasLayerWithId(action.payload, layerId);
+			});
+			state.layerPanel.expandedGroupIds = state.layerPanel.expandedGroupIds.filter(groupId => {
+				return hasGroupWithId(action.payload, groupId);
+			});
 		},
 		viewportPanBy: (state, action: PayloadAction<ViewportOffset>) => {
 			state.viewport.hasInteracted = true;
@@ -197,6 +266,7 @@ export type {
 	EditorSliceState,
 	EditorStatus,
 	EditorTool,
+	LayerPanelState,
 	ViewportOffset,
 	ViewportResetPayload,
 	ViewportState,

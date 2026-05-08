@@ -24,6 +24,14 @@ function selectCanUndo(state: EditorStoreState): boolean {
 	return state.editor.card.past.length > 0;
 }
 
+function selectExpandedGroupIds(state: EditorStoreState): string[] {
+	return state.editor.layerPanel.expandedGroupIds;
+}
+
+function selectSelectedLayerIds(state: EditorStoreState): string[] {
+	return state.editor.layerPanel.selectedLayerIds;
+}
+
 function selectSavedCardId(state: EditorStoreState): string | undefined {
 	return state.editor.savedCardId;
 }
@@ -77,9 +85,11 @@ export {
 	selectCanUndo,
 	selectCard,
 	selectEditorStatus,
+	selectExpandedGroupIds,
 	selectHasPendingChanges,
 	selectIsCardLoading,
 	selectSavedCardId,
+	selectSelectedLayerIds,
 	selectViewportHasInteracted,
 	selectViewportOffset,
 	selectViewportTool,
