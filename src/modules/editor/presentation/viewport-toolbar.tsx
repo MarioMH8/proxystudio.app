@@ -22,7 +22,16 @@ import { cn, cva } from '@shared/cva';
 import { MODIFIER_KIND, modifierKey } from '@shared/platform';
 import { useAppDispatch, useAppSelector } from '@shared/store';
 import { toggleFullscreen } from '@shared/toggle-fullscreen';
-import { ExpandIcon, HandIcon, MousePointer2Icon, Redo2Icon, Undo2Icon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
+import {
+	ExpandIcon,
+	FullscreenIcon,
+	HandIcon,
+	MousePointer2Icon,
+	Redo2Icon,
+	Undo2Icon,
+	ZoomInIcon,
+	ZoomOutIcon,
+} from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -236,6 +245,32 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 							ariaKey='+'
 							dimension='sm'
 							keyLabel='+'
+							variant='surface'
+						/>
+					</TooltipContent>
+				</Tooltip>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<div>
+							<ToolbarButton
+								aria-label={t('editor.viewportToolbar.zoomReset')}
+								icon
+								onClick={() => {
+									dispatch(editorSlice.actions.viewportReset({ markAsInteracted: false }));
+								}}>
+								<FullscreenIcon
+									aria-hidden='true'
+									size={ICON_SIZE}
+								/>
+							</ToolbarButton>
+						</div>
+					</TooltipTrigger>
+					<TooltipContent>
+						{t('editor.viewportToolbar.zoomReset')}{' '}
+						<KeyboardShortcut
+							ariaKey='0'
+							dimension='sm'
+							keyLabel='0'
 							variant='surface'
 						/>
 					</TooltipContent>
