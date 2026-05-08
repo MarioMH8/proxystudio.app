@@ -32,7 +32,12 @@ function EditorPage(): ReactNode {
 
 	useEditorHotkeys();
 
-	useFindCardQuery({ id: cardId });
+	useFindCardQuery(
+		{ id: cardId },
+		{
+			refetchOnMountOrArgChange: true,
+		}
+	);
 
 	useEffect(() => {
 		dispatch(editorSlice.actions.cardReset(cardId));
