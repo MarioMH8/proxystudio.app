@@ -22,6 +22,11 @@ function NavigationMenu(): ReactNode {
 				<NavigationTabs />
 			</NavigationMenuSlot>
 			<NavigationMenuSlot position='right'>
+				<FlexBox
+					className='gap-2'
+					id='menu-right-portal'
+					items='center'
+				/>
 				<CommandPalette />
 				<MenuSettings />
 			</NavigationMenuSlot>

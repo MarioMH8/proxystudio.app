@@ -7,6 +7,7 @@ import {
 	EditorContainer,
 	EditorViewport,
 	LayersPanel,
+	NewCardButton,
 	useEditorBeforeUnload,
 	useEditorHotkeys,
 } from '@modules/editor/presentation';
@@ -17,7 +18,7 @@ import { Portal } from 'radix-ui';
 import type { ReactNode } from 'react';
 import { Fragment, useEffect } from 'react';
 import { Group, useDefaultLayout } from 'react-resizable-panels';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 const EDITOR_LAYOUT_ID = 'editor';
 
@@ -27,9 +28,17 @@ function EditorPage(): ReactNode {
 		storage: localStorage,
 	});
 	const leftMenuPortalContainer = useElementById('menu-left-portal');
+	const rightMenuPortalContainer = useElementById('menu-right-portal');
 	const { card: cardId } = useParams();
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 	const card = useAppSelector(selectCard);
+
+	function handleCreateNewCard(): void {
+		const action = editorSlice.actions.cardCreate();
+		dispatch(action);
+		void navigate(`/${action.payload}/editor`);
+	}
 
 	useEditorHotkeys();
 	useEditorBeforeUnload();
@@ -69,6 +78,13 @@ function EditorPage(): ReactNode {
 					asChild
 					container={leftMenuPortalContainer}>
 					<CardHeader />
+				</Portal.Portal>
+			) : undefined}
+			{rightMenuPortalContainer ? (
+				<Portal.Portal
+					asChild
+					container={rightMenuPortalContainer}>
+					<NewCardButton onCreateNewCard={handleCreateNewCard} />
 				</Portal.Portal>
 			) : undefined}
 		</Fragment>

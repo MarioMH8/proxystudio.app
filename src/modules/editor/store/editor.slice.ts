@@ -103,6 +103,16 @@ const editorSlice = createSlice({
 	initialState,
 	name: 'editor',
 	reducers: {
+		cardCreate: {
+			prepare: () => ({ payload: crypto.randomUUID() }),
+			reducer: (state, action: PayloadAction<string>) => {
+				state.card = createCardHistoryState(Card.default({ id: action.payload }));
+				state.isCardLoading = false;
+				state.savedCardId = undefined;
+				state.savedCardUpdatedAt = undefined;
+				state.viewport = createViewportState();
+			},
+		},
 		cardRedo: state => {
 			const nextCard = state.card.future.shift();
 

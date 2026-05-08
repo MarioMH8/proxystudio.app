@@ -33,6 +33,12 @@
 		"add": "Add layers"
 	},
 	"editor": {
+		"newCardConfirm": {
+			"cancel": "Cancel",
+			"confirm": "Discard changes",
+			"description": "You have unsaved changes. If you continue, they will be lost.",
+			"title": "Discard unsaved changes?"
+		},
 		"viewportToolbar": {
 			"ariaLabel": "Viewport toolbar",
 			"fullscreen": "Fullscreen",
@@ -48,7 +54,8 @@
 			"zoomIn": "Zoom in",
 			"zoomOut": "Zoom out",
 			"zoomReset": "Reset zoom"
-		}
+		},
+		"newCard": "New card"
 	},
 	"navigation": {
 		"editor": "Editor",

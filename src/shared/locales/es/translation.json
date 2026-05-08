@@ -33,6 +33,12 @@
 		"add": "Añadir capas"
 	},
 	"editor": {
+		"newCardConfirm": {
+			"cancel": "Cancelar",
+			"confirm": "Perder cambios",
+			"description": "Tienes cambios sin guardar. Si continuas, se perderan.",
+			"title": "Perder cambios sin guardar?"
+		},
 		"viewportToolbar": {
 			"ariaLabel": "Barra de herramientas del viewport",
 			"fullscreen": "Pantalla completa",
@@ -48,7 +54,8 @@
 			"zoomIn": "Ampliar",
 			"zoomOut": "Reducir",
 			"zoomReset": "Restablecer zoom"
-		}
+		},
+		"newCard": "Nueva carta"
 	},
 	"navigation": {
 		"editor": "Editor",
