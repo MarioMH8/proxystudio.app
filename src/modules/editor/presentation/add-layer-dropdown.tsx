@@ -13,7 +13,6 @@ const ADDABLE_LAYER_TYPES = [
 	'art',
 	'bottom-info',
 	'frame',
-	'group',
 	'serial-number',
 	'symbol',
 	'text',
