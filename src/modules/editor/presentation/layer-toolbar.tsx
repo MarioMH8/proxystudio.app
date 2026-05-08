@@ -13,6 +13,7 @@ import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { selectCard } from '../store';
+import AddLayerDropdown from './add-layer-dropdown';
 
 const variants = cva({
 	base: 'px-3 py-1',
