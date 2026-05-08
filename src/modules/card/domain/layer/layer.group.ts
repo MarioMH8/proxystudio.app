@@ -9,10 +9,10 @@ interface LayerGroup extends LayerBase {
 }
 
 const LayerGroup = {
-	default: (partial?: DeepPartial<LayerGroup>): LayerGroup => {
+	default: (partial?: Omit<DeepPartial<LayerGroup>, 'children'>, children: EffectiveLayer[] = []): LayerGroup => {
 		return {
 			...LayerBase.default(partial),
-			children: [],
+			children: [...children],
 			type: 'group',
 			...partial,
 		};
