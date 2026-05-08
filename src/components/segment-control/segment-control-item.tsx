@@ -14,7 +14,8 @@ function SegmentControlItem({ dimension = 'sm', isActive, ...properties }: Segme
 		<Button
 			className={cn(
 				rounded({ context: 'inner', dimension: 'lg' }),
-				!isActive && cn('opacity-60 hover:opacity-100', hover({ variant: 'inherit' }))
+				!isActive && cn('opacity-60 hover:opacity-100', hover({ variant: 'inherit' })),
+				'flex-1'
 			)}
 			dimension={dimension}
 			transparent={!isActive}
