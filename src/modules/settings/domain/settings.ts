@@ -3,6 +3,7 @@ import type { DeepPartial } from '@shared/types';
 type UITheme = 'dark' | 'light' | 'system';
 
 interface UISettings {
+	autosave: boolean;
 	theme: UITheme;
 }
 
@@ -19,15 +20,26 @@ const Settings = {
 			lang: 'en',
 			...settings,
 			ui: {
+				autosave: true,
 				theme: 'system',
 				...settings.ui,
 			},
 		};
 	},
+	isAutoSaveEnabled: (settings: Settings): boolean => settings.ui.autosave,
 	isDarkMode: (settings: Settings): boolean => settings.ui.theme === 'dark',
 	isLightMode: (settings: Settings): boolean => settings.ui.theme === 'light',
 	lang: ['es', 'en'],
 	matchSystem: (settings: Settings): boolean => settings.ui.theme === 'system',
+	setAutoSave: (settings: Settings, autosave: boolean): Settings => {
+		return {
+			...settings,
+			ui: {
+				...settings.ui,
+				autosave,
+			},
+		};
+	},
 	setLang: (settings: Settings, lang: string): Settings => {
 		return {
 			...settings,
