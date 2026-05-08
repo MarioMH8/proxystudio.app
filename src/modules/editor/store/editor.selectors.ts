@@ -28,6 +28,10 @@ function selectSavedCardId(state: EditorStoreState): string | undefined {
 	return state.editor.savedCardId;
 }
 
+function selectIsCardLoading(state: EditorStoreState): boolean {
+	return state.editor.isCardLoading;
+}
+
 function selectViewportHasInteracted(state: EditorStoreState): boolean {
 	return state.editor.viewport.hasInteracted;
 }
@@ -45,14 +49,20 @@ function selectViewportZoom(state: EditorStoreState): number {
 }
 
 function selectEditorStatus(state: EditorStoreState): EditorStatus {
-	const { card, savedCardId } = state.editor;
+	const { card, isCardLoading, savedCardId, savedCardUpdatedAt } = state.editor;
 	const isSaving = selectSaveMutationResult(state).isLoading;
+
+	if (isCardLoading) {
+		return EDITOR_STATUS.LOADING;
+	}
 
 	if (isSaving) {
 		return EDITOR_STATUS.SAVING;
 	}
 
-	return card.present.id === savedCardId ? EDITOR_STATUS.SAVED : EDITOR_STATUS.DRAFT;
+	const isSaved = card.present.id === savedCardId && card.present.metadata.updatedAt === savedCardUpdatedAt;
+
+	return isSaved ? EDITOR_STATUS.SAVED : EDITOR_STATUS.DRAFT;
 }
 
 export type { EditorStoreState };
@@ -61,6 +71,7 @@ export {
 	selectCanUndo,
 	selectCard,
 	selectEditorStatus,
+	selectIsCardLoading,
 	selectSavedCardId,
 	selectViewportHasInteracted,
 	selectViewportOffset,

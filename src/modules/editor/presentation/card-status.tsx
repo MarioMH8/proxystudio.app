@@ -9,13 +9,23 @@ const SAVING_STATUS_DEBOUNCE_MS = 250;
 
 function CardStatus(): ReactNode {
 	const status = useAppSelector(selectEditorStatus);
-	const displayStatus = useDebouncedValue(status, SAVING_STATUS_DEBOUNCE_MS);
+	const displayStatus = useDebouncedValue(status, SAVING_STATUS_DEBOUNCE_MS, nextStatus => {
+		return nextStatus === EDITOR_STATUS.SAVING;
+	});
 
 	switch (displayStatus) {
 		case EDITOR_STATUS.DRAFT: {
 			return (
 				<CircleDashedIcon
 					className='text-warning-500 opacity-50'
+					size={ICON_SIZE}
+				/>
+			);
+		}
+		case EDITOR_STATUS.LOADING: {
+			return (
+				<CircleDashedIcon
+					className='text-foreground-500 opacity-50 animate-spin'
 					size={ICON_SIZE}
 				/>
 			);

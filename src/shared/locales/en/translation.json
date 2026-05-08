@@ -56,6 +56,13 @@
 		"primaryAriaLabel": "Primary navigation"
 	},
 	"settings": {
+		"autosave": {
+			"options": {
+				"disabled": "Off",
+				"enabled": "On"
+			},
+			"title": "Autosave"
+		},
 		"lang": {
 			"title": "Language"
 		},

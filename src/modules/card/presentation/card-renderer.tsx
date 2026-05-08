@@ -8,6 +8,7 @@ interface CardRendererProperties {
 function CardRenderer({ card }: CardRendererProperties): ReactNode {
 	return (
 		<canvas
+			className='bg-[#FABADA]'
 			height={card.dimensions.height}
 			width={card.dimensions.width}
 		/>

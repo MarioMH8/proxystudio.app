@@ -6,6 +6,7 @@ import { editorApi } from './editor.api';
 
 const EDITOR_STATUS = {
 	DRAFT: 'DRAFT',
+	LOADING: 'LOADING',
 	SAVED: 'SAVED',
 	SAVING: 'SAVING',
 } as const;
@@ -43,7 +44,9 @@ interface CardHistoryState {
 
 interface EditorSliceState {
 	card: CardHistoryState;
+	isCardLoading: boolean;
 	savedCardId: string | undefined;
+	savedCardUpdatedAt: number | undefined;
 	viewport: ViewportState;
 }
 
@@ -71,19 +74,30 @@ function createViewportState(): ViewportState {
 
 const initialState: EditorSliceState = {
 	card: createCardHistoryState(Card.default()),
+	isCardLoading: true,
 	savedCardId: undefined,
+	savedCardUpdatedAt: undefined,
 	viewport: createViewportState(),
 };
 
 const editorSlice = createSlice({
 	extraReducers: builder => {
 		builder
+			.addMatcher(editorApi.endpoints.findCard.matchPending, state => {
+				state.isCardLoading = true;
+			})
 			.addMatcher(editorApi.endpoints.findCard.matchFulfilled, (state, action) => {
 				state.card = createCardHistoryState(action.payload);
+				state.isCardLoading = false;
 				state.savedCardId = action.payload.id;
+				state.savedCardUpdatedAt = action.payload.metadata.updatedAt;
+			})
+			.addMatcher(editorApi.endpoints.findCard.matchRejected, state => {
+				state.isCardLoading = false;
 			})
 			.addMatcher(editorApi.endpoints.saveCard.matchFulfilled, (state, action) => {
 				state.savedCardId = action.meta.arg.originalArgs.id;
+				state.savedCardUpdatedAt = action.meta.arg.originalArgs.metadata.updatedAt;
 			});
 	},
 	initialState,
@@ -106,7 +120,9 @@ const editorSlice = createSlice({
 		},
 		cardReset: (state, action: PayloadAction<string | undefined>) => {
 			state.card = createCardHistoryState(Card.default(action.payload ? { id: action.payload } : undefined));
+			state.isCardLoading = true;
 			state.savedCardId = action.payload;
+			state.savedCardUpdatedAt = undefined;
 			state.viewport = createViewportState();
 		},
 		cardUndo: state => {
