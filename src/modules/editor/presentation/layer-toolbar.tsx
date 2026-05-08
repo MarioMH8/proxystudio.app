@@ -6,10 +6,13 @@ import Heading from '@components/heading';
 import Span from '@components/span';
 import type { VariantProperties } from '@shared/cva';
 import { cn } from '@shared/cva';
+import { useAppSelector } from '@shared/store';
 import { cva } from 'cva';
-import { FolderIcon, PlusIcon } from 'lucide-react';
+import { FolderIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { selectCard } from '../store';
 
 const variants = cva({
 	base: 'px-3 py-1',
@@ -22,6 +25,7 @@ type LayerPanelProperties = Omit<FlexBoxProperties, 'asChild' | 'side'> & Varian
 
 function LayerToolbar({ className, ...properties }: LayerPanelProperties): ReactNode {
 	const { t } = useTranslation();
+	const card = useAppSelector(selectCard);
 
 	return (
 		<FlexBox
@@ -41,7 +45,7 @@ function LayerToolbar({ className, ...properties }: LayerPanelProperties): React
 					dimension='sm'
 					variant='muted'
 					weight='extralight'>
-					(2)
+					({card.layers.length})
 				</Span>
 			</Heading>
 			<FlexBox
@@ -57,15 +61,7 @@ function LayerToolbar({ className, ...properties }: LayerPanelProperties): React
 						size={14}
 					/>
 				</Button>
-				<Button
-					dimension='xs'
-					variant='primary'>
-					<PlusIcon
-						aria-hidden='true'
-						size={14}
-					/>{' '}
-					{t('layers.add')}
-				</Button>
+				<AddLayerDropdown />
 			</FlexBox>
 		</FlexBox>
 	);
