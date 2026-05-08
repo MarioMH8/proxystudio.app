@@ -19,5 +19,9 @@ function selectLang(state: SettingsApiState): string {
 	return selectSettings(state).lang;
 }
 
+function selectAutoSave(state: SettingsApiState): boolean {
+	return selectSettings(state).ui.autosave;
+}
+
 export type { SettingsApiState };
-export { selectLang, selectSettings, selectTheme };
+export { selectAutoSave, selectLang, selectSettings, selectTheme };
