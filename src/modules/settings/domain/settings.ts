@@ -26,7 +26,6 @@ const Settings = {
 	},
 	isDarkMode: (settings: Settings): boolean => settings.ui.theme === 'dark',
 	isLightMode: (settings: Settings): boolean => settings.ui.theme === 'light',
-	key: 'settings',
 	lang: ['es', 'en'],
 	matchSystem: (settings: Settings): boolean => settings.ui.theme === 'system',
 	setLang: (settings: Settings, lang: string): Settings => {

@@ -8,15 +8,7 @@ export class SaveSettingsUseCase {
 		private readonly repository: SettingsRepository
 	) {}
 
-	get entityTools(): typeof Settings {
-		return Settings;
-	}
-
 	async execute(settings: Settings): Promise<void> {
 		await this.repository.upsert(settings);
-	}
-
-	optimistically(settings: Settings): Settings {
-		return settings;
 	}
 }

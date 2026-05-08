@@ -8,10 +8,6 @@ export class FindSettingsUseCase {
 		private readonly repository: SettingsRepository
 	) {}
 
-	get entityTools(): typeof Settings {
-		return Settings;
-	}
-
 	async execute(): Promise<Settings> {
 		const partial = await this.repository.find();
 
