@@ -53,7 +53,16 @@ const Layer = {
 		}
 	},
 	isLayer: (layer: DeepPartial<Layer>): layer is Layer => {
-		return layer.type === 'group';
+		return (
+			layer.type === 'art' ||
+			layer.type === 'bottom-info' ||
+			layer.type === 'frame' ||
+			layer.type === 'group' ||
+			layer.type === 'serial-number' ||
+			layer.type === 'symbol' ||
+			layer.type === 'text' ||
+			layer.type === 'watermark'
+		);
 	},
 };
 

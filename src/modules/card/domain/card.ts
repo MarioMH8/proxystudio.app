@@ -23,6 +23,16 @@ interface Card {
 }
 
 const Card = {
+	addLayer: (card: Card, layerType: Layer['type']): Card => {
+		return {
+			...card,
+			layers: [...card.layers, Layer.default({ type: layerType })],
+			metadata: {
+				...card.metadata,
+				updatedAt: Date.now(),
+			},
+		};
+	},
 	default: ({ dimensions = {}, layers = [], metadata = {}, ...partial }: DeepPartial<Card> = {}): Card => {
 		const id = partial.id ?? crypto.randomUUID();
 
