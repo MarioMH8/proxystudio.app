@@ -18,6 +18,16 @@
 		"empty": "La galería aún está vacía."
 	},
 	"layers": {
+		"options": {
+			"art": "Arte",
+			"bottom-info": "Info inferior",
+			"frame": "Marco",
+			"group": "Grupo",
+			"serial-number": "Numero de serie",
+			"symbol": "Símbolo",
+			"text": "Texto",
+			"watermark": "Marca de agua"
+		},
 		"open": "Abrir grupos de capas",
 		"title": "Capas",
 		"add": "Añadir capas"

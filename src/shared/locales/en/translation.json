@@ -18,6 +18,16 @@
 		"empty": "The gallery is still empty."
 	},
 	"layers": {
+		"options": {
+			"art": "Art",
+			"bottom-info": "Bottom info",
+			"frame": "Frame",
+			"group": "Group",
+			"serial-number": "Serial number",
+			"symbol": "Symbol",
+			"text": "Text",
+			"watermark": "Watermark"
+		},
 		"open": "Open layer groups",
 		"title": "Layers",
 		"add": "Add layers"
