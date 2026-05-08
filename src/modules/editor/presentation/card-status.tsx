@@ -1,15 +1,18 @@
-import { selectEditorStatus } from '@modules/editor/store';
+import { EDITOR_STATUS, selectEditorStatus } from '@modules/editor/store';
+import useDebouncedValue from '@shared/hooks/use-debounced-value';
 import { useAppSelector } from '@shared/store';
 import { CircleCheckBigIcon, CircleDashedIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 const ICON_SIZE = 14;
+const SAVING_STATUS_DEBOUNCE_MS = 250;
 
 function CardStatus(): ReactNode {
 	const status = useAppSelector(selectEditorStatus);
+	const displayStatus = useDebouncedValue(status, SAVING_STATUS_DEBOUNCE_MS);
 
-	switch (status) {
-		case 'DRAFT': {
+	switch (displayStatus) {
+		case EDITOR_STATUS.DRAFT: {
 			return (
 				<CircleDashedIcon
 					className='text-warning-500 opacity-50'
@@ -17,7 +20,7 @@ function CardStatus(): ReactNode {
 				/>
 			);
 		}
-		case 'SAVED': {
+		case EDITOR_STATUS.SAVED: {
 			return (
 				<CircleCheckBigIcon
 					className='text-success-500'
@@ -25,7 +28,7 @@ function CardStatus(): ReactNode {
 				/>
 			);
 		}
-		case 'SAVING': {
+		case EDITOR_STATUS.SAVING: {
 			return (
 				<CircleDashedIcon
 					className='text-warning-500 opacity-50 animate-spin'
