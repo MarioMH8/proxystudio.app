@@ -1,4 +1,4 @@
-import { editorApi, editorSlice } from '@modules/editor/store';
+import { editorApi, editorListenerMiddleware, editorSlice } from '@modules/editor/store';
 import { settingsApi } from '@modules/settings/store';
 import type { Middleware, Reducer } from '@reduxjs/toolkit';
 import { configureStore } from '@reduxjs/toolkit';
@@ -13,7 +13,8 @@ function createAppStore(options: StoreOptions = {}) {
 	const { middlewares = [], reducers = {} } = options;
 
 	return configureStore({
-		middleware: getDefaultMiddleware => getDefaultMiddleware().concat(middlewares),
+		middleware: getDefaultMiddleware =>
+			getDefaultMiddleware().prepend(editorListenerMiddleware.middleware).concat(middlewares),
 		reducer: reducers,
 	});
 }
