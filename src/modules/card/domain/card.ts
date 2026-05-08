@@ -76,7 +76,6 @@ const Card = {
 			},
 		};
 	},
-	key: 'card',
 	ungroupLayer: (card: Card, groupId: string): Card => {
 		const group = card.layers.find(
 			(layer): layer is Extract<Layer, { type: 'group' }> => layer.type === 'group' && layer.id === groupId

@@ -10,10 +10,6 @@ export class FindLastCardUseCase {
 		private readonly repository: CardRepository
 	) {}
 
-	get entityTools(): typeof Card {
-		return Card;
-	}
-
 	async execute(): Promise<Card | undefined> {
 		const partial = await this.repository.search(
 			CardCriteria.default({

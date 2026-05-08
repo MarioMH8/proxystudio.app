@@ -14,10 +14,6 @@ export class FindCardUseCase {
 		private readonly repository: CardRepository
 	) {}
 
-	get entityTools(): typeof Card {
-		return Card;
-	}
-
 	async execute({ id }: FindCardUseCaseParameters): Promise<Card | undefined> {
 		const partial = await this.repository.find(id);
 		if (!partial) {
@@ -25,9 +21,5 @@ export class FindCardUseCase {
 		}
 
 		return Card.default(partial);
-	}
-
-	generateEntityIdFromParameters({ id }: FindCardUseCaseParameters): string {
-		return `find-${Card.key}-${id}`;
 	}
 }
