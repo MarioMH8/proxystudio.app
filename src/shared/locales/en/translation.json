@@ -18,6 +18,11 @@
 		"empty": "The gallery is still empty."
 	},
 	"layers": {
+		"clearSelection": "Clear selection",
+		"collapseGroup": "Collapse {{name}} group",
+		"empty": "There are no layers yet. Add one to get started.",
+		"expandGroup": "Expand {{name}} group",
+		"group": "Group",
 		"options": {
 			"art": "Art",
 			"bottom-info": "Bottom info",
@@ -30,7 +35,8 @@
 		},
 		"open": "Open layer groups",
 		"title": "Layers",
-		"add": "Add layers"
+		"add": "Add layers",
+		"ungroup": "Ungroup"
 	},
 	"editor": {
 		"newCardConfirm": {

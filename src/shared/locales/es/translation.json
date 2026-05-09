@@ -18,6 +18,11 @@
 		"empty": "La galería aún está vacía."
 	},
 	"layers": {
+		"clearSelection": "Limpiar selección",
+		"collapseGroup": "Cerrar grupo {{name}}",
+		"empty": "Aún no hay capas. Añade una para empezar.",
+		"expandGroup": "Abrir grupo {{name}}",
+		"group": "Agrupar",
 		"options": {
 			"art": "Arte",
 			"bottom-info": "Info inferior",
@@ -30,7 +35,8 @@
 		},
 		"open": "Abrir grupos de capas",
 		"title": "Capas",
-		"add": "Añadir capas"
+		"add": "Añadir capas",
+		"ungroup": "Desagrupar"
 	},
 	"editor": {
 		"newCardConfirm": {
