@@ -1,19 +1,18 @@
 import border from '@components/border';
-import Button from '@components/button';
 import type { FlexBoxProperties } from '@components/flex-box';
 import FlexBox from '@components/flex-box';
 import Heading from '@components/heading';
 import Span from '@components/span';
+import { selectCard, selectIsCardLoading } from '@modules/editor/store';
 import type { VariantProperties } from '@shared/cva';
 import { cn } from '@shared/cva';
 import { useAppSelector } from '@shared/store';
 import { cva } from 'cva';
-import { FolderIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { selectCard, selectIsCardLoading } from '../store';
 import AddLayerDropdown from './add-layer-dropdown';
+import GroupLayersButton from './group-layers-button';
 
 const variants = cva({
 	base: 'px-3 py-1',
@@ -55,16 +54,7 @@ function LayerToolbar({ className, ...properties }: LayerPanelProperties): React
 			<FlexBox
 				className='gap-2'
 				items='center'>
-				<Button
-					aria-label={t('layers.open')}
-					dimension='xs'
-					icon
-					transparent>
-					<FolderIcon
-						aria-hidden='true'
-						size={14}
-					/>
-				</Button>
+				<GroupLayersButton />
 				<AddLayerDropdown />
 			</FlexBox>
 		</FlexBox>
