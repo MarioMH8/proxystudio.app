@@ -4,6 +4,7 @@ import FlexBox from '@components/flex-box';
 import type { ReactNode } from 'react';
 import { Panel } from 'react-resizable-panels';
 
+import LayerList from './layer-list';
 import LayerToolbar from './layer-toolbar';
 
 type LayerPanelProperties = Omit<AsideProperties, 'asChild' | 'side'>;
@@ -16,7 +17,7 @@ function LayersPanel(properties: LayerPanelProperties): ReactNode {
 			{...properties}>
 			<FlexBox
 				asChild
-				className='gap-2'
+				className='h-full'
 				direction='column'
 				items='stretch'>
 				<Panel
@@ -25,6 +26,7 @@ function LayersPanel(properties: LayerPanelProperties): ReactNode {
 					maxSize='35%'
 					minSize='15%'>
 					<LayerToolbar />
+					<LayerList />
 				</Panel>
 			</FlexBox>
 		</Aside>
