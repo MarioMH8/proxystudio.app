@@ -2,11 +2,8 @@ import border from '@components/border';
 import type { FlexBoxProperties } from '@components/flex-box';
 import FlexBox from '@components/flex-box';
 import Heading from '@components/heading';
-import Span from '@components/span';
-import { selectCard, selectIsCardLoading } from '@modules/editor/store';
 import type { VariantProperties } from '@shared/cva';
 import { cn } from '@shared/cva';
-import { useAppSelector } from '@shared/store';
 import { cva } from 'cva';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,8 +22,6 @@ type LayerPanelProperties = Omit<FlexBoxProperties, 'asChild' | 'side'> & Varian
 
 function LayerToolbar({ className, ...properties }: LayerPanelProperties): ReactNode {
 	const { t } = useTranslation();
-	const card = useAppSelector(selectCard);
-	const isCardLoading = useAppSelector(selectIsCardLoading);
 
 	return (
 		<FlexBox
@@ -41,15 +36,6 @@ function LayerToolbar({ className, ...properties }: LayerPanelProperties): React
 				variant='muted'
 				weight='medium'>
 				{t('layers.title')}
-				{isCardLoading ? undefined : (
-					<Span
-						className='ml-3'
-						dimension='sm'
-						variant='muted'
-						weight='extralight'>
-						({card.layers.length})
-					</Span>
-				)}
 			</Heading>
 			<FlexBox
 				className='gap-2'
