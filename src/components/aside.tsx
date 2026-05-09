@@ -8,13 +8,13 @@ import { Slot } from 'radix-ui';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 const variants = cva({
-	base: [background({ variant: 'surfaces' }), border({ side: 'right' })],
+	base: [background({ variant: 'surfaces' })],
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {
 		side: {
-			left: border({ side: 'right' }),
-			right: border({ side: 'left' }),
+			left: '',
+			right: '',
 		},
 	},
 });
@@ -26,7 +26,7 @@ function LayersPanel({ asChild, className, side, ...properties }: AsidePropertie
 
 	return (
 		<Comp
-			className={cn(variants({ className, side }), className)}
+			className={cn(variants({ className, side }), border({ side }), className)}
 			{...properties}
 		/>
 	);
