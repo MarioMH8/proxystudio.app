@@ -1,5 +1,6 @@
 import background from '@components/background';
 import Button from '@components/button';
+import EditableSpan from '@components/editable-span';
 import FlexBox from '@components/flex-box';
 import focus from '@components/focus';
 import font from '@components/font';
@@ -50,6 +51,7 @@ interface LayerListItemProperties {
 	isSelected: boolean;
 	layer: Layer;
 	onClick: MouseEventHandler<HTMLButtonElement>;
+	onRename: (name: string) => void;
 	onToggleExpanded?: (() => void) | undefined;
 }
 
@@ -59,10 +61,12 @@ function LayerListItem({
 	isSelected,
 	layer,
 	onClick,
+	onRename,
 	onToggleExpanded,
 }: LayerListItemProperties): ReactNode {
 	const { t } = useTranslation();
 	const isGroup = layer.type === 'group';
+	const name = layer.name ?? t(`layers.options.${layer.type}`);
 
 	function handleExpandIndicatorClick(event: MouseEvent<HTMLSpanElement>): void {
 		event.preventDefault();
@@ -103,7 +107,7 @@ function LayerListItem({
 					className='shrink-0 cursor-pointer'
 					onClick={handleExpandIndicatorClick}
 					title={t(isExpanded ? 'layers.collapseGroup' : 'layers.expandGroup', {
-						name: t(`layers.options.${layer.type}`),
+						name,
 					})}>
 					{isExpanded ? (
 						<ChevronDownIcon
@@ -135,11 +139,18 @@ function LayerListItem({
 				className='min-w-0'
 				direction='column'
 				items='start'>
-				<Span className='truncate'>{t(`layers.options.${layer.type}`)}</Span>
+				<EditableSpan
+					ariaLabel={t('layers.rename')}
+					className='truncate'
+					inputClassName='truncate'
+					onChange={onRename}
+					placeholder={name}
+					value={name}
+				/>
 				<Span
 					className={metaVariants()}
 					weight='light'>
-					{layer.id.slice(0, 8)}
+					{`${t(`layers.options.${layer.type}`)} · ${layer.id.slice(0, 8)}`}
 					{isGroup ? ` · ${layer.children.length.toFixed(0)}` : ''}
 				</Span>
 			</FlexBox>

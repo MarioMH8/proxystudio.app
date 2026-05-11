@@ -19,9 +19,9 @@
 	},
 	"layers": {
 		"clearSelection": "Limpiar selección",
-		"collapseGroup": "Cerrar grupo {{name}}",
+		"collapseGroup": "Cerrar grupo '{{name}}'",
 		"empty": "Aún no hay capas. Añade una para empezar.",
-		"expandGroup": "Abrir grupo {{name}}",
+		"expandGroup": "Abrir grupo '{{name}}'",
 		"group": "Agrupar",
 		"options": {
 			"art": "Arte",
@@ -34,6 +34,7 @@
 			"watermark": "Marca de agua"
 		},
 		"open": "Abrir grupos de capas",
+		"rename": "Renombrar capa",
 		"title": "Capas",
 		"add": "Añadir capas",
 		"ungroup": "Desagrupar"

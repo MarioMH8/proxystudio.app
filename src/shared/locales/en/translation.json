@@ -19,9 +19,9 @@
 	},
 	"layers": {
 		"clearSelection": "Clear selection",
-		"collapseGroup": "Collapse {{name}} group",
+		"collapseGroup": "Collapse group '{{name}}'",
 		"empty": "There are no layers yet. Add one to get started.",
-		"expandGroup": "Expand {{name}} group",
+		"expandGroup": "Expand group '{{name}}'",
 		"group": "Group",
 		"options": {
 			"art": "Art",
@@ -34,6 +34,7 @@
 			"watermark": "Watermark"
 		},
 		"open": "Open layer groups",
+		"rename": "Rename layer",
 		"title": "Layers",
 		"add": "Add layers",
 		"ungroup": "Ungroup"

@@ -1,6 +1,7 @@
 import FlexBox from '@components/flex-box';
 import Span from '@components/span';
 import type { Layer } from '@modules/card/domain';
+import { Card } from '@modules/card/domain';
 import { editorSlice, selectCard, selectExpandedGroupIds, selectSelectedLayerIds } from '@modules/editor/store';
 import { useAppDispatch, useAppSelector } from '@shared/store';
 import type { MouseEvent, ReactNode } from 'react';
@@ -52,6 +53,10 @@ function LayerList(): ReactNode {
 		dispatch(editorSlice.actions.layerPanelGroupExpandToggle(layerId));
 	}
 
+	function handleLayerRename(layerId: string, name: string): void {
+		dispatch(editorSlice.actions.setCard(Card.renameLayer(card, layerId, name)));
+	}
+
 	const layers = buildLayerTree(card.layers);
 
 	if (layers.length === 0) {
@@ -81,9 +86,8 @@ function LayerList(): ReactNode {
 					isSelected={selectedLayerIds.includes(layer.id)}
 					key={layer.id}
 					layer={layer}
-					onClick={event => {
-						handleLayerClick(event, layer.id);
-					}}
+					onClick={event => handleLayerClick(event, layer.id)}
+					onRename={name => handleLayerRename(layer.id, name)}
 					onToggleExpanded={layer.type === 'group' ? () => handleLayerExpandedToggle(layer.id) : undefined}
 				/>
 			))}
