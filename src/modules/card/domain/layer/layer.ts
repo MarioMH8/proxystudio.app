@@ -88,6 +88,25 @@ const Layer = {
 
 		return { ...layer, name: normalizedName };
 	},
+	renameById: (layers: Layer[], layerId: string, name: string): Layer[] => {
+		return layers.map(layer => {
+			if (layer.id === layerId) {
+				return Layer.rename(layer, name);
+			}
+
+			if (layer.type !== 'group') {
+				return layer;
+			}
+
+			const children = layer.children.map(child => {
+				return child.id === layerId ? Layer.rename(child, name) : child;
+			});
+
+			const hasChanged = children.some((child, index) => child !== layer.children[index]);
+
+			return hasChanged ? { ...layer, children } : layer;
+		});
+	},
 };
 
 export type { EffectiveLayer };

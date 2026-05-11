@@ -86,6 +86,23 @@ const Card = {
 			},
 		};
 	},
+	renameLayer: (card: Card, layerId: string, name: string): Card => {
+		const layers = Layer.renameById(card.layers, layerId, name);
+		const hasChanged = layers.some((layer, index) => layer !== card.layers[index]);
+
+		if (!hasChanged) {
+			return card;
+		}
+
+		return {
+			...card,
+			layers,
+			metadata: {
+				...card.metadata,
+				updatedAt: Date.now(),
+			},
+		};
+	},
 	ungroupLayer: (card: Card, groupId: string): Card => {
 		const group = card.layers.find(
 			(layer): layer is Extract<Layer, { type: 'group' }> => layer.type === 'group' && layer.id === groupId
