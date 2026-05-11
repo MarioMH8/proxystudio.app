@@ -64,6 +64,30 @@ const Layer = {
 			layer.type === 'watermark'
 		);
 	},
+	normalizeName: (name: string): string | undefined => {
+		const normalizedName = name.trim();
+
+		return normalizedName.length > 0 ? normalizedName : undefined;
+	},
+	rename: <T extends EffectiveLayer | Layer>(layer: T, name: string): T => {
+		const normalizedName = Layer.normalizeName(name);
+
+		if (normalizedName === undefined) {
+			if (layer.name === undefined) {
+				return layer;
+			}
+
+			const { name: _name, ...nextLayer } = layer;
+
+			return nextLayer as T;
+		}
+
+		if (layer.name === normalizedName) {
+			return layer;
+		}
+
+		return { ...layer, name: normalizedName };
+	},
 };
 
 export type { EffectiveLayer };
