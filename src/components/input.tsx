@@ -1,5 +1,6 @@
 import background from '@components/background';
 import border from '@components/border';
+import type { FocusVariantsProperties } from '@components/focus';
 import focus from '@components/focus';
 import font from '@components/font';
 import rounded from '@components/rounded';
@@ -63,19 +64,23 @@ const variants = cva({
 
 type InputVariantProperties = VariantProperties<typeof variants>;
 
-type InputProperties = PropertiesWithAsChild<ComponentPropsWithRef<'input'> & InputVariantProperties>;
+type InputProperties = PropertiesWithAsChild<ComponentPropsWithRef<'input'> & InputVariantProperties> & {
+	strength?: FocusVariantsProperties['strength'];
+};
 
 function className(
 	className?: string,
 	dimension: InputVariantProperties['dimension'] = 'base',
 	transparent = false,
-	inputType: InputVariantProperties['inputType'] = 'default'
+	inputType: InputVariantProperties['inputType'] = 'default',
+	strength: FocusVariantsProperties['strength'] = 'default'
 ): string {
 	return cn(
 		font({ dimension, variant: transparent ? 'muted' : 'default' }),
 		focus({
 			dimension,
 			noBorder: true,
+			strength,
 			variant: 'default',
 		}),
 		variants({ className, dimension, inputType, transparent }),
@@ -83,13 +88,20 @@ function className(
 	);
 }
 
-function Input({ asChild = false, className: cls, dimension, transparent, ...properties }: InputProperties): ReactNode {
+function Input({
+	asChild = false,
+	className: cls,
+	dimension,
+	strength,
+	transparent,
+	...properties
+}: InputProperties): ReactNode {
 	const Comp = asChild ? Slot.Slot : 'input';
 	const inputType = properties.type === 'range' ? 'range' : 'default';
 
 	return (
 		<Comp
-			className={className(cls, dimension, transparent, inputType)}
+			className={className(cls, dimension, transparent, inputType, strength)}
 			{...properties}
 		/>
 	);
