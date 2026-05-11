@@ -2,6 +2,7 @@ import type { DeepPartial } from '@shared/types';
 
 interface LayerBase {
 	id: string;
+	name?: string | undefined;
 }
 
 const LayerBase = {
