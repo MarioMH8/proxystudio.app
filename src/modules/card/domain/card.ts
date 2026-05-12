@@ -1,8 +1,6 @@
 import type { DeepPartial } from '@shared/types';
 
-import type { EffectiveLayer } from './layer/layer';
 import { Layer } from './layer/layer';
-import { LayerGroup } from './layer/layer.group';
 
 interface CardMetadata {
 	createdAt: number;
@@ -54,30 +52,7 @@ const Card = {
 		};
 	},
 	deleteLayers: (card: Card, layerIds: string[]): Card => {
-		const deletedLayerIds = new Set(layerIds);
-		const layers = card.layers.flatMap<Layer>(layer => {
-			if (deletedLayerIds.has(layer.id)) {
-				return [];
-			}
-
-			if (layer.type !== 'group') {
-				return [layer];
-			}
-
-			const children = layer.children.filter(child => {
-				return !deletedLayerIds.has(child.id);
-			});
-
-			if (children.length !== layer.children.length) {
-				if (children.length === 0) {
-					return [];
-				}
-
-				return [{ ...layer, children }];
-			}
-
-			return [layer];
-		});
+		const layers = Layer.deleteByIds(card.layers, new Set(layerIds));
 
 		const hasChanged =
 			layers.length !== card.layers.length || layers.some((layer, index) => layer !== card.layers[index]);
@@ -96,32 +71,15 @@ const Card = {
 		};
 	},
 	groupLayers: (card: Card, layerIds: string[]): Card => {
-		const selectedLayers = new Set(layerIds);
-		const groupableLayers = card.layers.filter(
-			(layer): layer is EffectiveLayer => selectedLayers.has(layer.id) && layer.type !== 'group'
-		);
+		const result = Layer.group(card.layers, layerIds);
 
-		if (groupableLayers.length < 2) {
+		if (!result) {
 			return card;
 		}
 
-		let hasCreatedGroup = false;
-
 		return {
 			...card,
-			layers: card.layers.flatMap(layer => {
-				if (!selectedLayers.has(layer.id) || layer.type === 'group') {
-					return [layer];
-				}
-
-				if (hasCreatedGroup) {
-					return [];
-				}
-
-				hasCreatedGroup = true;
-
-				return [LayerGroup.default(undefined, [...groupableLayers])];
-			}),
+			layers: result.layers,
 			metadata: {
 				...card.metadata,
 				updatedAt: Date.now(),
@@ -146,21 +104,13 @@ const Card = {
 		};
 	},
 	ungroupLayer: (card: Card, groupId: string): Card => {
-		const group = card.layers.find(
-			(layer): layer is Extract<Layer, { type: 'group' }> => layer.type === 'group' && layer.id === groupId
-		);
+		const layers = Layer.ungroupById(card.layers, groupId);
+		const hasChanged =
+			layers.length !== card.layers.length || layers.some((layer, index) => layer !== card.layers[index]);
 
-		if (!group) {
+		if (!hasChanged) {
 			return card;
 		}
-
-		const layers = card.layers.flatMap(layer => {
-			if (layer.type !== 'group' || layer.id !== groupId) {
-				return [layer];
-			}
-
-			return layer.children.map(child => Layer.default(child));
-		});
 
 		return {
 			...card,

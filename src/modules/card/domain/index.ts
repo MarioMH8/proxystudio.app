@@ -1,7 +1,7 @@
 export { Card } from './card';
 export { CardCriteria } from './card.criteria';
 export { CardRepository } from './card.repository';
-export type { Layer } from './layer/layer';
+export { Layer } from './layer/layer';
 export { LayerArt } from './layer/layer.art';
 export { LayerBottomInfo } from './layer/layer.bottom-info';
 export { LayerFrame } from './layer/layer.frame';

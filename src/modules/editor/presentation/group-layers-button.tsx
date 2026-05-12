@@ -1,5 +1,5 @@
 import Button from '@components/button';
-import { Card } from '@modules/card/domain';
+import { Card, Layer } from '@modules/card/domain';
 import { editorSlice, selectCard, selectExpandedGroupIds, selectSelectedLayerIds } from '@modules/editor/store';
 import { useAppDispatch, useAppSelector } from '@shared/store';
 import { FolderIcon } from 'lucide-react';
@@ -12,19 +12,17 @@ function GroupLayersButton(): ReactNode {
 	const card = useAppSelector(selectCard);
 	const expandedGroupIds = useAppSelector(selectExpandedGroupIds);
 	const selectedLayerIds = useAppSelector(selectSelectedLayerIds);
-	const canGroupSelection = selectedLayerIds.length > 1;
+	const canGroupSelection = Layer.canGroupSelection(card.layers, selectedLayerIds);
 
 	function handleGroupSelection(): void {
 		if (!canGroupSelection) {
 			return;
 		}
 
+		const previousGroupIds = new Set(Layer.findGroups(card.layers).map(layer => layer.id));
 		const nextCard = Card.groupLayers(card, selectedLayerIds);
-		const nextGroup = nextCard.layers.find(layer => {
-			return (
-				layer.type === 'group' &&
-				selectedLayerIds.every(layerId => layer.children.some(child => child.id === layerId))
-			);
+		const nextGroup = Layer.findGroups(nextCard.layers).find(layer => {
+			return !previousGroupIds.has(layer.id);
 		});
 
 		dispatch(editorSlice.actions.setCard(nextCard));
