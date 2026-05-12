@@ -1,4 +1,3 @@
-import font from '@components/font';
 import type { VariantProperties } from '@shared/cva';
 import { cn } from '@shared/cva';
 import { ContextMenu as RadixContextMenu } from 'radix-ui';
@@ -8,10 +7,14 @@ import { variants } from './context-menu-item';
 
 type ContextMenuSubTriggerProps = RadixContextMenu.ContextMenuSubTriggerProps & VariantProperties<typeof variants>;
 
-function ContextMenuSubTrigger({ className, ...properties }: ContextMenuSubTriggerProps): ReactNode {
+function ContextMenuSubTrigger({
+	className,
+	variant = 'default',
+	...properties
+}: ContextMenuSubTriggerProps): ReactNode {
 	return (
 		<RadixContextMenu.SubTrigger
-			className={cn(font({ dimension: 'sm', variant: 'default' }), variants({ className }), className)}
+			className={cn(variants({ className, variant }), className)}
 			{...properties}
 		/>
 	);

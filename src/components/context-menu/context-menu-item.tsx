@@ -13,26 +13,35 @@ const variants = cva({
 		'group relative',
 		'h-8',
 		'px-4 py-2',
-		font({ dimension: 'sm', variant: 'default' }),
-		focus({ noBorder: true, variant: 'primary' }),
-		flexBoxClassName({}),
-		rounded({ dimension: 'sm' }),
 		'select-none',
-		'data-disabled:pointer-events-none data-disabled:text-foreground-600 dark:data-disabled:text-foreground-400',
-		hover({ strength: 'default', variant: 'default' }),
-		'data-highlighted:bg-foreground-400/40 dark:data-highlighted:bg-foreground-700',
+		'data-disabled:pointer-events-none data-disabled:opacity-50',
 	],
 	compoundVariants: [],
-	defaultVariants: {},
-	variants: {},
+	defaultVariants: {
+		variant: 'default',
+	},
+	variants: {
+		variant: {
+			danger: '',
+			default: '',
+		},
+	},
 });
 
 type ContextMenuItemProps = RadixContextMenu.ContextMenuItemProps & VariantProperties<typeof variants>;
 
-function ContextMenuItem({ className, ...properties }: ContextMenuItemProps): ReactNode {
+function ContextMenuItem({ className, variant = 'default', ...properties }: ContextMenuItemProps): ReactNode {
 	return (
 		<RadixContextMenu.Item
-			className={cn(variants({ className }), className)}
+			className={cn(
+				font({ dimension: 'sm', variant }),
+				hover({ strength: 'soft', variant }),
+				focus({ noBorder: true, variant }),
+				flexBoxClassName({}),
+				rounded({ dimension: 'sm' }),
+				variants({ className, variant }),
+				className
+			)}
 			{...properties}
 		/>
 	);

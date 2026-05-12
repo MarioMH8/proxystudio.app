@@ -13,11 +13,8 @@ const variants = cva({
 		'group relative',
 		'h-8',
 		'px-4 py-2',
-		rounded({ dimension: 'sm' }),
 		'select-none',
-		'data-disabled:pointer-events-none data-disabled:text-foreground-600 dark:data-disabled:text-foreground-400',
-		cn('text-foreground-950 dark:text-foreground-50', hover({ strength: 'default', variant: 'default' })),
-		'data-highlighted:bg-foreground-400/40 dark:data-highlighted:bg-foreground-700',
+		'data-disabled:pointer-events-none data-disabled:opacity-50',
 	],
 	compoundVariants: [],
 	defaultVariants: {},
@@ -31,8 +28,10 @@ function DropdownMenuItem({ className, ...properties }: DropdownMenuItemProps): 
 		<RadixDropdownMenu.Item
 			className={cn(
 				font({ dimension: 'sm', variant: 'default' }),
-				focus({ noBorder: true, variant: 'primary' }),
+				hover({ strength: 'soft', variant: 'default' }),
+				focus({ noBorder: true, strength: 'soft', variant: 'default' }),
 				flexBoxClassName({}),
+				rounded({ dimension: 'sm' }),
 				variants({ className }),
 				className
 			)}
