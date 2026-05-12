@@ -1,5 +1,6 @@
 import type { DeepPartial } from '@shared/types';
 
+import type { LayerMoveTarget } from './layer/layer';
 import { Layer } from './layer/layer';
 
 interface CardMetadata {
@@ -89,6 +90,24 @@ const Card = {
 		return {
 			...card,
 			layers: result.layers,
+			metadata: {
+				...card.metadata,
+				updatedAt: Date.now(),
+			},
+		};
+	},
+	moveLayer: (card: Card, movedLayerId: string, target: LayerMoveTarget): Card => {
+		const layers = Layer.move(card.layers, movedLayerId, target);
+		const hasChanged =
+			layers.length !== card.layers.length || layers.some((layer, index) => layer !== card.layers[index]);
+
+		if (!hasChanged) {
+			return card;
+		}
+
+		return {
+			...card,
+			layers,
 			metadata: {
 				...card.metadata,
 				updatedAt: Date.now(),
