@@ -37,6 +37,7 @@ const variants = cva({
 			true: 'uppercase',
 		},
 		variant: {
+			danger: 'text-error-600 dark:text-error-400',
 			default: 'text-foreground-800 dark:text-foreground-200',
 			middle: 'text-foreground-500',
 			muted: 'text-foreground-600 dark:text-foreground-400',
