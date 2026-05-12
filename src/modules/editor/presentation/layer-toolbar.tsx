@@ -9,8 +9,6 @@ import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AddLayerDropdown from './add-layer-dropdown';
-import DeleteLayersButton from './delete-layers-button';
-import GroupLayersButton from './group-layers-button';
 
 const variants = cva({
 	base: 'px-3 py-1',
@@ -41,8 +39,6 @@ function LayerToolbar({ className, ...properties }: LayerPanelProperties): React
 			<FlexBox
 				className='gap-2'
 				items='center'>
-				<DeleteLayersButton />
-				<GroupLayersButton />
 				<AddLayerDropdown />
 			</FlexBox>
 		</FlexBox>

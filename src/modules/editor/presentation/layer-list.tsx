@@ -1,7 +1,6 @@
 import FlexBox from '@components/flex-box';
 import Span from '@components/span';
-import type { Layer } from '@modules/card/domain';
-import { Card } from '@modules/card/domain';
+import { Card, Layer } from '@modules/card/domain';
 import { editorSlice, selectCard, selectExpandedGroupIds, selectSelectedLayerIds } from '@modules/editor/store';
 import { useAppDispatch, useAppSelector } from '@shared/store';
 import type { MouseEvent, ReactNode } from 'react';
@@ -20,6 +19,9 @@ function LayerList(): ReactNode {
 	const card = useAppSelector(selectCard);
 	const expandedGroupIds = useAppSelector(selectExpandedGroupIds);
 	const selectedLayerIds = useAppSelector(selectSelectedLayerIds);
+
+	const canDeleteSelection = selectedLayerIds.length > 0;
+	const canGroupSelection = Layer.canGroupSelection(card.layers, selectedLayerIds);
 
 	function buildLayerTree(layers: Layer[], depth = 0): LayerTreeNode[] {
 		return [...layers].toReversed().flatMap(layer => {
@@ -57,6 +59,44 @@ function LayerList(): ReactNode {
 		dispatch(editorSlice.actions.setCard(Card.renameLayer(card, layerId, name)));
 	}
 
+	function handleLayerContextMenu(layerId: string): void {
+		if (selectedLayerIds.includes(layerId)) {
+			return;
+		}
+
+		dispatch(editorSlice.actions.layerPanelSelectionSet([layerId]));
+	}
+
+	function handleDeleteSelection(): void {
+		if (!canDeleteSelection) {
+			return;
+		}
+
+		dispatch(editorSlice.actions.setCard(Card.deleteLayers(card, selectedLayerIds)));
+		dispatch(editorSlice.actions.layerPanelSelectionClear());
+	}
+
+	function handleGroupSelection(): void {
+		if (!canGroupSelection) {
+			return;
+		}
+
+		const previousGroupIds = new Set(Layer.findGroups(card.layers).map(layer => layer.id));
+		const nextCard = Card.groupLayers(card, selectedLayerIds);
+		const nextGroup = Layer.findGroups(nextCard.layers).find(layer => {
+			return !previousGroupIds.has(layer.id);
+		});
+
+		dispatch(editorSlice.actions.setCard(nextCard));
+
+		if (nextGroup?.type === 'group') {
+			dispatch(
+				editorSlice.actions.layerPanelExpandedGroupsSet([...new Set([nextGroup.id, ...expandedGroupIds])])
+			);
+			dispatch(editorSlice.actions.layerPanelSelectionSet([nextGroup.id]));
+		}
+	}
+
 	const layers = buildLayerTree(card.layers);
 
 	if (layers.length === 0) {
@@ -81,12 +121,17 @@ function LayerList(): ReactNode {
 			items='stretch'>
 			{layers.map(({ depth, layer }) => (
 				<LayerListItem
+					canDeleteSelection={canDeleteSelection}
+					canGroupSelection={canGroupSelection}
 					depth={depth}
 					isExpanded={expandedGroupIds.includes(layer.id)}
 					isSelected={selectedLayerIds.includes(layer.id)}
 					key={layer.id}
 					layer={layer}
 					onClick={event => handleLayerClick(event, layer.id)}
+					onContextMenuSelection={() => handleLayerContextMenu(layer.id)}
+					onDeleteSelection={handleDeleteSelection}
+					onGroupSelection={handleGroupSelection}
 					onRename={name => handleLayerRename(layer.id, name)}
 					onToggleExpanded={layer.type === 'group' ? () => handleLayerExpandedToggle(layer.id) : undefined}
 				/>
