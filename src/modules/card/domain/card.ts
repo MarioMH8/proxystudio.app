@@ -53,6 +53,48 @@ const Card = {
 			...partial,
 		};
 	},
+	deleteLayers: (card: Card, layerIds: string[]): Card => {
+		const deletedLayerIds = new Set(layerIds);
+		const layers = card.layers.flatMap<Layer>(layer => {
+			if (deletedLayerIds.has(layer.id)) {
+				return [];
+			}
+
+			if (layer.type !== 'group') {
+				return [layer];
+			}
+
+			const children = layer.children.filter(child => {
+				return !deletedLayerIds.has(child.id);
+			});
+
+			if (children.length !== layer.children.length) {
+				if (children.length === 0) {
+					return [];
+				}
+
+				return [{ ...layer, children }];
+			}
+
+			return [layer];
+		});
+
+		const hasChanged =
+			layers.length !== card.layers.length || layers.some((layer, index) => layer !== card.layers[index]);
+
+		if (!hasChanged) {
+			return card;
+		}
+
+		return {
+			...card,
+			layers,
+			metadata: {
+				...card.metadata,
+				updatedAt: Date.now(),
+			},
+		};
+	},
 	groupLayers: (card: Card, layerIds: string[]): Card => {
 		const selectedLayers = new Set(layerIds);
 		const groupableLayers = card.layers.filter(

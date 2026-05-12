@@ -22,6 +22,7 @@
 		"collapseGroup": "Collapse group '{{name}}'",
 		"empty": "There are no layers yet. Add one to get started.",
 		"expandGroup": "Expand group '{{name}}'",
+		"delete": "Delete layer",
 		"group": "Group",
 		"options": {
 			"art": "Art",

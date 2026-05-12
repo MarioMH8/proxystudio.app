@@ -22,6 +22,7 @@
 		"collapseGroup": "Cerrar grupo '{{name}}'",
 		"empty": "Aún no hay capas. Añade una para empezar.",
 		"expandGroup": "Abrir grupo '{{name}}'",
+		"delete": "Eliminar capa",
 		"group": "Agrupar",
 		"options": {
 			"art": "Arte",
