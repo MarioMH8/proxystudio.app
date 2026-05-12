@@ -31,12 +31,9 @@ function NavigationMenu({ asChild = false, children, className, ...properties }:
 	const slots = childrenArray.filter(
 		child => child.type === NavigationMenuSlot
 	) as ReactElement<NavigationMenuSlotProperties>[];
-
-	const renderSlot = (position: NavigationMenuSlotProperties['position']) => {
-		const slot = slots.find(s => s.props.position === position);
-
-		return slot?.props.children;
-	};
+	const leftSlot = slots.find(slot => slot.props.position === 'left')?.props.children;
+	const centerSlot = slots.find(slot => slot.props.position === 'center')?.props.children;
+	const rightSlot = slots.find(slot => slot.props.position === 'right')?.props.children;
 
 	return (
 		<FlexBox
@@ -56,18 +53,18 @@ function NavigationMenu({ asChild = false, children, className, ...properties }:
 							viewTransition
 						/>
 					</Imagotipo>
-					{renderSlot('left')}
+					{leftSlot}
 				</FlexBox>
 				<FlexBox
 					className='gap-4 h-full'
 					items='center'>
-					{renderSlot('center')}
+					{centerSlot}
 				</FlexBox>
 				<FlexBox
 					className='gap-4 h-full  flex-1'
 					items='center'
 					justify='end'>
-					{renderSlot('right')}
+					{rightSlot}
 				</FlexBox>
 			</Comp>
 		</FlexBox>

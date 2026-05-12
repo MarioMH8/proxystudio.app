@@ -23,15 +23,9 @@ function EditableSpan({
 	value,
 	...properties
 }: EditableSpanProperties): ReactNode {
-	const [draftValue, setDraftValue] = useState(value);
+	const [draftValue, setDraftValue] = useState('');
 	const [isEditing, setIsEditing] = useState(false);
 	const inputReference = useRef<HTMLInputElement>(null);
-
-	useEffect(() => {
-		if (!isEditing) {
-			setDraftValue(value);
-		}
-	}, [isEditing, value]);
 
 	useEffect(() => {
 		if (!isEditing) {

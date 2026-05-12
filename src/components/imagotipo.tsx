@@ -17,20 +17,20 @@ const variants = cva({
 	variants: {},
 });
 
+const IMAGOTIPO_CONTENT = (
+	<Fragment>
+		<Isotipo
+			alt=''
+			aria-hidden='true'
+		/>
+		<Logotipo />
+	</Fragment>
+);
+
 type ImagotipoProperties = PropertiesWithAsChild<ComponentPropsWithRef<'div'> & VariantProperties<typeof variants>>;
 
 function Imagotipo({ asChild = false, children, className, ...properties }: ImagotipoProperties): ReactNode {
 	const Comp = asChild ? Slot.Slot : 'div';
-
-	const content = (
-		<Fragment>
-			<Isotipo
-				alt=''
-				aria-hidden='true'
-			/>
-			<Logotipo />
-		</Fragment>
-	);
 
 	if (asChild && isValidElement(children)) {
 		return (
@@ -42,7 +42,7 @@ function Imagotipo({ asChild = false, children, className, ...properties }: Imag
 					className
 				)}
 				{...properties}>
-				{cloneElement(children, {}, content)}
+				{cloneElement(children, {}, IMAGOTIPO_CONTENT)}
 			</Comp>
 		);
 	}
@@ -56,7 +56,7 @@ function Imagotipo({ asChild = false, children, className, ...properties }: Imag
 				className
 			)}
 			{...properties}>
-			{content}
+			{IMAGOTIPO_CONTENT}
 		</Comp>
 	);
 }

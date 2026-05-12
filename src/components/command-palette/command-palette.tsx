@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { CommandPaletteProvider } from './command-palette-context';
 
@@ -11,7 +11,8 @@ interface CommandPaletteProperties {
 }
 
 function CommandPalette({ children, defaultOpen = false, onOpenChange, open }: CommandPaletteProperties): ReactNode {
-	const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
+	const defaultOpenReference = useRef(defaultOpen);
+	const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpenReference.current);
 	const isControlled = open !== undefined;
 	const currentOpen = isControlled ? open : uncontrolledOpen;
 

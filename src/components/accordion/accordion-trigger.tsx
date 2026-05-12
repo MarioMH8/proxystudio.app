@@ -8,8 +8,7 @@ import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { ChevronDown } from 'lucide-react';
 import { Accordion as RadixAccordion } from 'radix-ui';
-import type { ComponentRef } from 'react';
-import { forwardRef } from 'react';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 const variants = cva({
 	base: [
@@ -28,23 +27,23 @@ const variants = cva({
 
 type AccordionTriggerProps = FontVariantsProperties &
 	RadixAccordion.AccordionTriggerProps &
-	VariantProperties<typeof variants>;
+	VariantProperties<typeof variants> & {
+		ref?: ComponentPropsWithRef<typeof RadixAccordion.Trigger>['ref'];
+	};
 
-const AccordionTrigger = forwardRef<ComponentRef<typeof RadixAccordion.Trigger>, AccordionTriggerProps>(
-	(
-		{
-			children,
-			className,
-			dimension = 'sm',
-			leading,
-			tracking,
-			uppercase,
-			variant = 'default',
-			weight = 'medium',
-			...properties
-		},
-		forwardedReference
-	) => (
+function AccordionTrigger({
+	children,
+	className,
+	dimension = 'sm',
+	leading,
+	ref,
+	tracking,
+	uppercase,
+	variant = 'default',
+	weight = 'medium',
+	...properties
+}: AccordionTriggerProps): ReactNode {
+	return (
 		<FlexBox asChild>
 			<RadixAccordion.Header>
 				<RadixAccordion.Trigger
@@ -55,7 +54,7 @@ const AccordionTrigger = forwardRef<ComponentRef<typeof RadixAccordion.Trigger>,
 						font({ dimension, leading, tracking, uppercase, variant, weight }),
 						className
 					)}
-					ref={forwardedReference}
+					ref={ref}
 					{...properties}>
 					{children}
 					<ChevronDown
@@ -66,8 +65,8 @@ const AccordionTrigger = forwardRef<ComponentRef<typeof RadixAccordion.Trigger>,
 				</RadixAccordion.Trigger>
 			</RadixAccordion.Header>
 		</FlexBox>
-	)
-);
+	);
+}
 
 AccordionTrigger.displayName = 'AccordionTrigger';
 

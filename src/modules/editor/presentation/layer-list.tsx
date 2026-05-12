@@ -121,11 +121,7 @@ function LayerList(): ReactNode {
 			items='stretch'>
 			{layers.map(({ depth, layer }) => (
 				<LayerListItem
-					canDeleteSelection={canDeleteSelection}
-					canGroupSelection={canGroupSelection}
 					depth={depth}
-					isExpanded={expandedGroupIds.includes(layer.id)}
-					isSelected={selectedLayerIds.includes(layer.id)}
 					key={layer.id}
 					layer={layer}
 					onClick={event => handleLayerClick(event, layer.id)}
@@ -134,6 +130,11 @@ function LayerList(): ReactNode {
 					onGroupSelection={handleGroupSelection}
 					onRename={name => handleLayerRename(layer.id, name)}
 					onToggleExpanded={layer.type === 'group' ? () => handleLayerExpandedToggle(layer.id) : undefined}
+					permissions={{ canDeleteSelection, canGroupSelection }}
+					state={{
+						isExpanded: expandedGroupIds.includes(layer.id),
+						isSelected: selectedLayerIds.includes(layer.id),
+					}}
 				/>
 			))}
 		</FlexBox>

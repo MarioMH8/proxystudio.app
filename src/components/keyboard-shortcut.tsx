@@ -89,6 +89,8 @@ const modifierVariants = cva({
 	},
 });
 
+const EMPTY_MODIFIERS: ModifierKey[] = [];
+
 type KeyboardShortcutProperties = Omit<ComponentPropsWithRef<'kbd'>, 'children'> & {
 	ariaKey: string;
 	dimension?: FontDimension;
@@ -102,7 +104,7 @@ function KeyboardShortcut({
 	className,
 	dimension = 'base',
 	keyLabel,
-	modifiers = [],
+	modifiers = EMPTY_MODIFIERS,
 	variant = 'default',
 	...properties
 }: KeyboardShortcutProperties): ReactNode {

@@ -12,15 +12,12 @@ function useDebouncedValue<T>(
 	const [debouncedValue, setDebouncedValue] = useState(value);
 
 	useEffect(() => {
-		if (!shouldDebounce(value)) {
-			setDebouncedValue(value);
-
-			return;
-		}
-
-		const timeout = setTimeout(() => {
-			setDebouncedValue(value);
-		}, delayMs);
+		const timeout = setTimeout(
+			() => {
+				setDebouncedValue(value);
+			},
+			shouldDebounce(value) ? delayMs : 0
+		);
 
 		return () => {
 			clearTimeout(timeout);

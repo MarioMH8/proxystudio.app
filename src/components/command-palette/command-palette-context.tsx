@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 
 interface CommandPaletteContextValue {
 	open: boolean;
@@ -18,7 +18,7 @@ function CommandPaletteProvider({ children, value }: CommandPaletteProviderPrope
 }
 
 function useCommandPaletteContext(): CommandPaletteContextValue {
-	const context = useContext(CommandPaletteContext);
+	const context = use(CommandPaletteContext);
 
 	if (context === undefined) {
 		throw new Error('CommandPalette components must be wrapped in <CommandPalette>.');

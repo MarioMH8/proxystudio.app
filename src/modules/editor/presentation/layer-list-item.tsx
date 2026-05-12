@@ -47,12 +47,18 @@ const metaVariants = cva({
 
 const ICON_SIZE = 14;
 
-interface LayerListItemProperties {
+interface LayerListItemPermissions {
 	canDeleteSelection: boolean;
 	canGroupSelection: boolean;
-	depth?: number;
+}
+
+interface LayerListItemState {
 	isExpanded?: boolean;
 	isSelected: boolean;
+}
+
+interface LayerListItemProperties {
+	depth?: number;
 	layer: Layer;
 	onClick: MouseEventHandler<HTMLButtonElement>;
 	onContextMenuSelection: () => void;
@@ -60,14 +66,12 @@ interface LayerListItemProperties {
 	onGroupSelection: () => void;
 	onRename: (name: string) => void;
 	onToggleExpanded?: (() => void) | undefined;
+	permissions: LayerListItemPermissions;
+	state: LayerListItemState;
 }
 
 function LayerListItem({
-	canDeleteSelection,
-	canGroupSelection,
 	depth = 0,
-	isExpanded = false,
-	isSelected,
 	layer,
 	onClick,
 	onContextMenuSelection,
@@ -75,7 +79,10 @@ function LayerListItem({
 	onGroupSelection,
 	onRename,
 	onToggleExpanded,
+	permissions,
+	state,
 }: LayerListItemProperties): ReactNode {
+	const { isExpanded = false, isSelected } = state;
 	const { t } = useTranslation();
 	const isGroup = layer.type === 'group';
 	const name = layer.name ?? t(`layers.options.${layer.type}`);
@@ -102,10 +109,20 @@ function LayerListItem({
 		}
 	}
 
+	function handleExpandIndicatorKeyDown(event: KeyboardEvent<HTMLSpanElement>): void {
+		if (event.key !== 'Enter' && event.key !== ' ') {
+			return;
+		}
+
+		event.preventDefault();
+		event.stopPropagation();
+		onToggleExpanded?.();
+	}
+
 	return (
 		<LayerListItemContextMenu
-			canDeleteSelection={canDeleteSelection}
-			canGroupSelection={canGroupSelection}
+			canDeleteSelection={permissions.canDeleteSelection}
+			canGroupSelection={permissions.canGroupSelection}
 			onDeleteSelection={onDeleteSelection}
 			onGroupSelection={onGroupSelection}>
 			<Button
@@ -124,6 +141,9 @@ function LayerListItem({
 					<span
 						className='shrink-0 cursor-pointer'
 						onClick={handleExpandIndicatorClick}
+						onKeyDown={handleExpandIndicatorKeyDown}
+						role='button'
+						tabIndex={0}
 						title={t(isExpanded ? 'layers.collapseGroup' : 'layers.expandGroup', {
 							name,
 						})}>

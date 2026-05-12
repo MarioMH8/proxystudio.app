@@ -33,6 +33,15 @@ const Card = {
 	},
 	default: ({ dimensions = {}, layers = [], metadata = {}, ...partial }: DeepPartial<Card> = {}): Card => {
 		const id = partial.id ?? crypto.randomUUID();
+		const normalizedLayers = layers.reduce<Layer[]>((accumulator, layer) => {
+			if (!Layer.isLayer(layer)) {
+				return accumulator;
+			}
+
+			accumulator.push(Layer.default(layer));
+
+			return accumulator;
+		}, []);
 
 		return {
 			dimensions: {
@@ -41,7 +50,7 @@ const Card = {
 				...dimensions,
 			},
 			id,
-			layers: layers.filter(layer => Layer.isLayer(layer)).map(partial => Layer.default(partial)),
+			layers: normalizedLayers,
 			metadata: {
 				createdAt: Date.now(),
 				updatedAt: Date.now(),

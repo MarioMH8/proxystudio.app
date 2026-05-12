@@ -29,8 +29,7 @@ export class IndexedDBDatabaseSettingsRepository extends SettingsRepository {
 
 	override async upsert(settings: Settings): Promise<void> {
 		const tx = this.database.transaction(STORE_NAME, 'readwrite');
-		await tx.store.clear();
-		await tx.store.add(settings);
+		await Promise.all([tx.store.clear(), tx.store.add(settings)]);
 		await tx.done;
 	}
 }
