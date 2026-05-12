@@ -35,7 +35,7 @@ function EditorPage(): ReactNode {
 	const card = useAppSelector(selectCard);
 
 	function handleCreateNewCard(): void {
-		const action = editorSlice.actions.cardCreate();
+		const action = editorSlice.actions.createCard();
 		dispatch(action);
 		void navigate(`/${action.payload}/editor`);
 	}
@@ -51,7 +51,7 @@ function EditorPage(): ReactNode {
 	);
 
 	useEffect(() => {
-		dispatch(editorSlice.actions.cardReset(cardId));
+		dispatch(editorSlice.actions.resetCard(cardId));
 	}, [cardId, dispatch]);
 
 	return (

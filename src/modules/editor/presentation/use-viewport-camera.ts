@@ -94,7 +94,7 @@ function useViewportCamera(): UseViewportCameraResult {
 		}
 
 		dispatch(
-			editorSlice.actions.viewportReset({
+			editorSlice.actions.resetViewport({
 				markAsInteracted: false,
 				zoom: calculateFitZoom(card.dimensions.height, card.dimensions.width, size.height, size.width),
 			})
@@ -121,7 +121,7 @@ function useViewportCamera(): UseViewportCameraResult {
 		const deltaY = event.clientY - pointerPositionReference.current.y;
 
 		pointerPositionReference.current = { x: event.clientX, y: event.clientY };
-		dispatch(editorSlice.actions.viewportPanBy({ x: deltaX, y: deltaY }));
+		dispatch(editorSlice.actions.panViewportBy({ x: deltaX, y: deltaY }));
 	}
 
 	function handlePointerEnd(event: ReactPointerEvent<HTMLDivElement>): void {
@@ -154,7 +154,7 @@ function useViewportCamera(): UseViewportCameraResult {
 		const container = containerRef.current;
 
 		if (!container) {
-			dispatch(editorSlice.actions.viewportZoomSet(zoom - event.deltaY * VIEWPORT_WHEEL_ZOOM_FACTOR));
+			dispatch(editorSlice.actions.setViewportZoom(zoom - event.deltaY * VIEWPORT_WHEEL_ZOOM_FACTOR));
 
 			return;
 		}
@@ -178,8 +178,8 @@ function useViewportCamera(): UseViewportCameraResult {
 		const scenePoint = calculateCursorOffset(cursorPoint, currentOffset, viewportCenter, zoom);
 		const nextOffset = calculateZoomOffset(cursorPoint, scenePoint, viewportCenter, nextZoom);
 
-		dispatch(editorSlice.actions.viewportPanSet(nextOffset));
-		dispatch(editorSlice.actions.viewportZoomSet(nextZoom));
+		dispatch(editorSlice.actions.setViewportPan(nextOffset));
+		dispatch(editorSlice.actions.setViewportZoom(nextZoom));
 	}
 
 	return {

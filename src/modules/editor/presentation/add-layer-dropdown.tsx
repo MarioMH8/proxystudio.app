@@ -25,7 +25,7 @@ function AddLayerDropdown(): ReactNode {
 	const card = useAppSelector(selectCard);
 
 	function handleLayerAdd(layerType: AddableLayerType): void {
-		dispatch(editorSlice.actions.setCard(Card.addLayer(card, layerType)));
+		dispatch(editorSlice.actions.updateCard(Card.addLayer(card, layerType)));
 	}
 
 	return (

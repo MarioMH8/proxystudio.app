@@ -38,26 +38,26 @@ function LayerList(): ReactNode {
 
 	function handleLayerClick(event: MouseEvent<HTMLButtonElement>, layerId: string): void {
 		if (event.metaKey || event.ctrlKey) {
-			dispatch(editorSlice.actions.layerPanelSelectionToggle(layerId));
+			dispatch(editorSlice.actions.toggleLayerSelection(layerId));
 
 			return;
 		}
 
 		if (selectedLayerIds.length === 1 && selectedLayerIds[0] === layerId) {
-			dispatch(editorSlice.actions.layerPanelSelectionClear());
+			dispatch(editorSlice.actions.clearLayerSelection());
 
 			return;
 		}
 
-		dispatch(editorSlice.actions.layerPanelSelectionSet([layerId]));
+		dispatch(editorSlice.actions.setLayerSelection([layerId]));
 	}
 
 	function handleLayerExpandedToggle(layerId: string): void {
-		dispatch(editorSlice.actions.layerPanelGroupExpandToggle(layerId));
+		dispatch(editorSlice.actions.toggleLayerGroupExpanded(layerId));
 	}
 
 	function handleLayerRename(layerId: string, name: string): void {
-		dispatch(editorSlice.actions.setCard(Card.renameLayer(card, layerId, name)));
+		dispatch(editorSlice.actions.updateCard(Card.renameLayer(card, layerId, name)));
 	}
 
 	function handleLayerContextMenu(layerId: string): void {
@@ -65,7 +65,7 @@ function LayerList(): ReactNode {
 			return;
 		}
 
-		dispatch(editorSlice.actions.layerPanelSelectionSet([layerId]));
+		dispatch(editorSlice.actions.setLayerSelection([layerId]));
 	}
 
 	function handleDeleteSelection(): void {
@@ -73,8 +73,8 @@ function LayerList(): ReactNode {
 			return;
 		}
 
-		dispatch(editorSlice.actions.setCard(Card.deleteLayers(card, selectedLayerIds)));
-		dispatch(editorSlice.actions.layerPanelSelectionClear());
+		dispatch(editorSlice.actions.updateCard(Card.deleteLayers(card, selectedLayerIds)));
+		dispatch(editorSlice.actions.clearLayerSelection());
 	}
 
 	function handleGroupSelection(): void {
@@ -88,13 +88,11 @@ function LayerList(): ReactNode {
 			return !previousGroupIds.has(layer.id);
 		});
 
-		dispatch(editorSlice.actions.setCard(nextCard));
+		dispatch(editorSlice.actions.updateCard(nextCard));
 
 		if (nextGroup?.type === 'group') {
-			dispatch(
-				editorSlice.actions.layerPanelExpandedGroupsSet([...new Set([nextGroup.id, ...expandedGroupIds])])
-			);
-			dispatch(editorSlice.actions.layerPanelSelectionSet([nextGroup.id]));
+			dispatch(editorSlice.actions.setExpandedLayerGroupIds([...new Set([nextGroup.id, ...expandedGroupIds])]));
+			dispatch(editorSlice.actions.setLayerSelection([nextGroup.id]));
 		}
 	}
 
@@ -104,7 +102,7 @@ function LayerList(): ReactNode {
 		setActiveLayerId(layerId);
 
 		if (layerId && !selectedLayerIds.includes(layerId)) {
-			dispatch(editorSlice.actions.layerPanelSelectionSet([layerId]));
+			dispatch(editorSlice.actions.setLayerSelection([layerId]));
 		}
 	}
 
@@ -160,15 +158,15 @@ function LayerList(): ReactNode {
 		const nextCard = Card.moveLayer(card, movedLayerId, dropState);
 
 		if (nextCard !== card) {
-			dispatch(editorSlice.actions.setCard(nextCard));
-			dispatch(editorSlice.actions.layerPanelSelectionSet([movedLayerId]));
+			dispatch(editorSlice.actions.updateCard(nextCard));
+			dispatch(editorSlice.actions.setLayerSelection([movedLayerId]));
 
 			if (
 				dropState.position === Layer.DROP_POSITION.INTO_END ||
 				dropState.position === Layer.DROP_POSITION.INTO_START
 			) {
 				dispatch(
-					editorSlice.actions.layerPanelExpandedGroupsSet([
+					editorSlice.actions.setExpandedLayerGroupIds([
 						...new Set([dropState.targetLayerId, ...expandedGroupIds]),
 					])
 				);

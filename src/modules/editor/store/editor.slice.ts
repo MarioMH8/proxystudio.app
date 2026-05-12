@@ -133,7 +133,10 @@ const editorSlice = createSlice({
 	initialState,
 	name: 'editor',
 	reducers: {
-		cardCreate: {
+		clearLayerSelection: state => {
+			state.layerPanel.selectedLayerIds = [];
+		},
+		createCard: {
 			prepare: () => ({ payload: crypto.randomUUID() }),
 			reducer: (state, action: PayloadAction<string>) => {
 				state.card = createCardHistoryState(Card.default({ id: action.payload }));
@@ -144,7 +147,12 @@ const editorSlice = createSlice({
 				state.viewport = createViewportState();
 			},
 		},
-		cardRedo: state => {
+		panViewportBy: (state, action: PayloadAction<ViewportOffset>) => {
+			state.viewport.hasInteracted = true;
+			state.viewport.offset.x += action.payload.x;
+			state.viewport.offset.y += action.payload.y;
+		},
+		redoCardChanges: state => {
 			const nextCard = state.card.future.shift();
 
 			if (!nextCard) {
@@ -159,7 +167,7 @@ const editorSlice = createSlice({
 
 			state.card.present = nextCard;
 		},
-		cardReset: (state, action: PayloadAction<string | undefined>) => {
+		resetCard: (state, action: PayloadAction<string | undefined>) => {
 			state.card = createCardHistoryState(Card.default(action.payload ? { id: action.payload } : undefined));
 			state.isCardLoading = true;
 			state.layerPanel = createLayerPanelState();
@@ -167,20 +175,30 @@ const editorSlice = createSlice({
 			state.savedCardUpdatedAt = undefined;
 			state.viewport = createViewportState();
 		},
-		cardUndo: state => {
-			const previousCard = state.card.past.pop();
-
-			if (!previousCard) {
-				return;
-			}
-
-			state.card.future.unshift(state.card.present);
-			state.card.present = previousCard;
+		resetViewport: (state, action: PayloadAction<undefined | ViewportResetPayload>) => {
+			state.viewport.hasInteracted = action.payload?.markAsInteracted ?? false;
+			state.viewport.offset = { x: 0, y: 0 };
+			state.viewport.zoom = clampViewportZoom(action.payload?.zoom ?? 1);
 		},
-		layerPanelExpandedGroupsSet: (state, action: PayloadAction<string[]>) => {
+		setExpandedLayerGroupIds: (state, action: PayloadAction<string[]>) => {
 			state.layerPanel.expandedGroupIds = [...action.payload];
 		},
-		layerPanelGroupExpandToggle: (state, action: PayloadAction<string>) => {
+		setLayerSelection: (state, action: PayloadAction<string[]>) => {
+			state.layerPanel.selectedLayerIds = [...action.payload];
+		},
+		setViewportPan: (state, action: PayloadAction<ViewportOffset>) => {
+			state.viewport.hasInteracted = true;
+			state.viewport.offset = action.payload;
+		},
+		setViewportTool: (state, action: PayloadAction<EditorTool>) => {
+			state.viewport.hasInteracted = true;
+			state.viewport.tool = action.payload;
+		},
+		setViewportZoom: (state, action: PayloadAction<number>) => {
+			state.viewport.hasInteracted = true;
+			state.viewport.zoom = clampViewportZoom(action.payload);
+		},
+		toggleLayerGroupExpanded: (state, action: PayloadAction<string>) => {
 			const expandedGroupIndex = state.layerPanel.expandedGroupIds.indexOf(action.payload);
 
 			if (expandedGroupIndex !== -1) {
@@ -191,13 +209,7 @@ const editorSlice = createSlice({
 
 			state.layerPanel.expandedGroupIds.push(action.payload);
 		},
-		layerPanelSelectionClear: state => {
-			state.layerPanel.selectedLayerIds = [];
-		},
-		layerPanelSelectionSet: (state, action: PayloadAction<string[]>) => {
-			state.layerPanel.selectedLayerIds = [...action.payload];
-		},
-		layerPanelSelectionToggle: (state, action: PayloadAction<string>) => {
+		toggleLayerSelection: (state, action: PayloadAction<string>) => {
 			const selectedLayerIndex = state.layerPanel.selectedLayerIds.indexOf(action.payload);
 
 			if (selectedLayerIndex !== -1) {
@@ -208,7 +220,17 @@ const editorSlice = createSlice({
 
 			state.layerPanel.selectedLayerIds.push(action.payload);
 		},
-		setCard: (state, action: PayloadAction<Card>) => {
+		undoCardChanges: state => {
+			const previousCard = state.card.past.pop();
+
+			if (!previousCard) {
+				return;
+			}
+
+			state.card.future.unshift(state.card.present);
+			state.card.present = previousCard;
+		},
+		updateCard: (state, action: PayloadAction<Card>) => {
 			if (state.card.present === action.payload) {
 				return;
 			}
@@ -228,35 +250,13 @@ const editorSlice = createSlice({
 				return hasGroupWithId(action.payload, groupId);
 			});
 		},
-		viewportPanBy: (state, action: PayloadAction<ViewportOffset>) => {
-			state.viewport.hasInteracted = true;
-			state.viewport.offset.x += action.payload.x;
-			state.viewport.offset.y += action.payload.y;
-		},
-		viewportPanSet: (state, action: PayloadAction<ViewportOffset>) => {
-			state.viewport.hasInteracted = true;
-			state.viewport.offset = action.payload;
-		},
-		viewportReset: (state, action: PayloadAction<undefined | ViewportResetPayload>) => {
-			state.viewport.hasInteracted = action.payload?.markAsInteracted ?? false;
-			state.viewport.offset = { x: 0, y: 0 };
-			state.viewport.zoom = clampViewportZoom(action.payload?.zoom ?? 1);
-		},
-		viewportToolSet: (state, action: PayloadAction<EditorTool>) => {
-			state.viewport.hasInteracted = true;
-			state.viewport.tool = action.payload;
-		},
-		viewportZoomIn: state => {
+		zoomInViewport: state => {
 			state.viewport.hasInteracted = true;
 			state.viewport.zoom = clampViewportZoom(state.viewport.zoom + VIEWPORT_ZOOM_STEP);
 		},
-		viewportZoomOut: state => {
+		zoomOutViewport: state => {
 			state.viewport.hasInteracted = true;
 			state.viewport.zoom = clampViewportZoom(state.viewport.zoom - VIEWPORT_ZOOM_STEP);
-		},
-		viewportZoomSet: (state, action: PayloadAction<number>) => {
-			state.viewport.hasInteracted = true;
-			state.viewport.zoom = clampViewportZoom(action.payload);
 		},
 	},
 });

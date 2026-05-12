@@ -23,7 +23,7 @@ function useEditorHotkeys(): void {
 		's',
 		event => {
 			event.preventDefault();
-			dispatch(editorSlice.actions.viewportToolSet(EDITOR_TOOL.SELECT));
+			dispatch(editorSlice.actions.setViewportTool(EDITOR_TOOL.SELECT));
 		},
 		{ preventDefault: true },
 		[dispatch]
@@ -33,7 +33,7 @@ function useEditorHotkeys(): void {
 		'h',
 		event => {
 			event.preventDefault();
-			dispatch(editorSlice.actions.viewportToolSet(EDITOR_TOOL.PAN));
+			dispatch(editorSlice.actions.setViewportTool(EDITOR_TOOL.PAN));
 		},
 		{ preventDefault: true },
 		[dispatch]
@@ -43,7 +43,7 @@ function useEditorHotkeys(): void {
 		'-,subtract',
 		event => {
 			event.preventDefault();
-			dispatch(editorSlice.actions.viewportZoomOut());
+			dispatch(editorSlice.actions.zoomOutViewport());
 		},
 		{ preventDefault: true },
 		[dispatch]
@@ -53,7 +53,7 @@ function useEditorHotkeys(): void {
 		'=,+,add',
 		event => {
 			event.preventDefault();
-			dispatch(editorSlice.actions.viewportZoomIn());
+			dispatch(editorSlice.actions.zoomInViewport());
 		},
 		{ preventDefault: true },
 		[dispatch]
@@ -63,7 +63,7 @@ function useEditorHotkeys(): void {
 		'0',
 		event => {
 			event.preventDefault();
-			dispatch(editorSlice.actions.viewportReset({ markAsInteracted: false }));
+			dispatch(editorSlice.actions.resetViewport({ markAsInteracted: false }));
 		},
 		{ preventDefault: true },
 		[dispatch]
@@ -85,7 +85,7 @@ function useEditorHotkeys(): void {
 			event.preventDefault();
 
 			if (canUndo) {
-				dispatch(editorSlice.actions.cardUndo());
+				dispatch(editorSlice.actions.undoCardChanges());
 			}
 		},
 		{ enableOnFormTags: true, preventDefault: true },
@@ -98,7 +98,7 @@ function useEditorHotkeys(): void {
 			event.preventDefault();
 
 			if (canRedo) {
-				dispatch(editorSlice.actions.cardRedo());
+				dispatch(editorSlice.actions.redoCardChanges());
 			}
 		},
 		{ enableOnFormTags: true, preventDefault: true },

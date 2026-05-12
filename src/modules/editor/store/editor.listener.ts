@@ -9,7 +9,7 @@ const SAVE_CARD_CACHE_KEY = 'save-card';
 const editorListenerMiddleware = createListenerMiddleware();
 
 editorListenerMiddleware.startListening({
-	actionCreator: editorSlice.actions.setCard,
+	actionCreator: editorSlice.actions.updateCard,
 	effect: (action, api) => {
 		const isAutoSaveEnabled = selectAutoSave(api.getState() as Parameters<typeof selectAutoSave>[0]);
 

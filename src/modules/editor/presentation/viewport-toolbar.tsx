@@ -70,7 +70,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 					onValueChange={value => {
 						if (value) {
 							dispatch(
-								editorSlice.actions.viewportToolSet(
+								editorSlice.actions.setViewportTool(
 									value as (typeof EDITOR_TOOL)[keyof typeof EDITOR_TOOL]
 								)
 							);
@@ -138,7 +138,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 								disabled={!canUndo}
 								icon
 								onClick={() => {
-									dispatch(editorSlice.actions.cardUndo());
+									dispatch(editorSlice.actions.undoCardChanges());
 								}}>
 								<Undo2Icon
 									aria-hidden='true'
@@ -166,7 +166,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 								disabled={!canRedo}
 								icon
 								onClick={() => {
-									dispatch(editorSlice.actions.cardRedo());
+									dispatch(editorSlice.actions.redoCardChanges());
 								}}>
 								<Redo2Icon
 									aria-hidden='true'
@@ -196,7 +196,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 								aria-label={t('editor.viewportToolbar.zoomOut')}
 								icon
 								onClick={() => {
-									dispatch(editorSlice.actions.viewportZoomOut());
+									dispatch(editorSlice.actions.zoomOutViewport());
 								}}>
 								<ZoomOutIcon
 									aria-hidden='true'
@@ -230,7 +230,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 								aria-label={t('editor.viewportToolbar.zoomIn')}
 								icon
 								onClick={() => {
-									dispatch(editorSlice.actions.viewportZoomIn());
+									dispatch(editorSlice.actions.zoomInViewport());
 								}}>
 								<ZoomInIcon
 									aria-hidden='true'
@@ -256,7 +256,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 								aria-label={t('editor.viewportToolbar.zoomReset')}
 								icon
 								onClick={() => {
-									dispatch(editorSlice.actions.viewportReset({ markAsInteracted: false }));
+									dispatch(editorSlice.actions.resetViewport({ markAsInteracted: false }));
 								}}>
 								<FullscreenIcon
 									aria-hidden='true'
