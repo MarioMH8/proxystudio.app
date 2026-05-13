@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '@shared/store';
 import { toggleFullscreen } from '@shared/toggle-fullscreen';
 import { useHotkeys } from 'react-hotkeys-hook';
 
-import { EDITOR_ID } from './viewport/const';
+import { EDITOR_ID } from '../viewport/const';
 
 function useEditorHotkeys(): void {
 	const dispatch = useAppDispatch();

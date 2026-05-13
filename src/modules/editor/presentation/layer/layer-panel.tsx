@@ -9,7 +9,7 @@ import LayerToolbar from './layer-toolbar';
 
 type LayerPanelProperties = Omit<AsideProperties, 'asChild' | 'side'>;
 
-function LayersPanel(properties: LayerPanelProperties): ReactNode {
+function LayerPanel(properties: LayerPanelProperties): ReactNode {
 	return (
 		<Aside
 			asChild
@@ -33,6 +33,6 @@ function LayersPanel(properties: LayerPanelProperties): ReactNode {
 	);
 }
 
-LayersPanel.displayName = 'LayerPanel';
+LayerPanel.displayName = 'LayerPanel';
 
-export default LayersPanel;
+export default LayerPanel;

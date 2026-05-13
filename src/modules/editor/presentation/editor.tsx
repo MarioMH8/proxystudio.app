@@ -10,12 +10,12 @@ import { Fragment, useEffect } from 'react';
 import { Group, useDefaultLayout } from 'react-resizable-panels';
 import { useNavigate, useParams } from 'react-router';
 
-import CardHeader from './card-header';
-import EditorContainer from './container';
-import LayersPanel from './layers-panel';
-import NewCardButton from './new-card-button';
-import useEditorBeforeUnload from './use-editor-before-unload';
-import useEditorHotkeys from './use-editor-hotkeys';
+import CardHeader from './card/card-header';
+import NewCardButton from './card/new-card-button';
+import EditorContainer from './editor/editor-container';
+import useEditorBeforeUnload from './editor/use-editor-before-unload';
+import useEditorHotkeys from './editor/use-editor-hotkeys';
+import LayerPanel from './layer/layer-panel';
 import { EDITOR_ID } from './viewport/const';
 import EditorViewport from './viewport/viewport';
 
@@ -64,7 +64,7 @@ function EditorPage(): ReactNode {
 						defaultLayout={defaultLayout}
 						id={EDITOR_ID}
 						onLayoutChanged={onLayoutChanged}>
-						<LayersPanel className='z-10' />
+						<LayerPanel className='z-10' />
 						<SeparatorGrab orientation='horizontal' />
 						<EditorViewport>
 							<CardRenderer card={card} />
