@@ -23,6 +23,8 @@
 		"empty": "Aún no hay capas. Añade una para empezar.",
 		"expandGroup": "Abrir grupo '{{name}}'",
 		"delete": "Eliminar capa",
+		"hide": "Ocultar capas",
+		"hideLayer": "Ocultar capa '{{name}}'",
 		"group": "Agrupar",
 		"options": {
 			"art": "Arte",
@@ -36,6 +38,8 @@
 		},
 		"open": "Abrir grupos de capas",
 		"rename": "Renombrar capa",
+		"show": "Mostrar capas",
+		"showLayer": "Mostrar capa '{{name}}'",
 		"title": "Capas",
 		"add": "Añadir capas",
 		"ungroup": "Desagrupar"

@@ -9,7 +9,15 @@ import Span from '@components/span';
 import type { DraggableAttributes, DraggableSyntheticListeners } from '@dnd-kit/core';
 import type { Layer, LayerMoveTarget } from '@modules/card/domain';
 import { cn, cva } from '@shared/cva';
-import { ChevronDownIcon, ChevronRightIcon, FolderTreeIcon, GripVerticalIcon, LayersIcon } from 'lucide-react';
+import {
+	ChevronDownIcon,
+	ChevronRightIcon,
+	EyeIcon,
+	EyeOffIcon,
+	FolderTreeIcon,
+	GripVerticalIcon,
+	LayersIcon,
+} from 'lucide-react';
 import type { KeyboardEvent, MouseEvent, MouseEventHandler, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -25,6 +33,7 @@ const variants = cva({
 	defaultVariants: {
 		dragging: false,
 		dropMode: 'none',
+		hidden: false,
 		selected: false,
 	},
 	variants: {
@@ -38,13 +47,13 @@ const variants = cva({
 			none: '',
 			reorder: '',
 		},
+		hidden: {
+			false: '',
+			true: 'opacity-60',
+		},
 		selected: {
-			false: hover({ strength: 'soft', variant: 'default' }),
-			true: [
-				background(),
-				hover({ strength: 'default', variant: 'default' }),
-				focus({ dimension: 'xs', strength: 'default', variant: 'default' }),
-			],
+			false: 'hover:bg-transparent',
+			true: [background(), focus({ dimension: 'xs', strength: 'default', variant: 'default' })],
 		},
 	},
 });
@@ -78,6 +87,8 @@ const ICON_SIZE = 14;
 interface LayerListItemPermissions {
 	canDeleteSelection: boolean;
 	canGroupSelection: boolean;
+	canToggleSelectionHidden: boolean;
+	isSelectionHidden: boolean;
 }
 
 interface LayerListItemState {
@@ -112,6 +123,8 @@ interface LayerListItemViewProperties {
 	onGroupSelection: () => void;
 	onRename: (name: string) => void;
 	onToggleExpanded?: (() => void) | undefined;
+	onToggleHidden: () => void;
+	onToggleSelectionHidden: () => void;
 	permissions: LayerListItemPermissions;
 	state: LayerListItemState;
 }
@@ -128,6 +141,8 @@ function LayerListItemView({
 	onGroupSelection,
 	onRename,
 	onToggleExpanded,
+	onToggleHidden,
+	onToggleSelectionHidden,
 	permissions,
 	state,
 }: LayerListItemViewProperties): ReactNode {
@@ -166,6 +181,22 @@ function LayerListItemView({
 		event.preventDefault();
 		event.stopPropagation();
 		onToggleExpanded?.();
+	}
+
+	function handleVisibilityIndicatorClick(event: MouseEvent<HTMLSpanElement>): void {
+		event.preventDefault();
+		event.stopPropagation();
+		onToggleHidden();
+	}
+
+	function handleVisibilityIndicatorKeyDown(event: KeyboardEvent<HTMLSpanElement>): void {
+		if (event.key !== 'Enter' && event.key !== ' ') {
+			return;
+		}
+
+		event.preventDefault();
+		event.stopPropagation();
+		onToggleHidden();
 	}
 
 	function getDropMode(): 'group' | 'inside' | 'none' | 'reorder' {
@@ -209,8 +240,11 @@ function LayerListItemView({
 			<LayerListItemContextMenu
 				canDeleteSelection={permissions.canDeleteSelection}
 				canGroupSelection={permissions.canGroupSelection}
+				canToggleSelectionHidden={permissions.canToggleSelectionHidden}
+				isSelectionHidden={permissions.isSelectionHidden}
 				onDeleteSelection={onDeleteSelection}
-				onGroupSelection={onGroupSelection}>
+				onGroupSelection={onGroupSelection}
+				onToggleSelectionHidden={onToggleSelectionHidden}>
 				<Button
 					{...dnd.attributes}
 					aria-expanded={isGroup ? isExpanded : undefined}
@@ -218,6 +252,7 @@ function LayerListItemView({
 					className={variants({
 						dragging: dnd.isDragging,
 						dropMode: getDropMode(),
+						hidden: layer.hidden,
 						selected: isSelected,
 					})}
 					dimension='xs'
@@ -295,6 +330,33 @@ function LayerListItemView({
 							{isGroup ? ` · ${layer.children.length.toFixed(0)}` : ''}
 						</Span>
 					</FlexBox>
+					<span
+						className={cn(
+							'ml-auto shrink-0 cursor-pointer text-foreground-500',
+							hover({
+								strength: 'soft',
+								variant: 'default',
+							})
+						)}
+						onClick={handleVisibilityIndicatorClick}
+						onKeyDown={handleVisibilityIndicatorKeyDown}
+						role='button'
+						tabIndex={0}
+						title={t(layer.hidden ? 'layers.showLayer' : 'layers.hideLayer', {
+							name,
+						})}>
+						{layer.hidden ? (
+							<EyeOffIcon
+								aria-hidden='true'
+								size={ICON_SIZE}
+							/>
+						) : (
+							<EyeIcon
+								aria-hidden='true'
+								size={ICON_SIZE}
+							/>
+						)}
+					</span>
 					<span className={dropIndicatorVariants({ position: getDropIndicatorPosition() })} />
 					{dropState?.position === 'into-end' ? (
 						<span className='pointer-events-none absolute inset-x-3 bottom-1 h-px bg-primary/70' />

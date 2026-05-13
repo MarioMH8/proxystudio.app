@@ -26,6 +26,8 @@ interface LayerListItemProperties {
 	onGroupSelection: () => void;
 	onRename: (name: string) => void;
 	onToggleExpanded?: (() => void) | undefined;
+	onToggleHidden: () => void;
+	onToggleSelectionHidden: () => void;
 	permissions: LayerListItemPermissions;
 	state: LayerListItemState;
 }
@@ -43,6 +45,8 @@ function LayerListItem({
 	onGroupSelection,
 	onRename,
 	onToggleExpanded,
+	onToggleHidden,
+	onToggleSelectionHidden,
 	permissions,
 	state,
 }: LayerListItemProperties): ReactNode {
@@ -102,6 +106,8 @@ function LayerListItem({
 			onGroupSelection={onGroupSelection}
 			onRename={onRename}
 			onToggleExpanded={onToggleExpanded}
+			onToggleHidden={onToggleHidden}
+			onToggleSelectionHidden={onToggleSelectionHidden}
 			permissions={permissions}
 			state={state}
 		/>

@@ -6,6 +6,31 @@ import { LayerGroup } from './layer.group';
 import { LayerText } from './layer.text';
 
 describe('Layer', () => {
+	describe('setHiddenByIds', () => {
+		it('should hide selected layers and preserve the rest', () => {
+			const art = LayerArt.default({ id: 'art' });
+			const text = LayerText.default({ id: 'text' });
+			const frame = LayerArt.default({ id: 'frame' });
+			const group = LayerGroup.default({ id: 'group' }, [text]);
+
+			const result = Layer.setHiddenByIds([art, group, frame], ['art', 'text'], true);
+
+			expect(result[0]?.hidden).toBeTrue();
+			expect(result[1]?.hidden).toBeFalse();
+			expect(result[1]?.type === 'group' ? result[1].children[0]?.hidden : undefined).toBeTrue();
+			expect(result[2]?.hidden).toBeFalse();
+		});
+
+		it('should return the same layers reference when there is no effective change', () => {
+			const art = LayerArt.default({ hidden: true, id: 'art' });
+			const layers = [art];
+
+			const result = Layer.setHiddenByIds(layers, ['art'], true);
+
+			expect(result).toBe(layers);
+		});
+	});
+
 	describe('move', () => {
 		it('should move a root layer before another root layer', () => {
 			const art = LayerArt.default({ id: 'art' });

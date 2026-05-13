@@ -34,6 +34,13 @@ function LayerList(): ReactNode {
 
 	const canDeleteSelection = selectedLayerIds.length > 0;
 	const canGroupSelection = Layer.canGroupSelection(card.layers, selectedLayerIds);
+	const selectedLayers = selectedLayerIds.flatMap(layerId => {
+		const layerResult = Layer.findLayerById(card.layers, layerId);
+
+		return layerResult ? [layerResult.layer] : [];
+	});
+	const canToggleSelectionHidden = selectedLayers.length > 0;
+	const isSelectionHidden = canToggleSelectionHidden && selectedLayers.every(layer => layer.hidden);
 	const nodes = buildLayerTree(card.layers, expandedGroupIds);
 
 	function handleLayerClick(event: MouseEvent<HTMLButtonElement>, layerId: string): void {
@@ -58,6 +65,16 @@ function LayerList(): ReactNode {
 
 	function handleLayerRename(layerId: string, name: string): void {
 		dispatch(editorSlice.actions.updateCard(Card.renameLayer(card, layerId, name)));
+	}
+
+	function handleLayerHiddenToggle(layerId: string): void {
+		const layerResult = Layer.findLayerById(card.layers, layerId);
+
+		if (!layerResult) {
+			return;
+		}
+
+		dispatch(editorSlice.actions.updateCard(Card.setLayersHidden(card, [layerId], !layerResult.layer.hidden)));
 	}
 
 	function handleLayerContextMenu(layerId: string): void {
@@ -94,6 +111,14 @@ function LayerList(): ReactNode {
 			dispatch(editorSlice.actions.setExpandedLayerGroupIds([...new Set([nextGroup.id, ...expandedGroupIds])]));
 			dispatch(editorSlice.actions.setLayerSelection([nextGroup.id]));
 		}
+	}
+
+	function handleSelectionHiddenToggle(): void {
+		if (!canToggleSelectionHidden) {
+			return;
+		}
+
+		dispatch(editorSlice.actions.updateCard(Card.setLayersHidden(card, selectedLayerIds, !isSelectionHidden)));
 	}
 
 	function handleDragStart(event: DragStartEvent): void {
@@ -239,7 +264,14 @@ function LayerList(): ReactNode {
 							onToggleExpanded={
 								node.layer.type === 'group' ? () => handleLayerExpandedToggle(node.layer.id) : undefined
 							}
-							permissions={{ canDeleteSelection, canGroupSelection }}
+							onToggleHidden={() => handleLayerHiddenToggle(node.layer.id)}
+							onToggleSelectionHidden={handleSelectionHiddenToggle}
+							permissions={{
+								canDeleteSelection,
+								canGroupSelection,
+								canToggleSelectionHidden,
+								isSelectionHidden,
+							}}
 							state={{
 								isExpanded: node.isExpanded,
 								isSelected: selectedLayerIds.includes(node.layer.id),

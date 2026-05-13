@@ -23,6 +23,8 @@
 		"empty": "There are no layers yet. Add one to get started.",
 		"expandGroup": "Expand group '{{name}}'",
 		"delete": "Delete layer",
+		"hide": "Hide layers",
+		"hideLayer": "Hide layer '{{name}}'",
 		"group": "Group",
 		"options": {
 			"art": "Art",
@@ -36,6 +38,8 @@
 		},
 		"open": "Open layer groups",
 		"rename": "Rename layer",
+		"show": "Show layers",
+		"showLayer": "Show layer '{{name}}'",
 		"title": "Layers",
 		"add": "Add layers",
 		"ungroup": "Ungroup"

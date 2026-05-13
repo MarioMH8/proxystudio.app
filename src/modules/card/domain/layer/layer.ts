@@ -367,6 +367,40 @@ const Layer = {
 
 		return nextLayers;
 	},
+	setHidden: <T extends EffectiveLayer | Layer>(layer: T, hidden: boolean): T => {
+		if (layer.hidden === hidden) {
+			return layer;
+		}
+
+		return { ...layer, hidden };
+	},
+	setHiddenByIds: (layers: Layer[], layerIds: string[], hidden: boolean): Layer[] => {
+		const hiddenLayerIds = new Set(layerIds);
+
+		if (hiddenLayerIds.size === 0) {
+			return layers;
+		}
+
+		function setHiddenByIdsWithin(currentLayers: Layer[]): Layer[] {
+			const nextLayers = currentLayers.map(layer => {
+				const nextLayer = hiddenLayerIds.has(layer.id) ? Layer.setHidden(layer, hidden) : layer;
+
+				if (nextLayer.type !== 'group') {
+					return nextLayer;
+				}
+
+				const children = setHiddenByIdsWithin(nextLayer.children);
+
+				return children === nextLayer.children ? nextLayer : { ...nextLayer, children };
+			});
+
+			const hasChanged = nextLayers.some((layer, index) => layer !== currentLayers[index]);
+
+			return hasChanged ? nextLayers : currentLayers;
+		}
+
+		return setHiddenByIdsWithin(layers);
+	},
 	topLevelSelection: (layers: Layer[]): Layer[] => {
 		return layers.filter(layer => {
 			return !layers.some(candidate => candidate.id !== layer.id && Layer.hasLayerId(candidate, layer.id));

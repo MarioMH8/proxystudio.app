@@ -5,17 +5,23 @@ import { useTranslation } from 'react-i18next';
 interface LayerListItemContextMenuProperties {
 	canDeleteSelection: boolean;
 	canGroupSelection: boolean;
+	canToggleSelectionHidden: boolean;
 	children: ReactNode;
+	isSelectionHidden: boolean;
 	onDeleteSelection: () => void;
 	onGroupSelection: () => void;
+	onToggleSelectionHidden: () => void;
 }
 
 function LayerListItemContextMenu({
 	canDeleteSelection,
 	canGroupSelection,
+	canToggleSelectionHidden,
 	children,
+	isSelectionHidden,
 	onDeleteSelection,
 	onGroupSelection,
+	onToggleSelectionHidden,
 }: LayerListItemContextMenuProperties): ReactNode {
 	const { t } = useTranslation();
 
@@ -27,6 +33,11 @@ function LayerListItemContextMenu({
 					disabled={!canGroupSelection}
 					onSelect={onGroupSelection}>
 					{t('layers.group')}
+				</ContextMenuItem>
+				<ContextMenuItem
+					disabled={!canToggleSelectionHidden}
+					onSelect={onToggleSelectionHidden}>
+					{t(isSelectionHidden ? 'layers.show' : 'layers.hide')}
 				</ContextMenuItem>
 				<ContextMenuItem
 					disabled={!canDeleteSelection}

@@ -1,6 +1,7 @@
 import type { DeepPartial } from '@shared/types';
 
 interface LayerBase {
+	hidden: boolean;
 	id: string;
 	name?: string | undefined;
 }
@@ -8,6 +9,7 @@ interface LayerBase {
 const LayerBase = {
 	default: (partial?: DeepPartial<LayerBase>): LayerBase => {
 		return {
+			hidden: false,
 			id: crypto.randomUUID(),
 			...partial,
 		};

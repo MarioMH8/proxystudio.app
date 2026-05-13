@@ -131,6 +131,23 @@ const Card = {
 			},
 		};
 	},
+	setLayersHidden: (card: Card, layerIds: string[], hidden: boolean): Card => {
+		const layers = Layer.setHiddenByIds(card.layers, layerIds, hidden);
+		const hasChanged = layers.some((layer, index) => layer !== card.layers[index]);
+
+		if (!hasChanged) {
+			return card;
+		}
+
+		return {
+			...card,
+			layers,
+			metadata: {
+				...card.metadata,
+				updatedAt: Date.now(),
+			},
+		};
+	},
 	ungroupLayer: (card: Card, groupId: string): Card => {
 		const layers = Layer.ungroupById(card.layers, groupId);
 		const hasChanged =
