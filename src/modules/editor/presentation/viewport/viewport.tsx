@@ -5,7 +5,7 @@ import { cva } from 'cva';
 import type { HTMLAttributes, ReactNode } from 'react';
 import { Panel } from 'react-resizable-panels';
 
-import useViewportCamera from './use-viewport-camera';
+import useViewportCamera from './hooks/use-viewport-camera';
 import EditorViewportToolbar from './viewport-toolbar';
 
 const variants = cva({
