@@ -227,7 +227,6 @@ function LayerList(): ReactNode {
 
 						return (
 							<LayerListItem
-								activeLayerId={activeLayerId}
 								allowsDropIntoEnd={node.allowsDropIntoEnd}
 								depth={node.depth}
 								dropState={dropState?.targetLayerId === node.layer.id ? dropState : undefined}

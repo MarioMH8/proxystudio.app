@@ -17,7 +17,6 @@ interface LayerListItemPermissions {
 }
 
 interface LayerListItemProperties {
-	activeLayerId: string | undefined;
 	allowsDropIntoEnd: boolean;
 	depth?: number;
 	dropState?: LayerDropState | undefined;
@@ -36,7 +35,6 @@ interface LayerListItemProperties {
 }
 
 function LayerListItem({
-	activeLayerId,
 	allowsDropIntoEnd,
 	depth,
 	dropState,
@@ -98,7 +96,6 @@ function LayerListItem({
 			onGroupSelection={onGroupSelection}
 			onToggleSelectionHidden={onToggleSelectionHidden}>
 			<LayerListItemView
-				activeLayerId={activeLayerId}
 				depth={depth ?? 0}
 				dnd={{
 					attributes,

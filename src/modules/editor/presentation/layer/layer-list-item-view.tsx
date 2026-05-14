@@ -255,7 +255,6 @@ interface LayerListItemDndProperties {
 }
 
 interface LayerListItemViewProperties {
-	activeLayerId: string | undefined;
 	depth?: number;
 	dnd: LayerListItemDndProperties;
 	dropState?: LayerDropState | undefined;
@@ -269,7 +268,6 @@ interface LayerListItemViewProperties {
 }
 
 function LayerListItemView({
-	activeLayerId,
 	depth = 0,
 	dnd,
 	dropState,
@@ -338,6 +336,10 @@ function LayerListItemView({
 				className='absolute inset-x-2 top-0 h-3'
 				ref={dnd.setTopDropNodeRef}
 			/>
+			<div
+				className='absolute inset-x-2 bottom-0 h-3'
+				ref={dnd.setBottomDropNodeRef}
+			/>
 			<FlexBox
 				items='center'
 				justify='center'
@@ -395,13 +397,6 @@ function LayerListItemView({
 				<span className={dropIndicatorVariants({ position: getDropIndicatorPosition(dropState) })} />
 				<DropIntoEndIndicator dropState={dropState} />
 			</FlexBox>
-			<div
-				className={cn(
-					'absolute inset-x-2 bottom-0 h-3',
-					activeLayerId === layer.id ? 'pointer-events-none' : ''
-				)}
-				ref={dnd.setBottomDropNodeRef}
-			/>
 		</li>
 	);
 }
