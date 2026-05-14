@@ -79,7 +79,7 @@ const META_CLASS_NAME = cn('truncate uppercase', font({ dimension: 'xs', trackin
 
 interface ExpandIndicatorProperties {
 	expanded: boolean;
-	onClick: (event: MouseEvent<HTMLSpanElement>) => void;
+	onClick: (event: MouseEvent<HTMLButtonElement>) => void;
 	title: string;
 	visible: boolean;
 }
@@ -107,11 +107,16 @@ function ExpandIndicator({ expanded, onClick, title, visible }: ExpandIndicatorP
 	}
 
 	return (
-		<span
-			aria-hidden='true'
-			className='shrink-0 cursor-pointer'
+		<Button
+			aria-label={title}
+			className='size-5 shrink-0 p-0'
+			dimension='xs'
+			icon
 			onClick={onClick}
-			title={title}>
+			title={title}
+			transparent
+			type='button'
+			variant='default'>
 			{expanded ? (
 				<ChevronDownIcon
 					aria-hidden='true'
@@ -123,7 +128,7 @@ function ExpandIndicator({ expanded, onClick, title, visible }: ExpandIndicatorP
 					size={ICON_SIZE}
 				/>
 			)}
-		</span>
+		</Button>
 	);
 }
 
@@ -151,23 +156,28 @@ function LayerTypeIndicator({ group }: LayerTypeIndicatorProperties): ReactNode 
 
 interface VisibilityIndicatorProperties {
 	hidden: boolean;
-	onClick: (event: MouseEvent<HTMLSpanElement>) => void;
+	onClick: (event: MouseEvent<HTMLButtonElement>) => void;
 	title: string;
 }
 
 function VisibilityIndicator({ hidden, onClick, title }: VisibilityIndicatorProperties): ReactNode {
 	return (
-		<span
-			aria-hidden='true'
+		<Button
+			aria-label={title}
 			className={cn(
-				'ml-auto shrink-0 cursor-pointer text-foreground-500',
+				'ml-auto size-5 shrink-0 p-0 text-foreground-500',
 				hover({
 					strength: 'soft',
 					variant: 'default',
 				})
 			)}
+			dimension='xs'
+			icon
 			onClick={onClick}
-			title={title}>
+			title={title}
+			transparent
+			type='button'
+			variant='default'>
 			{hidden ? (
 				<EyeOffIcon
 					aria-hidden='true'
@@ -179,7 +189,7 @@ function VisibilityIndicator({ hidden, onClick, title }: VisibilityIndicatorProp
 					size={ICON_SIZE}
 				/>
 			)}
-		</span>
+		</Button>
 	);
 }
 
@@ -237,7 +247,7 @@ interface LayerListItemDndProperties {
 	isDragging: boolean;
 	listeners: DraggableSyntheticListeners | undefined;
 	setBottomDropNodeRef: (node: HTMLElement | null) => void;
-	setButtonNodeRef: (node: HTMLButtonElement | null) => void;
+	setItemNodeRef: (node: HTMLElement | null) => void;
 	setTopDropNodeRef: (node: HTMLElement | null) => void;
 	transform: string | undefined;
 }
@@ -248,7 +258,7 @@ interface LayerListItemViewProperties {
 	dnd: LayerListItemDndProperties;
 	dropState?: LayerDropState | undefined;
 	layer: Layer;
-	onClick: MouseEventHandler<HTMLButtonElement>;
+	onClick: MouseEventHandler<HTMLDivElement>;
 	onContextMenuSelection: () => void;
 	onRename: (name: string) => void;
 	onToggleExpanded?: (() => void) | undefined;
@@ -278,13 +288,13 @@ function LayerListItemView({
 		name,
 	});
 
-	function handleExpandIndicatorClick(event: MouseEvent<HTMLSpanElement>): void {
+	function handleExpandIndicatorClick(event: MouseEvent<HTMLButtonElement>): void {
 		event.preventDefault();
 		event.stopPropagation();
 		onToggleExpanded?.();
 	}
 
-	function handleButtonKeyDown(event: KeyboardEvent<HTMLButtonElement>): void {
+	function handleItemKeyDown(event: KeyboardEvent<HTMLDivElement>): void {
 		if (isGroup && onToggleExpanded) {
 			if (event.key === 'ArrowRight' && !isExpanded) {
 				event.preventDefault();
@@ -304,10 +314,17 @@ function LayerListItemView({
 		if (event.key === 'h' || event.key === 'H') {
 			event.preventDefault();
 			onToggleHidden();
+
+			return;
+		}
+
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			event.currentTarget.click();
 		}
 	}
 
-	function handleVisibilityIndicatorClick(event: MouseEvent<HTMLSpanElement>): void {
+	function handleVisibilityIndicatorClick(event: MouseEvent<HTMLButtonElement>): void {
 		event.preventDefault();
 		event.stopPropagation();
 		onToggleHidden();
@@ -319,7 +336,9 @@ function LayerListItemView({
 				className='absolute inset-x-2 top-0 h-3'
 				ref={dnd.setTopDropNodeRef}
 			/>
-			<Button
+			<FlexBox
+				items='center'
+				justify='center'
 				{...dnd.attributes}
 				aria-expanded={isGroup ? isExpanded : undefined}
 				aria-pressed={isSelected}
@@ -329,18 +348,16 @@ function LayerListItemView({
 					hidden: layer.hidden,
 					selected: isSelected,
 				})}
-				dimension='xs'
 				onClick={onClick}
 				onContextMenu={onContextMenuSelection}
-				onKeyDown={handleButtonKeyDown}
-				ref={dnd.setButtonNodeRef}
+				onKeyDown={handleItemKeyDown}
+				ref={dnd.setItemNodeRef}
+				role='button'
 				style={{
 					paddingLeft: getLayerTreeIndent(depth),
 					transform: dnd.transform,
 				}}
-				transparent
-				type='button'
-				variant='default'>
+				tabIndex={0}>
 				<DragHandle listeners={dnd.listeners} />
 				<ExpandIndicator
 					expanded={isExpanded}
@@ -375,7 +392,7 @@ function LayerListItemView({
 				/>
 				<span className={dropIndicatorVariants({ position: getDropIndicatorPosition(dropState) })} />
 				<DropIntoEndIndicator dropState={dropState} />
-			</Button>
+			</FlexBox>
 			<div
 				className={cn(
 					'absolute inset-x-2 bottom-0 h-3',

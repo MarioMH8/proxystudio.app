@@ -23,7 +23,7 @@ interface LayerListItemProperties {
 	dropState?: LayerDropState | undefined;
 	isGroupExpanded: boolean;
 	layer: Layer;
-	onClick: (event: MouseEvent<HTMLButtonElement>) => void;
+	onClick: (event: MouseEvent<HTMLDivElement>) => void;
 	onContextMenuSelection: () => void;
 	onDeleteSelection: () => void;
 	onGroupSelection: () => void;
@@ -83,7 +83,7 @@ function LayerListItem({
 		id: `${layer.id}:${DROP_ZONE.BOTTOM}`,
 	});
 
-	function setButtonNodeReference(node: HTMLButtonElement | null): void {
+	function setItemNodeReference(node: HTMLElement | null): void {
 		setDraggableNodeReference(node);
 		centerDrop.setNodeRef(node);
 	}
@@ -105,7 +105,7 @@ function LayerListItem({
 					isDragging,
 					listeners,
 					setBottomDropNodeRef: bottomDrop.setNodeRef,
-					setButtonNodeRef: setButtonNodeReference,
+					setItemNodeRef: setItemNodeReference,
 					setTopDropNodeRef: topDrop.setNodeRef,
 					transform: CSS.Translate.toString(transform),
 				}}

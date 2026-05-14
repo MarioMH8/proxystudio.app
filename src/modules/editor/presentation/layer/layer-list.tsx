@@ -44,7 +44,7 @@ function LayerList(): ReactNode {
 
 	const nodes = buildLayerTree(card.layers, expandedGroupIds);
 
-	function handleLayerClick(event: MouseEvent<HTMLButtonElement>, layerId: string): void {
+	function handleLayerClick(event: MouseEvent<HTMLDivElement>, layerId: string): void {
 		if (event.metaKey || event.ctrlKey) {
 			dispatch(editorSlice.actions.toggleLayerSelection(layerId));
 
