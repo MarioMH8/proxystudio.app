@@ -1,17 +1,12 @@
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
-import type { LayerMoveTarget } from '@modules/card/domain';
 import { Layer } from '@modules/card/domain';
 import type { MouseEvent, ReactNode } from 'react';
 
+import type { LayerDropState } from './layer-list.dnd';
 import { DROP_ZONE } from './layer-list.dnd';
 import type { LayerListItemPermissions, LayerListItemState } from './layer-list-item-view';
 import LayerListItemView from './layer-list-item-view';
-
-interface LayerDropState {
-	position: LayerMoveTarget['position'];
-	targetLayerId: string;
-}
 
 interface LayerListItemProperties {
 	activeLayerId: string | undefined;

@@ -15,6 +15,15 @@ interface LayerDropState {
 	targetLayerId: string;
 }
 
+const LAYER_TREE_INDENT = {
+	BASE: 8,
+	STEP: 16,
+} as const;
+
+function getLayerTreeIndent(depth: number): number {
+	return depth * LAYER_TREE_INDENT.STEP + LAYER_TREE_INDENT.BASE;
+}
+
 interface DragOverData {
 	isExpanded: boolean;
 	layerId: string;
@@ -65,4 +74,4 @@ function getDropState({ activeLayerId, layer, zone }: GetDropStateParameters): L
 
 export type { DragOverData, DropZone, LayerDropState };
 
-export { collisionDetection, DROP_ZONE, getDropState };
+export { collisionDetection, DROP_ZONE, getDropState, getLayerTreeIndent };

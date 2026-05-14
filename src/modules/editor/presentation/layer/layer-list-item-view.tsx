@@ -7,7 +7,7 @@ import font from '@components/font';
 import hover from '@components/hover';
 import Span from '@components/span';
 import type { DraggableAttributes, DraggableSyntheticListeners } from '@dnd-kit/core';
-import type { Layer, LayerMoveTarget } from '@modules/card/domain';
+import type { Layer } from '@modules/card/domain';
 import { cn, cva } from '@shared/cva';
 import {
 	ChevronDownIcon,
@@ -21,6 +21,8 @@ import {
 import type { KeyboardEvent, MouseEvent, MouseEventHandler, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import type { LayerDropState } from './layer-list.dnd';
+import { getLayerTreeIndent } from './layer-list.dnd';
 import LayerListItemContextMenu from './layer-list-item-context-menu';
 
 const variants = cva({
@@ -94,11 +96,6 @@ interface LayerListItemPermissions {
 interface LayerListItemState {
 	isExpanded?: boolean;
 	isSelected: boolean;
-}
-
-interface LayerDropState {
-	position: LayerMoveTarget['position'];
-	targetLayerId: string;
 }
 
 interface LayerListItemDndProperties {
@@ -261,7 +258,7 @@ function LayerListItemView({
 					onKeyDown={handleButtonKeyDown}
 					ref={dnd.setButtonNodeRef}
 					style={{
-						paddingLeft: depth * 16 + 8,
+						paddingLeft: getLayerTreeIndent(depth),
 						transform: dnd.transform,
 					}}
 					transparent

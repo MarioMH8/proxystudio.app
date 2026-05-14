@@ -4,7 +4,7 @@ import { cn } from '@shared/cva';
 import type { ReactNode } from 'react';
 
 import type { LayerDropState } from './layer-list.dnd';
-import { DROP_ZONE } from './layer-list.dnd';
+import { DROP_ZONE, getLayerTreeIndent } from './layer-list.dnd';
 
 interface GroupBoundaryDropTargetProperties {
 	activeLayerId: string | undefined;
@@ -38,7 +38,7 @@ function GroupBoundaryDropTarget({
 		<div
 			className={cn('relative h-4', activeLayerId === groupId ? 'pointer-events-none' : '')}
 			ref={setNodeRef}
-			style={{ paddingLeft: depth * 16 + 8 }}>
+			style={{ paddingLeft: getLayerTreeIndent(depth) }}>
 			<span
 				className={cn(
 					'pointer-events-none absolute inset-x-2 top-1/2 h-px -translate-y-1/2 bg-primary transition-opacity',
