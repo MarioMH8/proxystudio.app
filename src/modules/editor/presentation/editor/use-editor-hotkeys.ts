@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '@shared/store';
 import { toggleFullscreen } from '@shared/toggle-fullscreen';
 import { useHotkeys } from 'react-hotkeys-hook';
 
+import useLayerSelectionActions from '../layer/use-layer-selection-actions';
 import { EDITOR_ID } from '../viewport/const';
 
 function useEditorHotkeys(): void {
@@ -18,6 +19,14 @@ function useEditorHotkeys(): void {
 	const canRedo = useAppSelector(selectCanRedo);
 	const card = useAppSelector(selectCard);
 	const [saveCard] = useSaveCardMutation({ fixedCacheKey: 'save-card' });
+	const {
+		canDeleteSelection,
+		canGroupSelection,
+		canToggleSelectionHidden,
+		deleteSelection,
+		groupSelection,
+		toggleSelectionHidden,
+	} = useLayerSelectionActions();
 
 	useHotkeys(
 		's',
@@ -113,6 +122,48 @@ function useEditorHotkeys(): void {
 		},
 		{ enableOnFormTags: true, preventDefault: true },
 		[card, saveCard]
+	);
+
+	useHotkeys(
+		'backspace,del',
+		event => {
+			if (!canDeleteSelection) {
+				return;
+			}
+
+			event.preventDefault();
+			deleteSelection();
+		},
+		{},
+		[canDeleteSelection, deleteSelection]
+	);
+
+	useHotkeys(
+		'meta+shift+g,ctrl+shift+g',
+		event => {
+			if (!canGroupSelection) {
+				return;
+			}
+
+			event.preventDefault();
+			groupSelection();
+		},
+		{},
+		[canGroupSelection, groupSelection]
+	);
+
+	useHotkeys(
+		'meta+shift+h,ctrl+shift+h',
+		event => {
+			if (!canToggleSelectionHidden) {
+				return;
+			}
+
+			event.preventDefault();
+			toggleSelectionHidden();
+		},
+		{},
+		[canToggleSelectionHidden, toggleSelectionHidden]
 	);
 }
 
