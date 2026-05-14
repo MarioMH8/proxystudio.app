@@ -5,7 +5,7 @@ import { DndContext, KeyboardSensor, MouseSensor, PointerSensor, useSensor, useS
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { Card, Layer } from '@modules/card/domain';
-import { editorSlice, selectCard, selectExpandedGroupIds, selectSelectedLayerIds } from '@modules/editor/store';
+import { editorSlice, selectCard, selectExpandedGroupIds } from '@modules/editor/store';
 import { useAppDispatch, useAppSelector } from '@shared/store';
 import type { MouseEvent, ReactNode } from 'react';
 import { useState } from 'react';
@@ -16,13 +16,23 @@ import { collisionDetection, getDropState } from './layer-list.dnd';
 import GroupBoundaryDropTarget from './layer-list-group-boundary-drop-target';
 import LayerListItem from './layer-list-item';
 import { buildLayerTree } from './layer-list-tree';
+import useLayerSelectionActions from './use-layer-selection-actions';
 
 function LayerList(): ReactNode {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const card = useAppSelector(selectCard);
 	const expandedGroupIds = useAppSelector(selectExpandedGroupIds);
-	const selectedLayerIds = useAppSelector(selectSelectedLayerIds);
+	const {
+		canDeleteSelection,
+		canGroupSelection,
+		canToggleSelectionHidden,
+		deleteSelection,
+		groupSelection,
+		isSelectionHidden,
+		selectedLayerIds,
+		toggleSelectionHidden,
+	} = useLayerSelectionActions();
 	const [activeLayerId, setActiveLayerId] = useState<string | undefined>();
 	const [dropState, setDropState] = useState<LayerDropState | undefined>();
 
@@ -32,15 +42,6 @@ function LayerList(): ReactNode {
 		useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
 	);
 
-	const canDeleteSelection = selectedLayerIds.length > 0;
-	const canGroupSelection = Layer.canGroupSelection(card.layers, selectedLayerIds);
-	const selectedLayers = selectedLayerIds.flatMap(layerId => {
-		const layerResult = Layer.findLayerById(card.layers, layerId);
-
-		return layerResult ? [layerResult.layer] : [];
-	});
-	const canToggleSelectionHidden = selectedLayers.length > 0;
-	const isSelectionHidden = canToggleSelectionHidden && selectedLayers.every(layer => layer.hidden);
 	const nodes = buildLayerTree(card.layers, expandedGroupIds);
 
 	function handleLayerClick(event: MouseEvent<HTMLButtonElement>, layerId: string): void {
@@ -83,42 +84,6 @@ function LayerList(): ReactNode {
 		}
 
 		dispatch(editorSlice.actions.setLayerSelection([layerId]));
-	}
-
-	function handleDeleteSelection(): void {
-		if (!canDeleteSelection) {
-			return;
-		}
-
-		dispatch(editorSlice.actions.updateCard(Card.deleteLayers(card, selectedLayerIds)));
-		dispatch(editorSlice.actions.clearLayerSelection());
-	}
-
-	function handleGroupSelection(): void {
-		if (!canGroupSelection) {
-			return;
-		}
-
-		const previousGroupIds = new Set(Layer.findGroups(card.layers).map(layer => layer.id));
-		const nextCard = Card.groupLayers(card, selectedLayerIds);
-		const nextGroup = Layer.findGroups(nextCard.layers).find(layer => {
-			return !previousGroupIds.has(layer.id);
-		});
-
-		dispatch(editorSlice.actions.updateCard(nextCard));
-
-		if (nextGroup?.type === 'group') {
-			dispatch(editorSlice.actions.setExpandedLayerGroupIds([...new Set([nextGroup.id, ...expandedGroupIds])]));
-			dispatch(editorSlice.actions.setLayerSelection([nextGroup.id]));
-		}
-	}
-
-	function handleSelectionHiddenToggle(): void {
-		if (!canToggleSelectionHidden) {
-			return;
-		}
-
-		dispatch(editorSlice.actions.updateCard(Card.setLayersHidden(card, selectedLayerIds, !isSelectionHidden)));
 	}
 
 	function handleDragStart(event: DragStartEvent): void {
@@ -258,14 +223,14 @@ function LayerList(): ReactNode {
 							layer={node.layer}
 							onClick={event => handleLayerClick(event, node.layer.id)}
 							onContextMenuSelection={() => handleLayerContextMenu(node.layer.id)}
-							onDeleteSelection={handleDeleteSelection}
-							onGroupSelection={handleGroupSelection}
+							onDeleteSelection={deleteSelection}
+							onGroupSelection={groupSelection}
 							onRename={name => handleLayerRename(node.layer.id, name)}
 							onToggleExpanded={
 								node.layer.type === 'group' ? () => handleLayerExpandedToggle(node.layer.id) : undefined
 							}
 							onToggleHidden={() => handleLayerHiddenToggle(node.layer.id)}
-							onToggleSelectionHidden={handleSelectionHiddenToggle}
+							onToggleSelectionHidden={toggleSelectionHidden}
 							permissions={{
 								canDeleteSelection,
 								canGroupSelection,
