@@ -1,24 +1,16 @@
-import {
-	EDITOR_TOOL,
-	editorSlice,
-	selectCanRedo,
-	selectCanUndo,
-	selectCard,
-	useSaveCardMutation,
-} from '@modules/editor/store';
-import { useAppDispatch, useAppSelector } from '@shared/store';
-import { toggleFullscreen } from '@shared/toggle-fullscreen';
+import { EDITOR_TOOL, selectCanRedo, selectCanUndo, selectCard } from '@modules/editor/store';
+import { useAppSelector } from '@shared/store';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import useLayerSelectionActions from '../layer/use-layer-selection-actions';
-import { EDITOR_ID } from '../viewport/const';
+import useEditorCommands from './use-editor-commands';
 
 function useEditorHotkeys(): void {
-	const dispatch = useAppDispatch();
 	const canUndo = useAppSelector(selectCanUndo);
 	const canRedo = useAppSelector(selectCanRedo);
 	const card = useAppSelector(selectCard);
-	const [saveCard] = useSaveCardMutation({ fixedCacheKey: 'save-card' });
+	const { redo, resetViewport, saveCard, setViewportTool, toggleFullscreen, undo, zoomIn, zoomOut } =
+		useEditorCommands();
 	const {
 		canDeleteSelection,
 		canGroupSelection,
@@ -32,60 +24,60 @@ function useEditorHotkeys(): void {
 		's',
 		event => {
 			event.preventDefault();
-			dispatch(editorSlice.actions.setViewportTool(EDITOR_TOOL.SELECT));
+			setViewportTool(EDITOR_TOOL.SELECT);
 		},
 		{ preventDefault: true },
-		[dispatch]
+		[setViewportTool]
 	);
 
 	useHotkeys(
 		'h',
 		event => {
 			event.preventDefault();
-			dispatch(editorSlice.actions.setViewportTool(EDITOR_TOOL.PAN));
+			setViewportTool(EDITOR_TOOL.PAN);
 		},
 		{ preventDefault: true },
-		[dispatch]
+		[setViewportTool]
 	);
 
 	useHotkeys(
 		'-,subtract',
 		event => {
 			event.preventDefault();
-			dispatch(editorSlice.actions.zoomOutViewport());
+			zoomOut();
 		},
 		{ preventDefault: true },
-		[dispatch]
+		[zoomOut]
 	);
 
 	useHotkeys(
 		'=,+,add',
 		event => {
 			event.preventDefault();
-			dispatch(editorSlice.actions.zoomInViewport());
+			zoomIn();
 		},
 		{ preventDefault: true },
-		[dispatch]
+		[zoomIn]
 	);
 
 	useHotkeys(
 		'0',
 		event => {
 			event.preventDefault();
-			dispatch(editorSlice.actions.resetViewport({ markAsInteracted: false }));
+			resetViewport();
 		},
 		{ preventDefault: true },
-		[dispatch]
+		[resetViewport]
 	);
 
 	useHotkeys(
 		'f',
 		event => {
 			event.preventDefault();
-			toggleFullscreen(EDITOR_ID);
+			toggleFullscreen();
 		},
 		{ preventDefault: true },
-		[]
+		[toggleFullscreen]
 	);
 
 	useHotkeys(
@@ -94,11 +86,11 @@ function useEditorHotkeys(): void {
 			event.preventDefault();
 
 			if (canUndo) {
-				dispatch(editorSlice.actions.undoCardChanges());
+				undo();
 			}
 		},
 		{ enableOnFormTags: true, preventDefault: true },
-		[canUndo, dispatch]
+		[canUndo, undo]
 	);
 
 	useHotkeys(
@@ -107,18 +99,18 @@ function useEditorHotkeys(): void {
 			event.preventDefault();
 
 			if (canRedo) {
-				dispatch(editorSlice.actions.redoCardChanges());
+				redo();
 			}
 		},
 		{ enableOnFormTags: true, preventDefault: true },
-		[canRedo, dispatch]
+		[canRedo, redo]
 	);
 
 	useHotkeys(
 		'meta+s,ctrl+s',
 		event => {
 			event.preventDefault();
-			void saveCard(card);
+			saveCard(card);
 		},
 		{ enableOnFormTags: true, preventDefault: true },
 		[card, saveCard]

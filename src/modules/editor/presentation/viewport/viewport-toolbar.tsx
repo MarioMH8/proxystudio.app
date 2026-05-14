@@ -11,7 +11,6 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/tooltip';
 import {
 	EDITOR_TOOL,
-	editorSlice,
 	selectCanRedo,
 	selectCanUndo,
 	selectViewportTool,
@@ -20,8 +19,7 @@ import {
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { MODIFIER_KIND, modifierKey } from '@shared/platform';
-import { useAppDispatch, useAppSelector } from '@shared/store';
-import { toggleFullscreen } from '@shared/toggle-fullscreen';
+import { useAppSelector } from '@shared/store';
 import {
 	ExpandIcon,
 	FullscreenIcon,
@@ -35,7 +33,7 @@ import {
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { EDITOR_ID } from './const';
+import useEditorCommands from '../editor/use-editor-commands';
 
 const ICON_SIZE = 14;
 const key = modifierKey();
@@ -54,7 +52,7 @@ type EditorViewportToolbarProperties = VariantProperties<typeof variants> & {
 
 function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): ReactNode {
 	const { t } = useTranslation();
-	const dispatch = useAppDispatch();
+	const { redo, resetViewport, setViewportTool, toggleFullscreen, undo, zoomIn, zoomOut } = useEditorCommands();
 	const canUndo = useAppSelector(selectCanUndo);
 	const canRedo = useAppSelector(selectCanRedo);
 	const tool = useAppSelector(selectViewportTool);
@@ -69,11 +67,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 					aria-label={t('editor.viewportToolbar.tools')}
 					onValueChange={value => {
 						if (value) {
-							dispatch(
-								editorSlice.actions.setViewportTool(
-									value as (typeof EDITOR_TOOL)[keyof typeof EDITOR_TOOL]
-								)
-							);
+							setViewportTool(value as (typeof EDITOR_TOOL)[keyof typeof EDITOR_TOOL]);
 						}
 					}}
 					type='single'
@@ -137,9 +131,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 								aria-label={t('editor.viewportToolbar.undo')}
 								disabled={!canUndo}
 								icon
-								onClick={() => {
-									dispatch(editorSlice.actions.undoCardChanges());
-								}}>
+								onClick={undo}>
 								<Undo2Icon
 									aria-hidden='true'
 									size={ICON_SIZE}
@@ -165,9 +157,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 								aria-label={t('editor.viewportToolbar.redo')}
 								disabled={!canRedo}
 								icon
-								onClick={() => {
-									dispatch(editorSlice.actions.redoCardChanges());
-								}}>
+								onClick={redo}>
 								<Redo2Icon
 									aria-hidden='true'
 									size={ICON_SIZE}
@@ -195,9 +185,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 							<ToolbarButton
 								aria-label={t('editor.viewportToolbar.zoomOut')}
 								icon
-								onClick={() => {
-									dispatch(editorSlice.actions.zoomOutViewport());
-								}}>
+								onClick={zoomOut}>
 								<ZoomOutIcon
 									aria-hidden='true'
 									size={ICON_SIZE}
@@ -229,9 +217,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 							<ToolbarButton
 								aria-label={t('editor.viewportToolbar.zoomIn')}
 								icon
-								onClick={() => {
-									dispatch(editorSlice.actions.zoomInViewport());
-								}}>
+								onClick={zoomIn}>
 								<ZoomInIcon
 									aria-hidden='true'
 									size={ICON_SIZE}
@@ -255,9 +241,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 							<ToolbarButton
 								aria-label={t('editor.viewportToolbar.zoomReset')}
 								icon
-								onClick={() => {
-									dispatch(editorSlice.actions.resetViewport({ markAsInteracted: false }));
-								}}>
+								onClick={resetViewport}>
 								<FullscreenIcon
 									aria-hidden='true'
 									size={ICON_SIZE}
@@ -281,9 +265,7 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 							<ToolbarButton
 								aria-label={t('editor.viewportToolbar.fullscreen')}
 								icon
-								onClick={() => {
-									toggleFullscreen(EDITOR_ID);
-								}}>
+								onClick={toggleFullscreen}>
 								<ExpandIcon
 									aria-hidden='true'
 									size={ICON_SIZE}
