@@ -8,25 +8,25 @@ const key = modifierKey();
 const shiftKey = { ariaKeyShortcuts: 'Shift', kind: MODIFIER_KIND.TEXT, label: 'Shift' } as const;
 
 interface LayerListItemContextMenuProperties {
-	canDeleteSelection: boolean;
-	canGroupSelection: boolean;
-	canToggleSelectionHidden: boolean;
 	children: ReactNode;
 	isSelectionHidden: boolean;
 	onDeleteSelection: () => void;
 	onGroupSelection: () => void;
 	onToggleSelectionHidden: () => void;
+	permissions: {
+		canDeleteSelection: boolean;
+		canGroupSelection: boolean;
+		canToggleSelectionHidden: boolean;
+	};
 }
 
 function LayerListItemContextMenu({
-	canDeleteSelection,
-	canGroupSelection,
-	canToggleSelectionHidden,
 	children,
 	isSelectionHidden,
 	onDeleteSelection,
 	onGroupSelection,
 	onToggleSelectionHidden,
+	permissions,
 }: LayerListItemContextMenuProperties): ReactNode {
 	const { t } = useTranslation();
 
@@ -35,7 +35,7 @@ function LayerListItemContextMenu({
 			<ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
 			<ContextMenuContent>
 				<ContextMenuItem
-					disabled={!canGroupSelection}
+					disabled={!permissions.canGroupSelection}
 					items='center'
 					justify='between'
 					onSelect={onGroupSelection}>
@@ -49,7 +49,7 @@ function LayerListItemContextMenu({
 					/>
 				</ContextMenuItem>
 				<ContextMenuItem
-					disabled={!canToggleSelectionHidden}
+					disabled={!permissions.canToggleSelectionHidden}
 					items='center'
 					justify='between'
 					onSelect={onToggleSelectionHidden}>
@@ -63,7 +63,7 @@ function LayerListItemContextMenu({
 					/>
 				</ContextMenuItem>
 				<ContextMenuItem
-					disabled={!canDeleteSelection}
+					disabled={!permissions.canDeleteSelection}
 					items='center'
 					justify='between'
 					onSelect={onDeleteSelection}

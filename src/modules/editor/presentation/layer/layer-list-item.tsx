@@ -88,13 +88,11 @@ function LayerListItem({
 
 	return (
 		<LayerListItemContextMenu
-			canDeleteSelection={permissions.canDeleteSelection}
-			canGroupSelection={permissions.canGroupSelection}
-			canToggleSelectionHidden={permissions.canToggleSelectionHidden}
 			isSelectionHidden={permissions.isSelectionHidden}
 			onDeleteSelection={onDeleteSelection}
 			onGroupSelection={onGroupSelection}
-			onToggleSelectionHidden={onToggleSelectionHidden}>
+			onToggleSelectionHidden={onToggleSelectionHidden}
+			permissions={permissions}>
 			<LayerListItemView
 				depth={depth ?? 0}
 				dnd={{

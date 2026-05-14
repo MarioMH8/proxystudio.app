@@ -19,7 +19,7 @@ import {
 	GripVerticalIcon,
 	LayersIcon,
 } from 'lucide-react';
-import type { KeyboardEvent, MouseEvent, MouseEventHandler, ReactNode } from 'react';
+import type { ComponentProps, KeyboardEvent, MouseEvent, MouseEventHandler, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { LayerDropState } from './layer-list.dnd';
@@ -254,7 +254,7 @@ interface LayerListItemDndProperties {
 	transform: string | undefined;
 }
 
-interface LayerListItemViewProperties {
+interface LayerListItemViewProperties extends Omit<ComponentProps<'li'>, 'onClick'> {
 	depth?: number;
 	dnd: LayerListItemDndProperties;
 	dropState?: LayerDropState | undefined;
@@ -264,6 +264,7 @@ interface LayerListItemViewProperties {
 	onRename: (name: string) => void;
 	onToggleExpanded?: (() => void) | undefined;
 	onToggleHidden: () => void;
+	ref?: ComponentProps<'li'>['ref'];
 	state: LayerListItemState;
 }
 
@@ -277,7 +278,9 @@ function LayerListItemView({
 	onRename,
 	onToggleExpanded,
 	onToggleHidden,
+	ref,
 	state,
+	...properties
 }: LayerListItemViewProperties): ReactNode {
 	const { isExpanded = false, isSelected } = state;
 	const { t } = useTranslation();
@@ -331,7 +334,10 @@ function LayerListItemView({
 	}
 
 	return (
-		<li className='relative'>
+		<li
+			{...properties}
+			className={cn('relative', properties.className)}
+			ref={ref}>
 			<div
 				className='absolute inset-x-2 top-0 h-3'
 				ref={dnd.setTopDropNodeRef}
