@@ -90,10 +90,6 @@ function LayerList(): ReactNode {
 		const layerId = typeof event.active.id === 'string' ? event.active.id : undefined;
 
 		setActiveLayerId(layerId);
-
-		if (layerId && !selectedLayerIds.includes(layerId)) {
-			dispatch(editorSlice.actions.setLayerSelection([layerId]));
-		}
 	}
 
 	function handleDragOver(event: DragOverEvent): void {
@@ -149,7 +145,6 @@ function LayerList(): ReactNode {
 
 		if (nextCard !== card) {
 			dispatch(editorSlice.actions.updateCard(nextCard));
-			dispatch(editorSlice.actions.setLayerSelection([movedLayerId]));
 
 			if (
 				dropState.position === Layer.DROP_POSITION.INTO_END ||
