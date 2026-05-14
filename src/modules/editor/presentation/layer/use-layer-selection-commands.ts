@@ -2,7 +2,7 @@ import { Card, Layer } from '@modules/card/domain';
 import { editorSlice, selectCard, selectExpandedGroupIds, selectSelectedLayerIds } from '@modules/editor/store';
 import { useAppDispatch, useAppSelector } from '@shared/store';
 
-interface LayerSelectionActionsResult {
+interface LayerSelectionCommandsResult {
 	canDeleteSelection: boolean;
 	canGroupSelection: boolean;
 	canToggleSelectionHidden: boolean;
@@ -13,7 +13,7 @@ interface LayerSelectionActionsResult {
 	toggleSelectionHidden: () => void;
 }
 
-function useLayerSelectionActions(): LayerSelectionActionsResult {
+function useLayerSelectionCommands(): LayerSelectionCommandsResult {
 	const dispatch = useAppDispatch();
 	const card = useAppSelector(selectCard);
 	const expandedGroupIds = useAppSelector(selectExpandedGroupIds);
@@ -76,4 +76,4 @@ function useLayerSelectionActions(): LayerSelectionActionsResult {
 	};
 }
 
-export default useLayerSelectionActions;
+export default useLayerSelectionCommands;

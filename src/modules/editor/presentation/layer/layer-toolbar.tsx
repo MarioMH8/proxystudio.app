@@ -6,7 +6,7 @@ import { cn } from '@shared/cva';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import AddLayerDropdown from './add-layer-dropdown';
+import AddLayerMenu from './add-layer-menu';
 
 const baseClassName = 'px-3 py-1';
 
@@ -32,7 +32,7 @@ function LayerToolbar({ className, ...properties }: LayerPanelProperties): React
 			<FlexBox
 				className='gap-2'
 				items='center'>
-				<AddLayerDropdown />
+				<AddLayerMenu />
 			</FlexBox>
 		</FlexBox>
 	);

@@ -2,7 +2,7 @@ import { EDITOR_TOOL, selectCanRedo, selectCanUndo, selectCard } from '@modules/
 import { useAppSelector } from '@shared/store';
 import { useHotkeys } from 'react-hotkeys-hook';
 
-import useLayerSelectionActions from '../layer/use-layer-selection-actions';
+import useLayerSelectionCommands from '../layer/use-layer-selection-commands';
 import useEditorCommands from './use-editor-commands';
 
 function useEditorHotkeys(): void {
@@ -18,7 +18,7 @@ function useEditorHotkeys(): void {
 		deleteSelection,
 		groupSelection,
 		toggleSelectionHidden,
-	} = useLayerSelectionActions();
+	} = useLayerSelectionCommands();
 
 	useHotkeys(
 		's',

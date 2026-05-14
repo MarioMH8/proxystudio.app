@@ -16,7 +16,7 @@ import { collisionDetection, getDropState } from './layer-list.dnd';
 import GroupBoundaryDropTarget from './layer-list-group-boundary-drop-target';
 import LayerListItem from './layer-list-item';
 import { buildLayerTree } from './layer-list-tree';
-import useLayerSelectionActions from './use-layer-selection-actions';
+import useLayerSelectionCommands from './use-layer-selection-commands';
 
 function LayerList(): ReactNode {
 	const { t } = useTranslation();
@@ -32,7 +32,7 @@ function LayerList(): ReactNode {
 		isSelectionHidden,
 		selectedLayerIds,
 		toggleSelectionHidden,
-	} = useLayerSelectionActions();
+	} = useLayerSelectionCommands();
 	const [activeLayerId, setActiveLayerId] = useState<string | undefined>();
 	const [dropState, setDropState] = useState<LayerDropState | undefined>();
 

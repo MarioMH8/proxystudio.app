@@ -19,7 +19,7 @@ const ADDABLE_LAYER_TYPES = [
 	'watermark',
 ] as const satisfies AddableLayerType[];
 
-function AddLayerDropdown(): ReactNode {
+function AddLayerMenu(): ReactNode {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const card = useAppSelector(selectCard);
@@ -56,6 +56,6 @@ function AddLayerDropdown(): ReactNode {
 	);
 }
 
-AddLayerDropdown.displayName = 'AddLayerDropdown';
+AddLayerMenu.displayName = 'AddLayerMenu';
 
-export default AddLayerDropdown;
+export default AddLayerMenu;
