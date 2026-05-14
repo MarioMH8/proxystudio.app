@@ -5,8 +5,16 @@ import type { MouseEvent, ReactNode } from 'react';
 
 import type { LayerDropState } from './layer-list.dnd';
 import { DROP_ZONE } from './layer-list.dnd';
-import type { LayerListItemPermissions, LayerListItemState } from './layer-list-item-view';
+import LayerListItemContextMenu from './layer-list-item-context-menu';
+import type { LayerListItemState } from './layer-list-item-view';
 import LayerListItemView from './layer-list-item-view';
+
+interface LayerListItemPermissions {
+	canDeleteSelection: boolean;
+	canGroupSelection: boolean;
+	canToggleSelectionHidden: boolean;
+	isSelectionHidden: boolean;
+}
 
 interface LayerListItemProperties {
 	activeLayerId: string | undefined;
@@ -81,36 +89,41 @@ function LayerListItem({
 	}
 
 	return (
-		<LayerListItemView
-			activeLayerId={activeLayerId}
-			depth={depth ?? 0}
-			dnd={{
-				attributes,
-				isDragging,
-				listeners,
-				setBottomDropNodeRef: bottomDrop.setNodeRef,
-				setButtonNodeRef: setButtonNodeReference,
-				setTopDropNodeRef: topDrop.setNodeRef,
-				transform: CSS.Translate.toString(transform),
-			}}
-			dropState={dropState}
-			layer={layer}
-			onClick={onClick}
-			onContextMenuSelection={onContextMenuSelection}
+		<LayerListItemContextMenu
+			canDeleteSelection={permissions.canDeleteSelection}
+			canGroupSelection={permissions.canGroupSelection}
+			canToggleSelectionHidden={permissions.canToggleSelectionHidden}
+			isSelectionHidden={permissions.isSelectionHidden}
 			onDeleteSelection={onDeleteSelection}
 			onGroupSelection={onGroupSelection}
-			onRename={onRename}
-			onToggleExpanded={onToggleExpanded}
-			onToggleHidden={onToggleHidden}
-			onToggleSelectionHidden={onToggleSelectionHidden}
-			permissions={permissions}
-			state={state}
-		/>
+			onToggleSelectionHidden={onToggleSelectionHidden}>
+			<LayerListItemView
+				activeLayerId={activeLayerId}
+				depth={depth ?? 0}
+				dnd={{
+					attributes,
+					isDragging,
+					listeners,
+					setBottomDropNodeRef: bottomDrop.setNodeRef,
+					setButtonNodeRef: setButtonNodeReference,
+					setTopDropNodeRef: topDrop.setNodeRef,
+					transform: CSS.Translate.toString(transform),
+				}}
+				dropState={dropState}
+				layer={layer}
+				onClick={onClick}
+				onContextMenuSelection={onContextMenuSelection}
+				onRename={onRename}
+				onToggleExpanded={onToggleExpanded}
+				onToggleHidden={onToggleHidden}
+				state={state}
+			/>
+		</LayerListItemContextMenu>
 	);
 }
 
 LayerListItem.displayName = 'LayerListItem';
 
-export type { LayerListItemProperties };
+export type { LayerListItemPermissions, LayerListItemProperties };
 
 export default LayerListItem;

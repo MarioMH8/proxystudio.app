@@ -23,7 +23,6 @@ import { useTranslation } from 'react-i18next';
 
 import type { LayerDropState } from './layer-list.dnd';
 import { getLayerTreeIndent } from './layer-list.dnd';
-import LayerListItemContextMenu from './layer-list-item-context-menu';
 
 const variants = cva({
 	base: [
@@ -110,13 +109,6 @@ function getDropIndicatorPosition(dropState: LayerDropState | undefined): 'botto
 	return 'hidden';
 }
 
-interface LayerListItemPermissions {
-	canDeleteSelection: boolean;
-	canGroupSelection: boolean;
-	canToggleSelectionHidden: boolean;
-	isSelectionHidden: boolean;
-}
-
 interface LayerListItemState {
 	isExpanded?: boolean;
 	isSelected: boolean;
@@ -140,13 +132,9 @@ interface LayerListItemViewProperties {
 	layer: Layer;
 	onClick: MouseEventHandler<HTMLButtonElement>;
 	onContextMenuSelection: () => void;
-	onDeleteSelection: () => void;
-	onGroupSelection: () => void;
 	onRename: (name: string) => void;
 	onToggleExpanded?: (() => void) | undefined;
 	onToggleHidden: () => void;
-	onToggleSelectionHidden: () => void;
-	permissions: LayerListItemPermissions;
 	state: LayerListItemState;
 }
 
@@ -158,13 +146,9 @@ function LayerListItemView({
 	layer,
 	onClick,
 	onContextMenuSelection,
-	onDeleteSelection,
-	onGroupSelection,
 	onRename,
 	onToggleExpanded,
 	onToggleHidden,
-	onToggleSelectionHidden,
-	permissions,
 	state,
 }: LayerListItemViewProperties): ReactNode {
 	const { isExpanded = false, isSelected } = state;
@@ -213,128 +197,119 @@ function LayerListItemView({
 				className='absolute inset-x-2 top-0 h-3'
 				ref={dnd.setTopDropNodeRef}
 			/>
-			<LayerListItemContextMenu
-				canDeleteSelection={permissions.canDeleteSelection}
-				canGroupSelection={permissions.canGroupSelection}
-				canToggleSelectionHidden={permissions.canToggleSelectionHidden}
-				isSelectionHidden={permissions.isSelectionHidden}
-				onDeleteSelection={onDeleteSelection}
-				onGroupSelection={onGroupSelection}
-				onToggleSelectionHidden={onToggleSelectionHidden}>
-				<Button
-					{...dnd.attributes}
-					aria-expanded={isGroup ? isExpanded : undefined}
-					aria-pressed={isSelected}
-					className={variants({
-						dragging: dnd.isDragging,
-						dropMode: getDropMode(dropState),
-						hidden: layer.hidden,
-						selected: isSelected,
-					})}
-					dimension='xs'
-					onClick={onClick}
-					onContextMenu={onContextMenuSelection}
-					onKeyDown={handleButtonKeyDown}
-					ref={dnd.setButtonNodeRef}
-					style={{
-						paddingLeft: getLayerTreeIndent(depth),
-						transform: dnd.transform,
-					}}
-					transparent
-					type='button'
-					variant='default'>
-					<span
-						className='cursor-grab text-foreground-500 active:cursor-grabbing'
-						{...dnd.listeners}>
-						<GripVerticalIcon
-							aria-hidden='true'
-							size={ICON_SIZE}
-						/>
-					</span>
-					{isGroup ? (
-						<span
-							aria-hidden='true'
-							className='shrink-0 cursor-pointer'
-							onClick={handleExpandIndicatorClick}
-							title={t(isExpanded ? 'layers.collapseGroup' : 'layers.expandGroup', {
-								name,
-							})}>
-							{isExpanded ? (
-								<ChevronDownIcon
-									aria-hidden='true'
-									size={ICON_SIZE}
-								/>
-							) : (
-								<ChevronRightIcon
-									aria-hidden='true'
-									size={ICON_SIZE}
-								/>
-							)}
-						</span>
-					) : (
-						<span className='w-3.5 shrink-0' />
-					)}
-					{isGroup ? (
-						<FolderTreeIcon
-							aria-hidden='true'
-							size={ICON_SIZE}
-						/>
-					) : (
-						<LayersIcon
-							aria-hidden='true'
-							size={ICON_SIZE}
-						/>
-					)}
-					<FlexBox
-						className='min-w-0'
-						direction='column'
-						items='start'>
-						<EditableSpan
-							ariaLabel={t('layers.rename')}
-							className='truncate'
-							inputClassName='truncate'
-							onChange={onRename}
-							placeholder={name}
-							value={name}
-						/>
-						<Span
-							className={META_CLASS_NAME}
-							weight='light'>
-							{`${t(`layers.options.${layer.type}`)} · ${layer.id.slice(0, 8)}`}
-							{isGroup ? ` · ${layer.children.length.toFixed(0)}` : ''}
-						</Span>
-					</FlexBox>
+			<Button
+				{...dnd.attributes}
+				aria-expanded={isGroup ? isExpanded : undefined}
+				aria-pressed={isSelected}
+				className={variants({
+					dragging: dnd.isDragging,
+					dropMode: getDropMode(dropState),
+					hidden: layer.hidden,
+					selected: isSelected,
+				})}
+				dimension='xs'
+				onClick={onClick}
+				onContextMenu={onContextMenuSelection}
+				onKeyDown={handleButtonKeyDown}
+				ref={dnd.setButtonNodeRef}
+				style={{
+					paddingLeft: getLayerTreeIndent(depth),
+					transform: dnd.transform,
+				}}
+				transparent
+				type='button'
+				variant='default'>
+				<span
+					className='cursor-grab text-foreground-500 active:cursor-grabbing'
+					{...dnd.listeners}>
+					<GripVerticalIcon
+						aria-hidden='true'
+						size={ICON_SIZE}
+					/>
+				</span>
+				{isGroup ? (
 					<span
 						aria-hidden='true'
-						className={cn(
-							'ml-auto shrink-0 cursor-pointer text-foreground-500',
-							hover({
-								strength: 'soft',
-								variant: 'default',
-							})
-						)}
-						onClick={handleVisibilityIndicatorClick}
-						title={t(layer.hidden ? 'layers.showLayer' : 'layers.hideLayer', {
+						className='shrink-0 cursor-pointer'
+						onClick={handleExpandIndicatorClick}
+						title={t(isExpanded ? 'layers.collapseGroup' : 'layers.expandGroup', {
 							name,
 						})}>
-						{layer.hidden ? (
-							<EyeOffIcon
+						{isExpanded ? (
+							<ChevronDownIcon
 								aria-hidden='true'
 								size={ICON_SIZE}
 							/>
 						) : (
-							<EyeIcon
+							<ChevronRightIcon
 								aria-hidden='true'
 								size={ICON_SIZE}
 							/>
 						)}
 					</span>
-					<span className={dropIndicatorVariants({ position: getDropIndicatorPosition(dropState) })} />
-					{dropState?.position === 'into-end' ? (
-						<span className='pointer-events-none absolute inset-x-3 bottom-1 h-px bg-primary/70' />
-					) : undefined}
-				</Button>
-			</LayerListItemContextMenu>
+				) : (
+					<span className='w-3.5 shrink-0' />
+				)}
+				{isGroup ? (
+					<FolderTreeIcon
+						aria-hidden='true'
+						size={ICON_SIZE}
+					/>
+				) : (
+					<LayersIcon
+						aria-hidden='true'
+						size={ICON_SIZE}
+					/>
+				)}
+				<FlexBox
+					className='min-w-0'
+					direction='column'
+					items='start'>
+					<EditableSpan
+						ariaLabel={t('layers.rename')}
+						className='truncate'
+						inputClassName='truncate'
+						onChange={onRename}
+						placeholder={name}
+						value={name}
+					/>
+					<Span
+						className={META_CLASS_NAME}
+						weight='light'>
+						{`${t(`layers.options.${layer.type}`)} · ${layer.id.slice(0, 8)}`}
+						{isGroup ? ` · ${layer.children.length.toFixed(0)}` : ''}
+					</Span>
+				</FlexBox>
+				<span
+					aria-hidden='true'
+					className={cn(
+						'ml-auto shrink-0 cursor-pointer text-foreground-500',
+						hover({
+							strength: 'soft',
+							variant: 'default',
+						})
+					)}
+					onClick={handleVisibilityIndicatorClick}
+					title={t(layer.hidden ? 'layers.showLayer' : 'layers.hideLayer', {
+						name,
+					})}>
+					{layer.hidden ? (
+						<EyeOffIcon
+							aria-hidden='true'
+							size={ICON_SIZE}
+						/>
+					) : (
+						<EyeIcon
+							aria-hidden='true'
+							size={ICON_SIZE}
+						/>
+					)}
+				</span>
+				<span className={dropIndicatorVariants({ position: getDropIndicatorPosition(dropState) })} />
+				{dropState?.position === 'into-end' ? (
+					<span className='pointer-events-none absolute inset-x-3 bottom-1 h-px bg-primary/70' />
+				) : undefined}
+			</Button>
 			<div
 				className={cn(
 					'absolute inset-x-2 bottom-0 h-3',
@@ -348,6 +323,6 @@ function LayerListItemView({
 
 LayerListItemView.displayName = 'LayerListItemView';
 
-export type { LayerListItemPermissions, LayerListItemState, LayerListItemViewProperties };
+export type { LayerListItemState, LayerListItemViewProperties };
 
 export default LayerListItemView;
