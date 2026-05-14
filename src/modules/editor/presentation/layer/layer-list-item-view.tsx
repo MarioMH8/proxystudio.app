@@ -77,6 +77,124 @@ const dropIndicatorVariants = cva({
 const ICON_SIZE = 14;
 const META_CLASS_NAME = cn('truncate uppercase', font({ dimension: 'xs', tracking: 'wider', weight: 'light' }));
 
+interface ExpandIndicatorProperties {
+	expanded: boolean;
+	onClick: (event: MouseEvent<HTMLSpanElement>) => void;
+	title: string;
+	visible: boolean;
+}
+
+interface DragHandleProperties {
+	listeners: DraggableSyntheticListeners | undefined;
+}
+
+function DragHandle({ listeners }: DragHandleProperties): ReactNode {
+	return (
+		<span
+			className='cursor-grab text-foreground-500 active:cursor-grabbing'
+			{...listeners}>
+			<GripVerticalIcon
+				aria-hidden='true'
+				size={ICON_SIZE}
+			/>
+		</span>
+	);
+}
+
+function ExpandIndicator({ expanded, onClick, title, visible }: ExpandIndicatorProperties): ReactNode {
+	if (!visible) {
+		return <span className='w-3.5 shrink-0' />;
+	}
+
+	return (
+		<span
+			aria-hidden='true'
+			className='shrink-0 cursor-pointer'
+			onClick={onClick}
+			title={title}>
+			{expanded ? (
+				<ChevronDownIcon
+					aria-hidden='true'
+					size={ICON_SIZE}
+				/>
+			) : (
+				<ChevronRightIcon
+					aria-hidden='true'
+					size={ICON_SIZE}
+				/>
+			)}
+		</span>
+	);
+}
+
+interface LayerTypeIndicatorProperties {
+	group: boolean;
+}
+
+function LayerTypeIndicator({ group }: LayerTypeIndicatorProperties): ReactNode {
+	if (group) {
+		return (
+			<FolderTreeIcon
+				aria-hidden='true'
+				size={ICON_SIZE}
+			/>
+		);
+	}
+
+	return (
+		<LayersIcon
+			aria-hidden='true'
+			size={ICON_SIZE}
+		/>
+	);
+}
+
+interface VisibilityIndicatorProperties {
+	hidden: boolean;
+	onClick: (event: MouseEvent<HTMLSpanElement>) => void;
+	title: string;
+}
+
+function VisibilityIndicator({ hidden, onClick, title }: VisibilityIndicatorProperties): ReactNode {
+	return (
+		<span
+			aria-hidden='true'
+			className={cn(
+				'ml-auto shrink-0 cursor-pointer text-foreground-500',
+				hover({
+					strength: 'soft',
+					variant: 'default',
+				})
+			)}
+			onClick={onClick}
+			title={title}>
+			{hidden ? (
+				<EyeOffIcon
+					aria-hidden='true'
+					size={ICON_SIZE}
+				/>
+			) : (
+				<EyeIcon
+					aria-hidden='true'
+					size={ICON_SIZE}
+				/>
+			)}
+		</span>
+	);
+}
+
+interface DropIntoEndIndicatorProperties {
+	dropState: LayerDropState | undefined;
+}
+
+function DropIntoEndIndicator({ dropState }: DropIntoEndIndicatorProperties): ReactNode {
+	if (dropState?.position !== 'into-end') {
+		return undefined;
+	}
+
+	return <span className='pointer-events-none absolute inset-x-3 bottom-1 h-px bg-primary/70' />;
+}
+
 function getDropMode(dropState: LayerDropState | undefined): 'group' | 'inside' | 'none' | 'reorder' {
 	if (!dropState) {
 		return 'none';
@@ -155,6 +273,10 @@ function LayerListItemView({
 	const { t } = useTranslation();
 	const isGroup = layer.type === 'group';
 	const name = layer.name ?? t(`layers.options.${layer.type}`);
+	const expandIndicatorTitle = t(isExpanded ? 'layers.collapseGroup' : 'layers.expandGroup', { name });
+	const visibilityIndicatorTitle = t(layer.hidden ? 'layers.showLayer' : 'layers.hideLayer', {
+		name,
+	});
 
 	function handleExpandIndicatorClick(event: MouseEvent<HTMLSpanElement>): void {
 		event.preventDefault();
@@ -219,48 +341,14 @@ function LayerListItemView({
 				transparent
 				type='button'
 				variant='default'>
-				<span
-					className='cursor-grab text-foreground-500 active:cursor-grabbing'
-					{...dnd.listeners}>
-					<GripVerticalIcon
-						aria-hidden='true'
-						size={ICON_SIZE}
-					/>
-				</span>
-				{isGroup ? (
-					<span
-						aria-hidden='true'
-						className='shrink-0 cursor-pointer'
-						onClick={handleExpandIndicatorClick}
-						title={t(isExpanded ? 'layers.collapseGroup' : 'layers.expandGroup', {
-							name,
-						})}>
-						{isExpanded ? (
-							<ChevronDownIcon
-								aria-hidden='true'
-								size={ICON_SIZE}
-							/>
-						) : (
-							<ChevronRightIcon
-								aria-hidden='true'
-								size={ICON_SIZE}
-							/>
-						)}
-					</span>
-				) : (
-					<span className='w-3.5 shrink-0' />
-				)}
-				{isGroup ? (
-					<FolderTreeIcon
-						aria-hidden='true'
-						size={ICON_SIZE}
-					/>
-				) : (
-					<LayersIcon
-						aria-hidden='true'
-						size={ICON_SIZE}
-					/>
-				)}
+				<DragHandle listeners={dnd.listeners} />
+				<ExpandIndicator
+					expanded={isExpanded}
+					onClick={handleExpandIndicatorClick}
+					title={expandIndicatorTitle}
+					visible={isGroup}
+				/>
+				<LayerTypeIndicator group={isGroup} />
 				<FlexBox
 					className='min-w-0'
 					direction='column'
@@ -280,35 +368,13 @@ function LayerListItemView({
 						{isGroup ? ` · ${layer.children.length.toFixed(0)}` : ''}
 					</Span>
 				</FlexBox>
-				<span
-					aria-hidden='true'
-					className={cn(
-						'ml-auto shrink-0 cursor-pointer text-foreground-500',
-						hover({
-							strength: 'soft',
-							variant: 'default',
-						})
-					)}
+				<VisibilityIndicator
+					hidden={layer.hidden}
 					onClick={handleVisibilityIndicatorClick}
-					title={t(layer.hidden ? 'layers.showLayer' : 'layers.hideLayer', {
-						name,
-					})}>
-					{layer.hidden ? (
-						<EyeOffIcon
-							aria-hidden='true'
-							size={ICON_SIZE}
-						/>
-					) : (
-						<EyeIcon
-							aria-hidden='true'
-							size={ICON_SIZE}
-						/>
-					)}
-				</span>
+					title={visibilityIndicatorTitle}
+				/>
 				<span className={dropIndicatorVariants({ position: getDropIndicatorPosition(dropState) })} />
-				{dropState?.position === 'into-end' ? (
-					<span className='pointer-events-none absolute inset-x-3 bottom-1 h-px bg-primary/70' />
-				) : undefined}
+				<DropIntoEndIndicator dropState={dropState} />
 			</Button>
 			<div
 				className={cn(
