@@ -28,16 +28,31 @@ const variants = cva({
 	},
 });
 
+type ContextMenuItemFlexProperties = Omit<Parameters<typeof flexBoxClassName>[0], 'className' | 'variant'>;
+
 type ContextMenuItemProps = RadixContextMenu.ContextMenuItemProps & VariantProperties<typeof variants>;
 
-function ContextMenuItem({ className, variant = 'default', ...properties }: ContextMenuItemProps): ReactNode {
+type ContextMenuItemProperties = ContextMenuItemFlexProperties &
+	ContextMenuItemProps & {
+		flexVariant?: Parameters<typeof flexBoxClassName>[0]['variant'];
+	};
+
+function ContextMenuItem({
+	className,
+	direction,
+	flexVariant,
+	items,
+	justify,
+	variant = 'default',
+	...properties
+}: ContextMenuItemProperties): ReactNode {
 	return (
 		<RadixContextMenu.Item
 			className={cn(
 				font({ dimension: 'sm', variant }),
 				hover({ strength: 'soft', variant }),
 				focus({ noBorder: true, variant }),
-				flexBoxClassName({}),
+				flexBoxClassName({ direction, items, justify, variant: flexVariant }),
 				rounded({ dimension: 'sm' }),
 				variants({ className, variant }),
 				className

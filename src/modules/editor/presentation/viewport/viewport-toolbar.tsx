@@ -16,8 +16,7 @@ import {
 	selectViewportTool,
 	selectViewportZoom,
 } from '@modules/editor/store';
-import type { VariantProperties } from '@shared/cva';
-import { cn, cva } from '@shared/cva';
+import { cn } from '@shared/cva';
 import { MODIFIER_KIND, modifierKey } from '@shared/platform';
 import { useAppSelector } from '@shared/store';
 import {
@@ -38,17 +37,27 @@ import useEditorCommands from '../editor/use-editor-commands';
 const ICON_SIZE = 14;
 const key = modifierKey();
 const shiftKey = { ariaKeyShortcuts: 'Shift', kind: MODIFIER_KIND.TEXT, label: 'Shift' } as const;
+const baseClassName = 'absolute bottom-3 left-1/2 z-10 -translate-x-1/2';
 
-const variants = cva({
-	base: 'absolute bottom-3 left-1/2 z-10 -translate-x-1/2',
-	compoundVariants: [],
-	defaultVariants: {},
-	variants: {},
-});
+interface ToolbarWithTooltipProperties {
+	children: ReactNode;
+	content: ReactNode;
+}
 
-type EditorViewportToolbarProperties = VariantProperties<typeof variants> & {
+function ToolbarWithTooltip({ children, content }: ToolbarWithTooltipProperties): ReactNode {
+	return (
+		<Tooltip>
+			<TooltipTrigger asChild>
+				<div>{children}</div>
+			</TooltipTrigger>
+			<TooltipContent>{content}</TooltipContent>
+		</Tooltip>
+	);
+}
+
+interface EditorViewportToolbarProperties {
 	className?: string;
-};
+}
 
 function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): ReactNode {
 	const { t } = useTranslation();
@@ -57,11 +66,101 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 	const canRedo = useAppSelector(selectCanRedo);
 	const tool = useAppSelector(selectViewportTool);
 	const zoom = useAppSelector(selectViewportZoom);
+	const selectToolShortcut = (
+		<>
+			{t('editor.viewportToolbar.selectTool')}{' '}
+			<KeyboardShortcut
+				ariaKey='S'
+				dimension='sm'
+				keyLabel='S'
+				variant='surface'
+			/>
+		</>
+	);
+	const panToolShortcut = (
+		<>
+			{t('editor.viewportToolbar.panTool')}{' '}
+			<KeyboardShortcut
+				ariaKey='H'
+				dimension='sm'
+				keyLabel='H'
+				variant='surface'
+			/>
+		</>
+	);
+	const undoShortcut = (
+		<>
+			{t('editor.viewportToolbar.undo')}{' '}
+			<KeyboardShortcut
+				ariaKey='z'
+				dimension='sm'
+				keyLabel='Z'
+				modifiers={[key]}
+				variant='surface'
+			/>
+		</>
+	);
+	const redoShortcut = (
+		<>
+			{t('editor.viewportToolbar.redo')}{' '}
+			<KeyboardShortcut
+				ariaKey='Z'
+				dimension='sm'
+				keyLabel='Z'
+				modifiers={[key, shiftKey]}
+				variant='surface'
+			/>
+		</>
+	);
+	const zoomOutShortcut = (
+		<>
+			{t('editor.viewportToolbar.zoomOut')}{' '}
+			<KeyboardShortcut
+				ariaKey='-'
+				dimension='sm'
+				keyLabel='-'
+				variant='surface'
+			/>
+		</>
+	);
+	const zoomInShortcut = (
+		<>
+			{t('editor.viewportToolbar.zoomIn')}{' '}
+			<KeyboardShortcut
+				ariaKey='+'
+				dimension='sm'
+				keyLabel='+'
+				variant='surface'
+			/>
+		</>
+	);
+	const zoomResetShortcut = (
+		<>
+			{t('editor.viewportToolbar.zoomReset')}{' '}
+			<KeyboardShortcut
+				ariaKey='0'
+				dimension='sm'
+				keyLabel='0'
+				variant='surface'
+			/>
+		</>
+	);
+	const fullscreenShortcut = (
+		<>
+			{t('editor.viewportToolbar.fullscreen')}{' '}
+			<KeyboardShortcut
+				ariaKey='F'
+				dimension='sm'
+				keyLabel='F'
+				variant='surface'
+			/>
+		</>
+	);
 
 	return (
 		<Toolbar
 			aria-label={t('editor.viewportToolbar.ariaLabel')}
-			className={cn(variants({ className }), className)}>
+			className={cn(baseClassName, className)}>
 			<ToolbarGroup>
 				<ToolbarToggleGroup
 					aria-label={t('editor.viewportToolbar.tools')}
@@ -72,137 +171,70 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 					}}
 					type='single'
 					value={tool}>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<div>
-								<ToolbarToggleItem
-									aria-label={t('editor.viewportToolbar.selectTool')}
-									icon
-									value={EDITOR_TOOL.SELECT}>
-									<MousePointer2Icon
-										aria-hidden='true'
-										size={ICON_SIZE}
-									/>
-								</ToolbarToggleItem>
-							</div>
-						</TooltipTrigger>
-						<TooltipContent>
-							{t('editor.viewportToolbar.selectTool')}{' '}
-							<KeyboardShortcut
-								ariaKey='S'
-								dimension='sm'
-								keyLabel='S'
-								variant='surface'
+					<ToolbarWithTooltip content={selectToolShortcut}>
+						<ToolbarToggleItem
+							aria-label={t('editor.viewportToolbar.selectTool')}
+							icon
+							value={EDITOR_TOOL.SELECT}>
+							<MousePointer2Icon
+								aria-hidden='true'
+								size={ICON_SIZE}
 							/>
-						</TooltipContent>
-					</Tooltip>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<div>
-								<ToolbarToggleItem
-									aria-label={t('editor.viewportToolbar.panTool')}
-									icon
-									value={EDITOR_TOOL.PAN}>
-									<HandIcon
-										aria-hidden='true'
-										size={ICON_SIZE}
-									/>
-								</ToolbarToggleItem>
-							</div>
-						</TooltipTrigger>
-						<TooltipContent>
-							{t('editor.viewportToolbar.panTool')}{' '}
-							<KeyboardShortcut
-								ariaKey='H'
-								dimension='sm'
-								keyLabel='H'
-								variant='surface'
+						</ToolbarToggleItem>
+					</ToolbarWithTooltip>
+					<ToolbarWithTooltip content={panToolShortcut}>
+						<ToolbarToggleItem
+							aria-label={t('editor.viewportToolbar.panTool')}
+							icon
+							value={EDITOR_TOOL.PAN}>
+							<HandIcon
+								aria-hidden='true'
+								size={ICON_SIZE}
 							/>
-						</TooltipContent>
-					</Tooltip>
+						</ToolbarToggleItem>
+					</ToolbarWithTooltip>
 				</ToolbarToggleGroup>
 			</ToolbarGroup>
 			<ToolbarSeparator />
 			<ToolbarGroup>
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<div>
-							<ToolbarButton
-								aria-label={t('editor.viewportToolbar.undo')}
-								disabled={!canUndo}
-								icon
-								onClick={undo}>
-								<Undo2Icon
-									aria-hidden='true'
-									size={ICON_SIZE}
-								/>
-							</ToolbarButton>
-						</div>
-					</TooltipTrigger>
-					<TooltipContent>
-						{t('editor.viewportToolbar.undo')}{' '}
-						<KeyboardShortcut
-							ariaKey='z'
-							dimension='sm'
-							keyLabel='Z'
-							modifiers={[key]}
-							variant='surface'
+				<ToolbarWithTooltip content={undoShortcut}>
+					<ToolbarButton
+						aria-label={t('editor.viewportToolbar.undo')}
+						disabled={!canUndo}
+						icon
+						onClick={undo}>
+						<Undo2Icon
+							aria-hidden='true'
+							size={ICON_SIZE}
 						/>
-					</TooltipContent>
-				</Tooltip>
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<div>
-							<ToolbarButton
-								aria-label={t('editor.viewportToolbar.redo')}
-								disabled={!canRedo}
-								icon
-								onClick={redo}>
-								<Redo2Icon
-									aria-hidden='true'
-									size={ICON_SIZE}
-								/>
-							</ToolbarButton>
-						</div>
-					</TooltipTrigger>
-					<TooltipContent>
-						{t('editor.viewportToolbar.redo')}{' '}
-						<KeyboardShortcut
-							ariaKey='Z'
-							dimension='sm'
-							keyLabel='Z'
-							modifiers={[key, shiftKey]}
-							variant='surface'
+					</ToolbarButton>
+				</ToolbarWithTooltip>
+				<ToolbarWithTooltip content={redoShortcut}>
+					<ToolbarButton
+						aria-label={t('editor.viewportToolbar.redo')}
+						disabled={!canRedo}
+						icon
+						onClick={redo}>
+						<Redo2Icon
+							aria-hidden='true'
+							size={ICON_SIZE}
 						/>
-					</TooltipContent>
-				</Tooltip>
+					</ToolbarButton>
+				</ToolbarWithTooltip>
 			</ToolbarGroup>
 			<ToolbarSeparator />
 			<ToolbarGroup>
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<div>
-							<ToolbarButton
-								aria-label={t('editor.viewportToolbar.zoomOut')}
-								icon
-								onClick={zoomOut}>
-								<ZoomOutIcon
-									aria-hidden='true'
-									size={ICON_SIZE}
-								/>
-							</ToolbarButton>
-						</div>
-					</TooltipTrigger>
-					<TooltipContent>
-						{t('editor.viewportToolbar.zoomOut')}{' '}
-						<KeyboardShortcut
-							ariaKey='-'
-							dimension='sm'
-							keyLabel='-'
-							variant='surface'
+				<ToolbarWithTooltip content={zoomOutShortcut}>
+					<ToolbarButton
+						aria-label={t('editor.viewportToolbar.zoomOut')}
+						icon
+						onClick={zoomOut}>
+						<ZoomOutIcon
+							aria-hidden='true'
+							size={ICON_SIZE}
 						/>
-					</TooltipContent>
-				</Tooltip>
+					</ToolbarButton>
+				</ToolbarWithTooltip>
 				<Span
 					className='min-w-12 text-center'
 					dimension='sm'
@@ -211,78 +243,39 @@ function EditorViewportToolbar({ className }: EditorViewportToolbarProperties): 
 					weight='medium'>
 					{`${Math.round(zoom * 100).toFixed(0)}%`}
 				</Span>
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<div>
-							<ToolbarButton
-								aria-label={t('editor.viewportToolbar.zoomIn')}
-								icon
-								onClick={zoomIn}>
-								<ZoomInIcon
-									aria-hidden='true'
-									size={ICON_SIZE}
-								/>
-							</ToolbarButton>
-						</div>
-					</TooltipTrigger>
-					<TooltipContent>
-						{t('editor.viewportToolbar.zoomIn')}{' '}
-						<KeyboardShortcut
-							ariaKey='+'
-							dimension='sm'
-							keyLabel='+'
-							variant='surface'
+				<ToolbarWithTooltip content={zoomInShortcut}>
+					<ToolbarButton
+						aria-label={t('editor.viewportToolbar.zoomIn')}
+						icon
+						onClick={zoomIn}>
+						<ZoomInIcon
+							aria-hidden='true'
+							size={ICON_SIZE}
 						/>
-					</TooltipContent>
-				</Tooltip>
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<div>
-							<ToolbarButton
-								aria-label={t('editor.viewportToolbar.zoomReset')}
-								icon
-								onClick={resetViewport}>
-								<FullscreenIcon
-									aria-hidden='true'
-									size={ICON_SIZE}
-								/>
-							</ToolbarButton>
-						</div>
-					</TooltipTrigger>
-					<TooltipContent>
-						{t('editor.viewportToolbar.zoomReset')}{' '}
-						<KeyboardShortcut
-							ariaKey='0'
-							dimension='sm'
-							keyLabel='0'
-							variant='surface'
+					</ToolbarButton>
+				</ToolbarWithTooltip>
+				<ToolbarWithTooltip content={zoomResetShortcut}>
+					<ToolbarButton
+						aria-label={t('editor.viewportToolbar.zoomReset')}
+						icon
+						onClick={resetViewport}>
+						<FullscreenIcon
+							aria-hidden='true'
+							size={ICON_SIZE}
 						/>
-					</TooltipContent>
-				</Tooltip>
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<div>
-							<ToolbarButton
-								aria-label={t('editor.viewportToolbar.fullscreen')}
-								icon
-								onClick={toggleFullscreen}>
-								<ExpandIcon
-									aria-hidden='true'
-									size={ICON_SIZE}
-								/>
-							</ToolbarButton>
-						</div>
-					</TooltipTrigger>
-					<TooltipContent>
-						{t('editor.viewportToolbar.fullscreen')}{' '}
-						<KeyboardShortcut
-							ariaKey='F'
-							dimension='sm'
-							keyLabel='F'
-							variant='surface'
+					</ToolbarButton>
+				</ToolbarWithTooltip>
+				<ToolbarWithTooltip content={fullscreenShortcut}>
+					<ToolbarButton
+						aria-label={t('editor.viewportToolbar.fullscreen')}
+						icon
+						onClick={toggleFullscreen}>
+						<ExpandIcon
+							aria-hidden='true'
+							size={ICON_SIZE}
 						/>
-					</TooltipContent>
-				</Tooltip>
+					</ToolbarButton>
+				</ToolbarWithTooltip>
 			</ToolbarGroup>
 		</Toolbar>
 	);

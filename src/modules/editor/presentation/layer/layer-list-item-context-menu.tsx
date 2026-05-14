@@ -1,6 +1,11 @@
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@components/context-menu';
+import KeyboardShortcut from '@components/keyboard-shortcut';
+import { MODIFIER_KIND, modifierKey } from '@shared/platform';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+
+const key = modifierKey();
+const shiftKey = { ariaKeyShortcuts: 'Shift', kind: MODIFIER_KIND.TEXT, label: 'Shift' } as const;
 
 interface LayerListItemContextMenuProperties {
 	canDeleteSelection: boolean;
@@ -31,19 +36,45 @@ function LayerListItemContextMenu({
 			<ContextMenuContent>
 				<ContextMenuItem
 					disabled={!canGroupSelection}
+					items='center'
+					justify='between'
 					onSelect={onGroupSelection}>
-					{t('layers.group')}
+					<span>{t('layers.group')}</span>
+					<KeyboardShortcut
+						aria-hidden='true'
+						ariaKey='G'
+						dimension='xs'
+						keyLabel='G'
+						modifiers={[key, shiftKey]}
+					/>
 				</ContextMenuItem>
 				<ContextMenuItem
 					disabled={!canToggleSelectionHidden}
+					items='center'
+					justify='between'
 					onSelect={onToggleSelectionHidden}>
-					{t(isSelectionHidden ? 'layers.show' : 'layers.hide')}
+					<span>{t(isSelectionHidden ? 'layers.show' : 'layers.hide')}</span>
+					<KeyboardShortcut
+						aria-hidden='true'
+						ariaKey='H'
+						dimension='xs'
+						keyLabel='H'
+						modifiers={[key, shiftKey]}
+					/>
 				</ContextMenuItem>
 				<ContextMenuItem
 					disabled={!canDeleteSelection}
+					items='center'
+					justify='between'
 					onSelect={onDeleteSelection}
 					variant='danger'>
-					{t('layers.delete')}
+					<span>{t('layers.delete')}</span>
+					<KeyboardShortcut
+						aria-hidden='true'
+						ariaKey='Delete'
+						dimension='xs'
+						keyLabel='Del'
+					/>
 				</ContextMenuItem>
 			</ContextMenuContent>
 		</ContextMenu>

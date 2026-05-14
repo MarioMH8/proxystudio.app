@@ -1,21 +1,14 @@
 import { EDITOR_TOOL } from '@modules/editor/store';
-import type { VariantProperties } from '@shared/cva';
 import { cn } from '@shared/cva';
-import { cva } from 'cva';
 import type { HTMLAttributes, ReactNode } from 'react';
 import { Panel } from 'react-resizable-panels';
 
 import useViewportCamera from './hooks/use-viewport-camera';
 import EditorViewportToolbar from './viewport-toolbar';
 
-const variants = cva({
-	base: 'relative overflow-hidden',
-	compoundVariants: [],
-	defaultVariants: {},
-	variants: {},
-});
+const baseClassName = 'relative overflow-hidden';
 
-type EditorViewportProperties = Omit<HTMLAttributes<HTMLDivElement>, 'onResize'> & VariantProperties<typeof variants>;
+type EditorViewportProperties = Omit<HTMLAttributes<HTMLDivElement>, 'onResize'>;
 
 function EditorViewport({ children, className, ...properties }: EditorViewportProperties): ReactNode {
 	const {
@@ -34,7 +27,7 @@ function EditorViewport({ children, className, ...properties }: EditorViewportPr
 
 	return (
 		<Panel
-			className={cn(variants({ className }), className)}
+			className={cn(baseClassName, className)}
 			id='editor-viewport'
 			{...properties}>
 			<div
