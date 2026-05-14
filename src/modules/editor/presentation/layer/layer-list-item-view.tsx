@@ -192,7 +192,7 @@ function LayerListItemView({
 	}
 
 	return (
-		<div className='relative'>
+		<li className='relative'>
 			<div
 				className='absolute inset-x-2 top-0 h-3'
 				ref={dnd.setTopDropNodeRef}
@@ -317,7 +317,7 @@ function LayerListItemView({
 				)}
 				ref={dnd.setBottomDropNodeRef}
 			/>
-		</div>
+		</li>
 	);
 }
 

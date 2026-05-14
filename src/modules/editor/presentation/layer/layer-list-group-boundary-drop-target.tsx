@@ -35,7 +35,7 @@ function GroupBoundaryDropTarget({
 		dropState.position === Layer.DROP_POSITION.BEFORE;
 
 	return (
-		<div
+		<li
 			className={cn('relative h-4', activeLayerId === groupId ? 'pointer-events-none' : '')}
 			ref={setNodeRef}
 			style={{ paddingLeft: getLayerTreeIndent(depth) }}>
@@ -45,7 +45,7 @@ function GroupBoundaryDropTarget({
 					isActive ? 'opacity-100' : 'opacity-0'
 				)}
 			/>
-		</div>
+		</li>
 	);
 }
 

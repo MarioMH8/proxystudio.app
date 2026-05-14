@@ -191,59 +191,64 @@ function LayerList(): ReactNode {
 			onDragStart={handleDragStart}
 			sensors={sensors}>
 			<FlexBox
+				asChild
 				className='h-full overflow-y-auto p-2'
 				direction='column'
 				items='stretch'>
-				{nodes.map(node => {
-					if (node.kind === 'group-boundary') {
-						if (!activeLayerId) {
-							// eslint-disable-next-line unicorn/no-useless-undefined
-							return undefined;
+				<ul>
+					{nodes.map(node => {
+						if (node.kind === 'group-boundary') {
+							if (!activeLayerId) {
+								// eslint-disable-next-line unicorn/no-useless-undefined
+								return undefined;
+							}
+
+							return (
+								<GroupBoundaryDropTarget
+									activeLayerId={activeLayerId}
+									depth={node.depth}
+									dropState={dropState}
+									groupId={node.groupId}
+									key={`${node.groupId}:group-boundary`}
+								/>
+							);
 						}
 
 						return (
-							<GroupBoundaryDropTarget
+							<LayerListItem
 								activeLayerId={activeLayerId}
+								allowsDropIntoEnd={node.allowsDropIntoEnd}
 								depth={node.depth}
-								dropState={dropState}
-								groupId={node.groupId}
-								key={`${node.groupId}:group-boundary`}
+								dropState={dropState?.targetLayerId === node.layer.id ? dropState : undefined}
+								isGroupExpanded={node.isExpanded}
+								key={node.layer.id}
+								layer={node.layer}
+								onClick={event => handleLayerClick(event, node.layer.id)}
+								onContextMenuSelection={() => handleLayerContextMenu(node.layer.id)}
+								onDeleteSelection={deleteSelection}
+								onGroupSelection={groupSelection}
+								onRename={name => handleLayerRename(node.layer.id, name)}
+								onToggleExpanded={
+									node.layer.type === 'group'
+										? () => handleLayerExpandedToggle(node.layer.id)
+										: undefined
+								}
+								onToggleHidden={() => handleLayerHiddenToggle(node.layer.id)}
+								onToggleSelectionHidden={toggleSelectionHidden}
+								permissions={{
+									canDeleteSelection,
+									canGroupSelection,
+									canToggleSelectionHidden,
+									isSelectionHidden,
+								}}
+								state={{
+									isExpanded: node.isExpanded,
+									isSelected: selectedLayerIds.includes(node.layer.id),
+								}}
 							/>
 						);
-					}
-
-					return (
-						<LayerListItem
-							activeLayerId={activeLayerId}
-							allowsDropIntoEnd={node.allowsDropIntoEnd}
-							depth={node.depth}
-							dropState={dropState?.targetLayerId === node.layer.id ? dropState : undefined}
-							isGroupExpanded={node.isExpanded}
-							key={node.layer.id}
-							layer={node.layer}
-							onClick={event => handleLayerClick(event, node.layer.id)}
-							onContextMenuSelection={() => handleLayerContextMenu(node.layer.id)}
-							onDeleteSelection={deleteSelection}
-							onGroupSelection={groupSelection}
-							onRename={name => handleLayerRename(node.layer.id, name)}
-							onToggleExpanded={
-								node.layer.type === 'group' ? () => handleLayerExpandedToggle(node.layer.id) : undefined
-							}
-							onToggleHidden={() => handleLayerHiddenToggle(node.layer.id)}
-							onToggleSelectionHidden={toggleSelectionHidden}
-							permissions={{
-								canDeleteSelection,
-								canGroupSelection,
-								canToggleSelectionHidden,
-								isSelectionHidden,
-							}}
-							state={{
-								isExpanded: node.isExpanded,
-								isSelected: selectedLayerIds.includes(node.layer.id),
-							}}
-						/>
-					);
-				})}
+					})}
+				</ul>
 			</FlexBox>
 		</DndContext>
 	);
