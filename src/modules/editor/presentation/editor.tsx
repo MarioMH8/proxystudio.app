@@ -1,16 +1,18 @@
 import FlexBox from '@components/flex-box';
 import SeparatorGrab from '@components/separator-grab';
+import type { CardRendererReference } from '@modules/card/presentation';
 import { CardRenderer } from '@modules/card/presentation';
 import { editorSlice, selectCard, useFindCardQuery } from '@modules/editor/store';
 import useElementById from '@shared/hooks/use-element-by-id';
 import { useAppDispatch, useAppSelector } from '@shared/store';
 import { Portal } from 'radix-ui';
 import type { ReactNode } from 'react';
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import { Group, useDefaultLayout } from 'react-resizable-panels';
 import { useNavigate, useParams } from 'react-router';
 
 import CardHeader from './card/card-header';
+import DownloadCardButton from './card/download-card-button';
 import NewCardButton from './card/new-card-button';
 import EditorContainer from './editor/editor-container';
 import useEditorBeforeUnload from './editor/use-editor-before-unload';
@@ -32,11 +34,25 @@ function EditorPage(): ReactNode {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const card = useAppSelector(selectCard);
+	const cardRendererReference = useRef<CardRendererReference>(null);
 
 	function handleCreateNewCard(): void {
 		const action = editorSlice.actions.createCard();
 		dispatch(action);
 		void navigate(`/${action.payload}/editor`);
+	}
+
+	function handleDownloadCard(): void {
+		const imageDataUrl = cardRendererReference.current?.exportImage();
+
+		if (!imageDataUrl) {
+			return;
+		}
+
+		const downloadAnchor = document.createElement('a');
+		downloadAnchor.download = `${card.name}.png`;
+		downloadAnchor.href = imageDataUrl;
+		downloadAnchor.click();
 	}
 
 	useEditorHotkeys();
@@ -67,7 +83,10 @@ function EditorPage(): ReactNode {
 						<LayerPanel className='z-10' />
 						<SeparatorGrab orientation='horizontal' />
 						<EditorViewport>
-							<CardRenderer card={card} />
+							<CardRenderer
+								card={card}
+								ref={cardRendererReference}
+							/>
 						</EditorViewport>
 					</Group>
 				</EditorContainer>
@@ -83,7 +102,10 @@ function EditorPage(): ReactNode {
 				<Portal.Portal
 					asChild
 					container={rightMenuPortalContainer}>
-					<NewCardButton onCreateNewCard={handleCreateNewCard} />
+					<Fragment>
+						<DownloadCardButton onDownloadCard={handleDownloadCard} />
+						<NewCardButton onCreateNewCard={handleCreateNewCard} />
+					</Fragment>
 				</Portal.Portal>
 			) : undefined}
 		</Fragment>
