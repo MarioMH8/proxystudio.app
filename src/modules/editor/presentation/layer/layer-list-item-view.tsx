@@ -60,15 +60,6 @@ const variants = cva({
 	},
 });
 
-const metaVariants = cva({
-	base: ['truncate uppercase', font({ dimension: 'xs', tracking: 'wider', weight: 'light' })],
-	compoundVariants: [],
-	defaultVariants: {
-		selected: false,
-	},
-	variants: {},
-});
-
 const dropIndicatorVariants = cva({
 	base: 'pointer-events-none absolute left-2 right-2 h-px bg-primary transition-opacity',
 	compoundVariants: [],
@@ -85,6 +76,39 @@ const dropIndicatorVariants = cva({
 });
 
 const ICON_SIZE = 14;
+const META_CLASS_NAME = cn('truncate uppercase', font({ dimension: 'xs', tracking: 'wider', weight: 'light' }));
+
+function getDropMode(dropState: LayerDropState | undefined): 'group' | 'inside' | 'none' | 'reorder' {
+	if (!dropState) {
+		return 'none';
+	}
+
+	if (dropState.position === 'group-with') {
+		return 'group';
+	}
+
+	if (dropState.position === 'into-end' || dropState.position === 'into-start') {
+		return 'inside';
+	}
+
+	return 'reorder';
+}
+
+function getDropIndicatorPosition(dropState: LayerDropState | undefined): 'bottom' | 'hidden' | 'top' {
+	if (!dropState) {
+		return 'hidden';
+	}
+
+	if (dropState.position === 'after') {
+		return 'top';
+	}
+
+	if (dropState.position === 'before') {
+		return 'bottom';
+	}
+
+	return 'hidden';
+}
 
 interface LayerListItemPermissions {
 	canDeleteSelection: boolean;
@@ -155,77 +179,32 @@ function LayerListItemView({
 	}
 
 	function handleButtonKeyDown(event: KeyboardEvent<HTMLButtonElement>): void {
-		if (!isGroup || !onToggleExpanded) {
-			return;
+		if (isGroup && onToggleExpanded) {
+			if (event.key === 'ArrowRight' && !isExpanded) {
+				event.preventDefault();
+				onToggleExpanded();
+
+				return;
+			}
+
+			if (event.key === 'ArrowLeft' && isExpanded) {
+				event.preventDefault();
+				onToggleExpanded();
+
+				return;
+			}
 		}
 
-		if (event.key === 'ArrowRight' && !isExpanded) {
+		if (event.key === 'h' || event.key === 'H') {
 			event.preventDefault();
-			onToggleExpanded();
+			onToggleHidden();
 		}
-
-		if (event.key === 'ArrowLeft' && isExpanded) {
-			event.preventDefault();
-			onToggleExpanded();
-		}
-	}
-
-	function handleExpandIndicatorKeyDown(event: KeyboardEvent<HTMLSpanElement>): void {
-		if (event.key !== 'Enter' && event.key !== ' ') {
-			return;
-		}
-
-		event.preventDefault();
-		event.stopPropagation();
-		onToggleExpanded?.();
 	}
 
 	function handleVisibilityIndicatorClick(event: MouseEvent<HTMLSpanElement>): void {
 		event.preventDefault();
 		event.stopPropagation();
 		onToggleHidden();
-	}
-
-	function handleVisibilityIndicatorKeyDown(event: KeyboardEvent<HTMLSpanElement>): void {
-		if (event.key !== 'Enter' && event.key !== ' ') {
-			return;
-		}
-
-		event.preventDefault();
-		event.stopPropagation();
-		onToggleHidden();
-	}
-
-	function getDropMode(): 'group' | 'inside' | 'none' | 'reorder' {
-		if (!dropState) {
-			return 'none';
-		}
-
-		if (dropState.position === 'group-with') {
-			return 'group';
-		}
-
-		if (dropState.position === 'into-end' || dropState.position === 'into-start') {
-			return 'inside';
-		}
-
-		return 'reorder';
-	}
-
-	function getDropIndicatorPosition(): 'bottom' | 'hidden' | 'top' {
-		if (!dropState) {
-			return 'hidden';
-		}
-
-		if (dropState.position === 'after') {
-			return 'top';
-		}
-
-		if (dropState.position === 'before') {
-			return 'bottom';
-		}
-
-		return 'hidden';
 	}
 
 	return (
@@ -248,7 +227,7 @@ function LayerListItemView({
 					aria-pressed={isSelected}
 					className={variants({
 						dragging: dnd.isDragging,
-						dropMode: getDropMode(),
+						dropMode: getDropMode(dropState),
 						hidden: layer.hidden,
 						selected: isSelected,
 					})}
@@ -274,11 +253,9 @@ function LayerListItemView({
 					</span>
 					{isGroup ? (
 						<span
+							aria-hidden='true'
 							className='shrink-0 cursor-pointer'
 							onClick={handleExpandIndicatorClick}
-							onKeyDown={handleExpandIndicatorKeyDown}
-							role='button'
-							tabIndex={0}
 							title={t(isExpanded ? 'layers.collapseGroup' : 'layers.expandGroup', {
 								name,
 							})}>
@@ -321,13 +298,14 @@ function LayerListItemView({
 							value={name}
 						/>
 						<Span
-							className={metaVariants()}
+							className={META_CLASS_NAME}
 							weight='light'>
 							{`${t(`layers.options.${layer.type}`)} · ${layer.id.slice(0, 8)}`}
 							{isGroup ? ` · ${layer.children.length.toFixed(0)}` : ''}
 						</Span>
 					</FlexBox>
 					<span
+						aria-hidden='true'
 						className={cn(
 							'ml-auto shrink-0 cursor-pointer text-foreground-500',
 							hover({
@@ -336,9 +314,6 @@ function LayerListItemView({
 							})
 						)}
 						onClick={handleVisibilityIndicatorClick}
-						onKeyDown={handleVisibilityIndicatorKeyDown}
-						role='button'
-						tabIndex={0}
 						title={t(layer.hidden ? 'layers.showLayer' : 'layers.hideLayer', {
 							name,
 						})}>
@@ -354,7 +329,7 @@ function LayerListItemView({
 							/>
 						)}
 					</span>
-					<span className={dropIndicatorVariants({ position: getDropIndicatorPosition() })} />
+					<span className={dropIndicatorVariants({ position: getDropIndicatorPosition(dropState) })} />
 					{dropState?.position === 'into-end' ? (
 						<span className='pointer-events-none absolute inset-x-3 bottom-1 h-px bg-primary/70' />
 					) : undefined}
