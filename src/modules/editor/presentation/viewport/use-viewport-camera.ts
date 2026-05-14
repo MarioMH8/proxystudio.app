@@ -93,13 +93,19 @@ function useViewportCamera(): UseViewportCameraResult {
 			return;
 		}
 
+		const fitZoom = calculateFitZoom(card.dimensions.height, card.dimensions.width, size.height, size.width);
+
+		if (Math.abs(zoom - fitZoom) < 0.0001) {
+			return;
+		}
+
 		dispatch(
 			editorSlice.actions.resetViewport({
 				markAsInteracted: false,
-				zoom: calculateFitZoom(card.dimensions.height, card.dimensions.width, size.height, size.width),
+				zoom: fitZoom,
 			})
 		);
-	}, [card.dimensions.height, card.dimensions.width, dispatch, hasInteracted, size.height, size.width]);
+	}, [card.dimensions.height, card.dimensions.width, dispatch, hasInteracted, size.height, size.width, zoom]);
 
 	function handlePointerDown(event: ReactPointerEvent<HTMLDivElement>): void {
 		if (tool !== EDITOR_TOOL.PAN) {
