@@ -90,6 +90,22 @@ function LayerList(): ReactNode {
 		const layerId = typeof event.active.id === 'string' ? event.active.id : undefined;
 
 		setActiveLayerId(layerId);
+
+		if (!layerId) {
+			return;
+		}
+
+		if (!expandedGroupIds.includes(layerId)) {
+			return;
+		}
+
+		const layerResult = Layer.findLayerById(card.layers, layerId);
+
+		if (layerResult?.layer.type !== 'group') {
+			return;
+		}
+
+		dispatch(editorSlice.actions.setExpandedLayerGroupIds(expandedGroupIds.filter(groupId => groupId !== layerId)));
 	}
 
 	function handleDragOver(event: DragOverEvent): void {

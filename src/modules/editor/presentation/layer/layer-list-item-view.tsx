@@ -5,6 +5,7 @@ import FlexBox from '@components/flex-box';
 import focus from '@components/focus';
 import font from '@components/font';
 import hover from '@components/hover';
+import rounded from '@components/rounded';
 import Span from '@components/span';
 import type { DraggableAttributes, DraggableSyntheticListeners } from '@dnd-kit/core';
 import type { Layer } from '@modules/card/domain';
@@ -27,6 +28,7 @@ import { getLayerTreeIndent } from './layer-list.dnd';
 const variants = cva({
 	base: [
 		'relative w-full justify-start gap-2 px-2 py-1.5 transition-colors',
+		rounded({ dimension: 'sm' }),
 		font({ dimension: 'xs', tracking: 'normal', variant: 'muted', weight: 'normal' }),
 		focus({ dimension: 'xs', strength: 'soft', variant: 'default' }),
 	],
