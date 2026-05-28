@@ -1,7 +1,7 @@
 import Paragraph from '@components/paragraph';
 import type { Card } from '@modules/card/domain';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import type { ReactNode } from 'react';
+import type { ReactNode, RefObject } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import GalleryGridItem from './gallery-grid-item';
@@ -19,6 +19,7 @@ interface GalleryGridProperties {
 	loadMoreLabel: string;
 	loadingLabel: string;
 	onLoadMore: () => void;
+	scrollReference: RefObject<HTMLDivElement | null>;
 }
 
 function GalleryGrid({
@@ -28,8 +29,9 @@ function GalleryGrid({
 	loadingLabel,
 	loadMoreLabel,
 	onLoadMore,
+	scrollReference,
 }: GalleryGridProperties): ReactNode {
-	const listReference = useRef<HTMLDivElement>(null);
+	const contentReference = useRef<HTMLDivElement>(null);
 	const [listWidth, setListWidth] = useState(0);
 	const columnCount = Math.max(
 		1,
@@ -44,7 +46,7 @@ function GalleryGrid({
 	const rowVirtualizer = useVirtualizer({
 		count: cardRows + (hasMoreCards ? 1 : 0),
 		estimateSize: () => rowHeight,
-		getScrollElement: () => listReference.current,
+		getScrollElement: () => scrollReference.current,
 		onChange: instance => {
 			const virtualItems = instance.getVirtualItems();
 			const lastVirtualItem = virtualItems.at(-1);
@@ -62,7 +64,7 @@ function GalleryGrid({
 	const virtualItems = rowVirtualizer.getVirtualItems();
 
 	useEffect(() => {
-		const currentListElement = listReference.current;
+		const currentListElement = contentReference.current;
 
 		if (!currentListElement) {
 			return;
@@ -88,52 +90,49 @@ function GalleryGrid({
 
 	return (
 		<div
-			className='min-h-0 flex-1 overflow-auto'
-			ref={listReference}>
-			<div
-				className='relative w-full'
-				style={{ height: rowVirtualizer.getTotalSize() }}>
-				{virtualItems.map(virtualItem => {
-					const rowStartIndex = virtualItem.index * columnCount;
-					const rowCards = cards.slice(rowStartIndex, rowStartIndex + columnCount);
+			className='relative w-full'
+			ref={contentReference}
+			style={{ height: rowVirtualizer.getTotalSize() }}>
+			{virtualItems.map(virtualItem => {
+				const rowStartIndex = virtualItem.index * columnCount;
+				const rowCards = cards.slice(rowStartIndex, rowStartIndex + columnCount);
 
-					return (
-						<div
-							className='absolute left-0 top-0 w-full'
-							key={virtualItem.key}
-							style={{ transform: `translateY(${virtualItem.start.toString()}px)` }}>
-							{rowCards.length > 0 ? (
-								<div
-									className='grid'
-									style={{
-										columnGap: GRID_COLUMN_GAP,
-										gridTemplateColumns: `repeat(${columnCount.toString()}, minmax(0, 1fr))`,
-										rowGap: GRID_ROW_GAP,
-									}}>
-									{rowCards.map(card => {
-										return (
-											<GalleryGridItem
-												card={card}
-												key={card.id}
-												thumbnailWidth={thumbnailWidth}
-											/>
-										);
-									})}
-								</div>
-							) : hasMoreCards ? (
-								<div className='grid h-16 place-items-center'>
-									<Paragraph
-										dimension='sm'
-										tracking='normal'
-										variant='muted'>
-										{isLoadingMoreCards ? loadingLabel : loadMoreLabel}
-									</Paragraph>
-								</div>
-							) : undefined}
-						</div>
-					);
-				})}
-			</div>
+				return (
+					<div
+						className='absolute left-0 top-0 w-full'
+						key={virtualItem.key}
+						style={{ transform: `translateY(${virtualItem.start.toString()}px)` }}>
+						{rowCards.length > 0 ? (
+							<div
+								className='grid'
+								style={{
+									columnGap: GRID_COLUMN_GAP,
+									gridTemplateColumns: `repeat(${columnCount.toString()}, minmax(0, 1fr))`,
+									rowGap: GRID_ROW_GAP,
+								}}>
+								{rowCards.map(card => {
+									return (
+										<GalleryGridItem
+											card={card}
+											key={card.id}
+											thumbnailWidth={thumbnailWidth}
+										/>
+									);
+								})}
+							</div>
+						) : hasMoreCards ? (
+							<div className='grid h-16 place-items-center'>
+								<Paragraph
+									dimension='sm'
+									tracking='normal'
+									variant='muted'>
+									{isLoadingMoreCards ? loadingLabel : loadMoreLabel}
+								</Paragraph>
+							</div>
+						) : undefined}
+					</div>
+				);
+			})}
 		</div>
 	);
 }
