@@ -1,17 +1,23 @@
 import type { DeepPartial } from '@shared/types';
 
-import { LayerBase } from './layer.base';
+import { RenderableLayer } from './layer.renderable';
 
-interface LayerSymbol extends LayerBase {
+interface LayerSymbol extends RenderableLayer {
 	type: 'symbol';
 }
 
 const LayerSymbol = {
 	default: (partial?: DeepPartial<LayerSymbol>): LayerSymbol => {
+		const defaultValues = RenderableLayer.default(partial);
+
 		return {
-			...LayerBase.default(partial),
+			...defaultValues,
 			type: 'symbol',
 			...partial,
+			bounds: {
+				...defaultValues.bounds,
+				...partial?.bounds,
+			},
 		};
 	},
 };

@@ -1,17 +1,23 @@
 import type { DeepPartial } from '@shared/types';
 
-import { LayerBase } from './layer.base';
+import { RenderableLayer } from './layer.renderable';
 
-interface LayerBottomInfo extends LayerBase {
+interface LayerBottomInfo extends RenderableLayer {
 	type: 'bottom-info';
 }
 
 const LayerBottomInfo = {
 	default: (partial?: DeepPartial<LayerBottomInfo>): LayerBottomInfo => {
+		const defaultValues = RenderableLayer.default(partial);
+
 		return {
-			...LayerBase.default(partial),
+			...defaultValues,
 			type: 'bottom-info',
 			...partial,
+			bounds: {
+				...defaultValues.bounds,
+				...partial?.bounds,
+			},
 		};
 	},
 };

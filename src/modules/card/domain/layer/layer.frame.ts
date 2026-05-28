@@ -1,17 +1,23 @@
 import type { DeepPartial } from '@shared/types';
 
-import { LayerBase } from './layer.base';
+import { RenderableLayer } from './layer.renderable';
 
-interface LayerFrame extends LayerBase {
+interface LayerFrame extends RenderableLayer {
 	type: 'frame';
 }
 
 const LayerFrame = {
 	default: (partial?: DeepPartial<LayerFrame>): LayerFrame => {
+		const defaultValues = RenderableLayer.default(partial);
+
 		return {
-			...LayerBase.default(partial),
+			...defaultValues,
 			type: 'frame',
 			...partial,
+			bounds: {
+				...defaultValues.bounds,
+				...partial?.bounds,
+			},
 		};
 	},
 };

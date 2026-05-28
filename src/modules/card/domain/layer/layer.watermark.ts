@@ -1,17 +1,23 @@
 import type { DeepPartial } from '@shared/types';
 
-import { LayerBase } from './layer.base';
+import { RenderableLayer } from './layer.renderable';
 
-interface LayerWatermark extends LayerBase {
+interface LayerWatermark extends RenderableLayer {
 	type: 'watermark';
 }
 
 const LayerWatermark = {
 	default: (partial?: DeepPartial<LayerWatermark>): LayerWatermark => {
+		const defaultValues = RenderableLayer.default(partial);
+
 		return {
-			...LayerBase.default(partial),
+			...defaultValues,
 			type: 'watermark',
 			...partial,
+			bounds: {
+				...defaultValues.bounds,
+				...partial?.bounds,
+			},
 		};
 	},
 };
