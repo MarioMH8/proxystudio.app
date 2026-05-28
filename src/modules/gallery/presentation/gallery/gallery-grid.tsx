@@ -57,7 +57,6 @@ function GalleryGrid({
 				onLoadMore();
 			}
 		},
-		overscan: 5,
 	});
 
 	const virtualItems = rowVirtualizer.getVirtualItems();
@@ -87,12 +86,10 @@ function GalleryGrid({
 		};
 	}, []);
 
-	useEffect(() => {
-		rowVirtualizer.measure();
-	}, [columnCount, rowHeight, rowVirtualizer]);
-
 	return (
-		<div ref={listReference}>
+		<div
+			className='min-h-0 flex-1 overflow-auto'
+			ref={listReference}>
 			<div
 				className='relative w-full'
 				style={{ height: rowVirtualizer.getTotalSize() }}>
@@ -111,7 +108,7 @@ function GalleryGrid({
 									style={{
 										columnGap: GRID_COLUMN_GAP,
 										gridTemplateColumns: `repeat(${columnCount.toString()}, minmax(0, 1fr))`,
-										rowGap: GRID_COLUMN_GAP,
+										rowGap: GRID_ROW_GAP,
 									}}>
 									{rowCards.map(card => {
 										return (

@@ -3,7 +3,7 @@ import { useLazySearchCardsQuery } from '@modules/gallery/store';
 import { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 20;
 
 interface UseGalleryCardsResult {
 	cards: Card[];
