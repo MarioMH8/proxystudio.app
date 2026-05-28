@@ -1,4 +1,4 @@
-import { FindCardUseCase, FindLastCardUseCase, SaveCardUseCase, SearchCardUseCase } from '@modules/card/application';
+import { FindCardUseCase, FindLastCardUseCase, SaveCardUseCase } from '@modules/card/application';
 import { Card } from '@modules/card/domain';
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import container from '@shared/container';
@@ -7,18 +7,9 @@ interface FindCardParameters {
 	id: string | undefined;
 }
 
-interface SearchCardsParameters {
-	limit?: number;
-	offset?: number;
-	sort?: 'createdAt' | 'name' | 'updatedAt';
-	sortDirection?: 'asc' | 'desc';
-	term?: string;
-}
-
 const findCardUseCase = container.get(FindCardUseCase);
 const saveCardUseCase = container.get(SaveCardUseCase);
 const findLastCardUseCase = container.get(FindLastCardUseCase);
-const searchCardUseCase = container.get(SearchCardUseCase);
 
 const editorApi = createApi({
 	baseQuery: fakeBaseQuery(),
@@ -67,23 +58,12 @@ const editorApi = createApi({
 				}
 			},
 		}),
-		searchCards: build.query<Card[], SearchCardsParameters>({
-			queryFn: async parameters => {
-				try {
-					const data = await searchCardUseCase.execute(parameters);
-
-					return { data };
-				} catch {
-					return { data: [] };
-				}
-			},
-		}),
 	}),
 	reducerPath: 'editorApi',
 	tagTypes: ['Card'],
 });
 
-const { useFindCardQuery, useFindLastCardQuery, useLazySearchCardsQuery, useSaveCardMutation } = editorApi;
+const { useFindCardQuery, useFindLastCardQuery, useSaveCardMutation } = editorApi;
 
 export type { FindCardParameters };
-export { editorApi, useFindCardQuery, useFindLastCardQuery, useLazySearchCardsQuery, useSaveCardMutation };
+export { editorApi, useFindCardQuery, useFindLastCardQuery, useSaveCardMutation };

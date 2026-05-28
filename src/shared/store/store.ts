@@ -1,4 +1,5 @@
 import { editorApi, editorListenerMiddleware, editorSlice } from '@modules/editor/store';
+import { galleryApi } from '@modules/gallery/store';
 import { settingsApi } from '@modules/settings/store';
 import type { Middleware, Reducer } from '@reduxjs/toolkit';
 import { configureStore } from '@reduxjs/toolkit';
@@ -20,10 +21,11 @@ function createAppStore(options: StoreOptions = {}) {
 }
 
 const store = createAppStore({
-	middlewares: [settingsApi.middleware, editorApi.middleware],
+	middlewares: [settingsApi.middleware, editorApi.middleware, galleryApi.middleware],
 	reducers: {
 		[editorApi.reducerPath]: editorApi.reducer,
 		[editorSlice.name]: editorSlice.reducer,
+		[galleryApi.reducerPath]: galleryApi.reducer,
 		[settingsApi.reducerPath]: settingsApi.reducer,
 	},
 });

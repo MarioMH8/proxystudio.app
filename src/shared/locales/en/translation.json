@@ -15,7 +15,10 @@
 		"searchPlaceholder": "Search actions..."
 	},
 	"gallery": {
-		"empty": "The gallery is still empty."
+		"empty": "The gallery is still empty.",
+		"loadError": "Unable to load cards right now.",
+		"loading": "Loading more cards...",
+		"loadMore": "Scroll to load more cards"
 	},
 	"layers": {
 		"clearSelection": "Clear selection",

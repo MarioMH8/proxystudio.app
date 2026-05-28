@@ -15,7 +15,10 @@
 		"searchPlaceholder": "Buscar acciones..."
 	},
 	"gallery": {
-		"empty": "La galería aún está vacía."
+		"empty": "La galería aún está vacía.",
+		"loadError": "No se pudieron cargar las cartas ahora mismo.",
+		"loading": "Cargando más cartas...",
+		"loadMore": "Desplázate para cargar más cartas"
 	},
 	"layers": {
 		"clearSelection": "Limpiar selección",

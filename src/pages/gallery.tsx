@@ -1,20 +1,10 @@
-import EmptyState from '@components/empty-state';
-import { ImagesIcon } from 'lucide-react';
+import { Gallery } from '@modules/gallery/presentation';
 import type { ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
 
-function Gallery(): ReactNode {
-	const { t } = useTranslation();
-
-	return (
-		<EmptyState
-			className='mx-auto w-fit'
-			icon={ImagesIcon}
-			message={t('gallery.empty')}
-		/>
-	);
+function GalleryPage(): ReactNode {
+	return <Gallery />;
 }
 
-Gallery.displayName = 'GalleryPage';
+GalleryPage.displayName = 'GalleryPage';
 
-export default Gallery;
+export default GalleryPage;
