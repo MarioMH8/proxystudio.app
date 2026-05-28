@@ -1,3 +1,4 @@
+import type { RenderableLayerUnion } from '@modules/card/domain';
 import { Card, Layer } from '@modules/card/domain';
 
 import { editorApi } from './editor.api';
@@ -50,9 +51,7 @@ function selectSingleSelectedLayer(state: EditorStoreState): Layer | undefined {
 	return selectedLayerResult?.layer;
 }
 
-function selectSingleSelectedRenderableLayer(
-	state: EditorStoreState
-): Exclude<Card['layers'][number], { type: 'group' }> | undefined {
+function selectSingleSelectedRenderableLayer(state: EditorStoreState): RenderableLayerUnion | undefined {
 	const layer = selectSingleSelectedLayer(state);
 
 	if (!layer || layer.type === 'group') {

@@ -21,6 +21,12 @@ const variants = cva({
 	variants: {
 		variant: {
 			default: '',
+			transparent: cn(
+				border({ side: 'none' }),
+				background({ variant: 'transparent' }),
+				rounded({ dimension: 'none' }),
+				'shadow-none'
+			),
 		},
 	},
 });

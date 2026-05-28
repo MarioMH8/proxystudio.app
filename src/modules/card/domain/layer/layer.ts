@@ -30,6 +30,8 @@ type Layer =
 	| LayerText
 	| LayerWatermark;
 
+type RenderableLayerUnion = Exclude<Layer, { type: 'group' }>;
+
 type PartialLayer = DeepPartial<Layer> & { type: Layer['type'] };
 
 type EffectiveLayer = Exclude<Layer, LayerGroup>;
@@ -493,6 +495,12 @@ const Layer = {
 	},
 };
 
-export type { EffectiveLayer, LayerDropPosition, LayerMoveTarget, RenderableLayerUpdateProperties };
+export type {
+	EffectiveLayer,
+	LayerDropPosition,
+	LayerMoveTarget,
+	RenderableLayerUnion,
+	RenderableLayerUpdateProperties,
+};
 
 export { Layer };

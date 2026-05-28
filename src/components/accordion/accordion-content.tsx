@@ -19,6 +19,7 @@ const variants = cva({
 	variants: {
 		variant: {
 			default: 'text-foreground-700 dark:text-foreground-300',
+			transparent: cn('px-0 py-2 text-foreground-700 dark:text-foreground-300', border({ side: 'none' })),
 		},
 	},
 });

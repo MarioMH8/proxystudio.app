@@ -45,7 +45,7 @@ const variants = cva({
 			variant: 'success',
 		},
 		{
-			className: 'bg-transparent',
+			className: 'bg-transparent dark:bg-transparent',
 			strength: 'default',
 			variant: 'transparent',
 		},

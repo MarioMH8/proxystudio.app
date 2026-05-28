@@ -11,18 +11,28 @@ import { Accordion as RadixAccordion } from 'radix-ui';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 const variants = cva({
-	base: [
-		'group',
-		'cursor-default',
-		'py-3',
-		'px-4',
-		rounded({ dimension: 'lg' }),
-		'data-[state=open]:rounded-b-none',
-		hover({ strength: 'soft', variant: 'default' }),
-	],
+	base: 'group cursor-default w-full',
 	compoundVariants: [],
-	defaultVariants: {},
-	variants: {},
+	defaultVariants: {
+		surface: 'default',
+	},
+	variants: {
+		surface: {
+			default: cn(
+				'py-3',
+				'px-4',
+				rounded({ dimension: 'lg' }),
+				'data-[state=open]:rounded-b-none',
+				hover({ strength: 'soft', variant: 'default' })
+			),
+			transparent: cn(
+				'px-0 py-0',
+				rounded({ dimension: 'none' }),
+				'data-[state=open]:rounded-none',
+				'hover:bg-transparent'
+			),
+		},
+	},
 });
 
 type AccordionTriggerProps = FontVariantsProperties &
@@ -37,6 +47,7 @@ function AccordionTrigger({
 	dimension = 'sm',
 	leading,
 	ref,
+	surface = 'default',
 	tracking,
 	uppercase,
 	variant = 'default',
@@ -50,7 +61,7 @@ function AccordionTrigger({
 					className={cn(
 						focus({ variant: 'primary' }),
 						flexBoxClassName({ grow: 1, justify: 'between' }),
-						variants({ className }),
+						variants({ className, surface }),
 						font({ dimension, leading, tracking, uppercase, variant, weight }),
 						className
 					)}

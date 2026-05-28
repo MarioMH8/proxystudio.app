@@ -46,6 +46,7 @@
 		"title": "Capas",
 		"properties": {
 			"title": "Propiedades",
+			"common": "Comunes",
 			"x": "X",
 			"y": "Y",
 			"width": "Ancho",

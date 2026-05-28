@@ -46,6 +46,7 @@
 		"title": "Layers",
 		"properties": {
 			"title": "Properties",
+			"common": "Common",
 			"x": "X",
 			"y": "Y",
 			"width": "Width",

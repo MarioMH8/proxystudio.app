@@ -38,6 +38,8 @@ const variants = cva({
 			none: 'border-0',
 			right: 'border-r',
 			top: 'border-t',
+			x: 'border-x',
+			y: 'border-y',
 		},
 		strength: {
 			default: '',
