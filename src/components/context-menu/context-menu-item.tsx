@@ -11,7 +11,7 @@ import type { ReactNode } from 'react';
 const variants = cva({
 	base: [
 		'group relative',
-		'h-8',
+		'h-8 gap-2',
 		'px-4 py-2',
 		'select-none',
 		'data-disabled:pointer-events-none data-disabled:opacity-50',

@@ -71,7 +71,7 @@ function EditableSpan({
 			<Input
 				aria-label={ariaLabel}
 				className={cn(
-					'h-auto min-w-0 border-none bg-transparent px-0 py-0 shadow-none rounded-sm outline-hidden',
+					'h-auto min-w-0 border-none bg-transparent px-0 py-0 shadow-none rounded-sm outline-hidden focus-visible:ring-0',
 					inputClassName
 				)}
 				name={ariaLabel}
