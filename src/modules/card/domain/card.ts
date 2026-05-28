@@ -1,6 +1,6 @@
 import type { DeepPartial } from '@shared/types';
 
-import type { LayerMoveTarget } from './layer/layer';
+import type { LayerMoveTarget, RenderableLayerUpdateProperties } from './layer/layer';
 import { Layer } from './layer/layer';
 
 interface CardMetadata {
@@ -133,6 +133,23 @@ const Card = {
 	},
 	setLayersHidden: (card: Card, layerIds: string[], hidden: boolean): Card => {
 		const layers = Layer.setHiddenByIds(card.layers, layerIds, hidden);
+		const hasChanged = layers.some((layer, index) => layer !== card.layers[index]);
+
+		if (!hasChanged) {
+			return card;
+		}
+
+		return {
+			...card,
+			layers,
+			metadata: {
+				...card.metadata,
+				updatedAt: Date.now(),
+			},
+		};
+	},
+	setRenderableLayerProperties: (card: Card, layerId: string, properties: RenderableLayerUpdateProperties): Card => {
+		const layers = Layer.setRenderablePropertiesById(card.layers, layerId, properties);
 		const hasChanged = layers.some((layer, index) => layer !== card.layers[index]);
 
 		if (!hasChanged) {

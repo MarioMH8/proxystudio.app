@@ -44,6 +44,15 @@
 		"show": "Show layers",
 		"showLayer": "Show layer '{{name}}'",
 		"title": "Layers",
+		"properties": {
+			"title": "Properties",
+			"x": "X",
+			"y": "Y",
+			"width": "Width",
+			"height": "Height",
+			"rotation": "Rotation",
+			"opacity": "Opacity"
+		},
 		"add": "Add layers",
 		"ungroup": "Ungroup"
 	},

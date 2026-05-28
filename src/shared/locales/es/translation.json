@@ -31,7 +31,7 @@
 		"group": "Agrupar",
 		"options": {
 			"art": "Arte",
-			"bottom-info": "Info inferior",
+			"bottom-info": "Información inferior",
 			"frame": "Marco",
 			"group": "Grupo",
 			"serial-number": "Numero de serie",
@@ -44,6 +44,15 @@
 		"show": "Mostrar capas",
 		"showLayer": "Mostrar capa '{{name}}'",
 		"title": "Capas",
+		"properties": {
+			"title": "Propiedades",
+			"x": "X",
+			"y": "Y",
+			"width": "Ancho",
+			"height": "Alto",
+			"rotation": "Rotación",
+			"opacity": "Opacidad"
+		},
 		"add": "Añadir capas",
 		"ungroup": "Desagrupar"
 	},

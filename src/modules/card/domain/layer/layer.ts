@@ -2,6 +2,7 @@ import type { DeepPartial } from '@shared/types';
 
 import { LayerArt } from './layer.art';
 import { LayerBottomInfo } from './layer.bottom-info';
+import { LayerBounds } from './layer.bounds';
 import { LayerFrame } from './layer.frame';
 import { LayerGroup } from './layer.group';
 import { LayerSerialNumber } from './layer.serial-number';
@@ -56,6 +57,12 @@ interface GroupInsertResult {
 interface LayerMoveTarget {
 	position: LayerDropPosition;
 	targetLayerId: string;
+}
+
+interface RenderableLayerUpdateProperties {
+	bounds?: DeepPartial<LayerBounds>;
+	opacity?: number;
+	rotation?: number;
 }
 
 const Layer = {
@@ -270,6 +277,9 @@ const Layer = {
 			layer.type === 'watermark'
 		);
 	},
+	isRenderable: (layer: Layer): layer is EffectiveLayer => {
+		return layer.type !== 'group';
+	},
 	move: (layers: Layer[], movedLayerId: string, target: LayerMoveTarget): Layer[] => {
 		if (movedLayerId === target.targetLayerId) {
 			return layers;
@@ -401,6 +411,59 @@ const Layer = {
 
 		return setHiddenByIdsWithin(layers);
 	},
+	setRenderableProperties: <T extends EffectiveLayer>(layer: T, properties: RenderableLayerUpdateProperties): T => {
+		const bounds = properties.bounds
+			? {
+					...layer.bounds,
+					...properties.bounds,
+				}
+			: layer.bounds;
+		const opacity = properties.opacity ?? layer.opacity;
+		const rotation = properties.rotation ?? layer.rotation;
+
+		const hasChanged =
+			bounds.height !== layer.bounds.height ||
+			bounds.width !== layer.bounds.width ||
+			bounds.x !== layer.bounds.x ||
+			bounds.y !== layer.bounds.y ||
+			opacity !== layer.opacity ||
+			rotation !== layer.rotation;
+
+		if (!hasChanged) {
+			return layer;
+		}
+
+		return {
+			...layer,
+			bounds,
+			opacity,
+			rotation,
+		};
+	},
+	setRenderablePropertiesById: (
+		layers: Layer[],
+		layerId: string,
+		properties: RenderableLayerUpdateProperties
+	): Layer[] => {
+		const nextLayers = layers.map(layer => {
+			if (layer.id === layerId) {
+				return Layer.isRenderable(layer) ? Layer.setRenderableProperties(layer, properties) : layer;
+			}
+
+			if (layer.type !== 'group') {
+				return layer;
+			}
+
+			const children = Layer.setRenderablePropertiesById(layer.children, layerId, properties);
+			const hasChanged = children.some((child, index) => child !== layer.children[index]);
+
+			return hasChanged ? { ...layer, children } : layer;
+		});
+
+		const hasChanged = nextLayers.some((layer, index) => layer !== layers[index]);
+
+		return hasChanged ? nextLayers : layers;
+	},
 	topLevelSelection: (layers: Layer[]): Layer[] => {
 		return layers.filter(layer => {
 			return !layers.some(candidate => candidate.id !== layer.id && Layer.hasLayerId(candidate, layer.id));
@@ -430,6 +493,6 @@ const Layer = {
 	},
 };
 
-export type { EffectiveLayer, LayerDropPosition, LayerMoveTarget };
+export type { EffectiveLayer, LayerDropPosition, LayerMoveTarget, RenderableLayerUpdateProperties };
 
 export { Layer };

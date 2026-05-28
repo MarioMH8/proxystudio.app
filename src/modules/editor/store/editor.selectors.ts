@@ -1,4 +1,4 @@
-import { Card } from '@modules/card/domain';
+import { Card, Layer } from '@modules/card/domain';
 
 import { editorApi } from './editor.api';
 import type { EditorSliceState, EditorStatus, EditorTool, ViewportOffset } from './editor.slice';
@@ -30,6 +30,36 @@ function selectExpandedGroupIds(state: EditorStoreState): string[] {
 
 function selectSelectedLayerIds(state: EditorStoreState): string[] {
 	return state.editor.layerPanel.selectedLayerIds;
+}
+
+function selectSingleSelectedLayer(state: EditorStoreState): Layer | undefined {
+	const selectedLayerIds = selectSelectedLayerIds(state);
+
+	if (selectedLayerIds.length !== 1) {
+		return;
+	}
+
+	const selectedLayerId = selectedLayerIds[0];
+
+	if (!selectedLayerId) {
+		return;
+	}
+
+	const selectedLayerResult = Layer.findLayerById(selectCard(state).layers, selectedLayerId);
+
+	return selectedLayerResult?.layer;
+}
+
+function selectSingleSelectedRenderableLayer(
+	state: EditorStoreState
+): Exclude<Card['layers'][number], { type: 'group' }> | undefined {
+	const layer = selectSingleSelectedLayer(state);
+
+	if (!layer || layer.type === 'group') {
+		return;
+	}
+
+	return layer;
 }
 
 function selectSavedCardId(state: EditorStoreState): string | undefined {
@@ -90,6 +120,8 @@ export {
 	selectIsCardLoading,
 	selectSavedCardId,
 	selectSelectedLayerIds,
+	selectSingleSelectedLayer,
+	selectSingleSelectedRenderableLayer,
 	selectViewportHasInteracted,
 	selectViewportOffset,
 	selectViewportTool,

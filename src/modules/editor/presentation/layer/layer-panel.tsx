@@ -6,6 +6,7 @@ import { Panel } from 'react-resizable-panels';
 
 import LayerList from './layer-list';
 import LayerToolbar from './layer-toolbar';
+import RenderableLayerPropertiesPanel from './renderable-layer-properties-panel';
 
 type LayerPanelProperties = Omit<AsideProperties, 'asChild' | 'side'>;
 
@@ -27,6 +28,7 @@ function LayerPanel(properties: LayerPanelProperties): ReactNode {
 					minSize='15%'>
 					<LayerToolbar />
 					<LayerList />
+					<RenderableLayerPropertiesPanel />
 				</Panel>
 			</FlexBox>
 		</Aside>

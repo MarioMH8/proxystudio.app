@@ -12,6 +12,8 @@ export {
 	selectIsCardLoading,
 	selectSavedCardId,
 	selectSelectedLayerIds,
+	selectSingleSelectedLayer,
+	selectSingleSelectedRenderableLayer,
 	selectViewportHasInteracted,
 	selectViewportOffset,
 	selectViewportTool,
