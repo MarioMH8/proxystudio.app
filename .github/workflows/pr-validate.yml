@@ -189,12 +189,16 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.payload.pull_request.number,
             });
-
-            const renovate_labels = ['renovate', 'dependencies']
+            
+            const user = pr.user;
+            if (user.id === 29139614 && user.type === 'Bot') {
+              core.notice(`Renovate PR`);
+              return;
+            }
 
             const labels = pr.labels.map(l => l.name);
-            const typeLabels = labels.filter(l => l.startsWith('type:') || renovate_labels.includes(l));
-            const requiresChangeset = ['type:bug', 'type:feature', 'type:refactor', ...renovate_labels];
+            const typeLabels = labels.filter(l => l.startsWith('type:'));
+            const requiresChangeset = ['type:bug', 'type:feature', 'type:refactor'];
 
             if (typeLabels.length !== 1 || !requiresChangeset.includes(typeLabels[0])) {
               core.info(`No changeset required for label: ${typeLabels[0] || 'none'}`);
