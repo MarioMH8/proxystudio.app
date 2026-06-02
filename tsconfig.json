@@ -15,9 +15,9 @@
 			"@locales/*": ["./locales/*"],
 			"@pages/*": ["./src/pages/*"],
 			"@router": ["./src/router.tsx"],
-			"@styles": ["./src/index.css"],
 			"@shared/*": ["./src/shared/*"]
-		}
+		},
+		"types": ["bun"]
 	},
 	"exclude": ["node_modules", "dist"]
 }
