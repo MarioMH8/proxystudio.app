@@ -18,5 +18,11 @@ export default hexadrop(
 			'typescript/explicit-module-boundary-types': 'off',
 			'unicorn/prefer-spread': 'off',
 		},
+	},
+	{
+		files: ['commitlint.config.ts'],
+		rules: {
+			'import/no-anonymous-default-export': 'off',
+		},
 	}
 );

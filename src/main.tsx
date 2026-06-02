@@ -1,4 +1,4 @@
-import '@styles';
+import './index.css';
 import 'reflect-metadata';
 import '@shared/i18n';
 
