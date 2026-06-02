@@ -1,3 +1,4 @@
+import background from '@components/background';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { AlertDialog as RadixAlertDialog } from 'radix-ui';
@@ -11,7 +12,7 @@ const variants = cva({
 	},
 	variants: {
 		variant: {
-			default: 'bg-foreground-950/50 dark:bg-foreground-950/80',
+			default: background({ strength: 'soft', variant: 'overlay' }),
 		},
 	},
 });

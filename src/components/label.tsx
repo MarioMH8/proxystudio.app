@@ -1,3 +1,4 @@
+import { flexBoxClassName } from '@components/flex-box';
 import type { FontVariantsProperties } from '@components/font';
 import font from '@components/font';
 import type { VariantProperties } from '@shared/cva';
@@ -7,7 +8,7 @@ import { Label as RadixLabel, Slot } from 'radix-ui';
 import type { ReactNode } from 'react';
 
 const variants = cva({
-	base: 'block flex flex-col gap-2',
+	base: 'block gap-2',
 	compoundVariants: [],
 	defaultVariants: {},
 	variants: {},
@@ -36,6 +37,7 @@ function Label({
 		<Comp
 			className={cn(
 				font({ dimension, leading, tracking, uppercase, variant, weight }),
+				flexBoxClassName({ direction: 'column', items: 'stretch' }),
 				variants({ className }),
 				className
 			)}

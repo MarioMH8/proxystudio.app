@@ -1,3 +1,4 @@
+import border from '@components/border';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { Accordion as RadixAccordion } from 'radix-ui';
@@ -7,7 +8,7 @@ const variants = cva({
 	base: [
 		'py-3 px-4',
 		'overflow-hidden',
-		'border-t border-foreground-200 dark:border-foreground-700/60',
+		border({ side: 'top', strength: 'soft', variant: 'default' }),
 		'data-[state=closed]:animate-accordion-up',
 		'data-[state=open]:animate-accordion-down',
 	],
@@ -18,6 +19,7 @@ const variants = cva({
 	variants: {
 		variant: {
 			default: 'text-foreground-700 dark:text-foreground-300',
+			transparent: cn('px-0 py-2 text-foreground-700 dark:text-foreground-300', border({ side: 'none' })),
 		},
 	},
 });

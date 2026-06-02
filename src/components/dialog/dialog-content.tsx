@@ -1,3 +1,8 @@
+import background from '@components/background';
+import border from '@components/border';
+import { flexBoxClassName } from '@components/flex-box';
+import rounded from '@components/rounded';
+import shadow from '@components/shadow';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import { Dialog as RadixDialog } from 'radix-ui';
@@ -11,17 +16,15 @@ const variants = cva({
 		'left-1/2',
 		'top-1/2',
 		'z-50',
-		'flex',
 		'max-h-[85vh]',
 		'w-full',
 		'max-w-4xl',
 		'-translate-x-1/2',
 		'-translate-y-1/2',
-		'flex-col',
 		'overflow-visible',
-		'rounded-lg',
+		rounded({ dimension: 'lg' }),
 		'p-6',
-		'shadow-xl',
+		shadow({ depth: 'xl' }),
 	],
 	compoundVariants: [],
 	defaultVariants: {
@@ -29,7 +32,7 @@ const variants = cva({
 	},
 	variants: {
 		variant: {
-			default: 'bg-foreground-100 dark:bg-foreground-900 dark:border dark:border-foreground-700',
+			default: background({ strength: 'default', variant: 'default' }),
 		},
 	},
 });
@@ -41,7 +44,12 @@ function DialogContent({ className, variant = 'default', ...properties }: Dialog
 		<RadixDialog.Portal>
 			<DialogOverlay />
 			<RadixDialog.Content
-				className={cn(variants({ className, variant }), className)}
+				className={cn(
+					border({ strength: 'default', variant: 'default' }),
+					flexBoxClassName({ direction: 'column', items: 'none' }),
+					variants({ className, variant }),
+					className
+				)}
 				{...properties}
 			/>
 		</RadixDialog.Portal>

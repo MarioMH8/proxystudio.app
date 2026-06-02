@@ -1,100 +1,73 @@
-import Button from '@components/button';
-import focus from '@components/focus';
-import { variants as imagotipo } from '@components/imagotipo';
-import Isotipo from '@components/isotipo';
-import Logotipo from '@components/logotipo';
-import type { VariantProperties } from '@shared/cva';
+import background from '@components/background';
+import border from '@components/border';
+import FlexBox from '@components/flex-box';
+import Imagotipo from '@components/imagotipo';
 import { cn, cva } from '@shared/cva';
 import type { PropertiesWithAsChild } from '@shared/types';
-import { MenuIcon, XIcon } from 'lucide-react';
 import { Slot } from 'radix-ui';
-import type { ComponentPropsWithRef, ReactNode } from 'react';
-import { Children, useEffect, useId, useState } from 'react';
+import type { ComponentPropsWithRef, ReactElement, ReactNode } from 'react';
+import { Children } from 'react';
 import { Link } from 'react-router';
 
-import NavigationMenuLi from './navigation-menu-li';
-import NavigationMenuUl from './navigation-menu-ul';
+import type { NavigationMenuSlotProperties } from './navigation-menu-slot';
+import NavigationMenuSlot from './navigation-menu-slot';
 
 const variants = cva({
-	base: 'fixed w-full z-20 motion-safe:transition-all flex flex-col items-center',
+	base: cn('w-full px-4 py-2', background({ variant: 'surfaces' })),
 	compoundVariants: [],
 	defaultVariants: {},
-	variants: {
-		bordered: {
-			false: 'border-b-0 border-transparent',
-			true: 'border-b border-foreground-300 dark:border-foreground-800 min-h-28',
-		},
-		scrolled: {
-			false: 'bg-transparent py-6',
-			true: 'backdrop-blur-sm py-2 bg-foreground-200/60 dark:bg-foreground-900/60',
-		},
-	},
+	variants: {},
 });
 
-type NavigationMenuProperties = PropertiesWithAsChild<
-	ComponentPropsWithRef<'nav'> & VariantProperties<typeof variants>
->;
+type NavigationMenuProperties = PropertiesWithAsChild<ComponentPropsWithRef<'nav'>> & {
+	children?: ReactElement<NavigationMenuSlotProperties> | ReactElement<NavigationMenuSlotProperties>[];
+};
 
 function NavigationMenu({ asChild = false, children, className, ...properties }: NavigationMenuProperties): ReactNode {
-	const [isMobileMenuOpened, setIsMobileMenuOpened] = useState(false);
-	const [scrolled, setScrolled] = useState(false);
-	const id = useId();
-
 	const Comp = asChild ? Slot.Slot : 'nav';
 
-	useEffect(() => {
-		const handleScroll = () => {
-			setScrolled(window.scrollY > 50);
-			setIsMobileMenuOpened(false);
-		};
+	const childrenArray = Children.toArray(children) as ReactElement[];
 
-		window.addEventListener('scroll', handleScroll);
-		handleScroll();
-
-		return () => window.removeEventListener('scroll', handleScroll);
-	}, []);
-
-	useEffect(() => {
-		const handleResize = () => setIsMobileMenuOpened(false);
-
-		window.addEventListener('resize', handleResize);
-
-		return () => window.removeEventListener('resize', handleResize);
-	}, []);
-
-	const links = Children.toArray(children).map((link, index) => (
-		<NavigationMenuLi key={`${id}-${index.toFixed(0)}`}>{link}</NavigationMenuLi>
-	));
+	const slots = childrenArray.filter(
+		child => child.type === NavigationMenuSlot
+	) as ReactElement<NavigationMenuSlotProperties>[];
+	const leftSlot = slots.find(slot => slot.props.position === 'left')?.props.children;
+	const centerSlot = slots.find(slot => slot.props.position === 'center')?.props.children;
+	const rightSlot = slots.find(slot => slot.props.position === 'right')?.props.children;
 
 	return (
-		<Comp
-			className={cn(
-				variants({
-					bordered: scrolled || isMobileMenuOpened,
-					className,
-					scrolled: scrolled || isMobileMenuOpened,
-				}),
-				className
-			)}
-			{...properties}>
-			<div className='container mx-auto py-0 flex flex-wrap justify-between items-center'>
-				<Link
-					className={cn(focus({ variant: 'primary' }), imagotipo(), 'rounded-lg')}
-					to='/'
-					viewTransition>
-					<Isotipo />
-					<Logotipo />
-				</Link>
-				<Button
-					className='flex lg:hidden'
-					icon
-					onClick={() => setIsMobileMenuOpened(!isMobileMenuOpened)}
-					transparent>
-					{isMobileMenuOpened ? <XIcon /> : <MenuIcon />}
-				</Button>
-				<NavigationMenuUl mobileMenuOpened={isMobileMenuOpened}>{links}</NavigationMenuUl>
-			</div>
-		</Comp>
+		<FlexBox
+			asChild
+			direction='row'
+			items='center'
+			justify='between'>
+			<Comp
+				className={cn(variants({ className }), border({ side: 'bottom' }), className)}
+				{...properties}>
+				<FlexBox
+					className='gap-4 h-full flex-1'
+					items='center'>
+					<Imagotipo asChild>
+						<Link
+							to='/'
+							viewTransition
+						/>
+					</Imagotipo>
+					{leftSlot}
+				</FlexBox>
+				<FlexBox
+					className='gap-4 h-full'
+					items='center'>
+					{centerSlot}
+				</FlexBox>
+				<FlexBox
+					className='gap-4 h-full  flex-1'
+					items='center'
+					justify='end'>
+					{rightSlot}
+				</FlexBox>
+			</Comp>
+		</FlexBox>
 	);
 }
 

@@ -1,10 +1,10 @@
+import { Gallery } from '@modules/gallery/presentation';
 import type { ReactNode } from 'react';
-import { Fragment } from 'react';
 
-function Gallery(): ReactNode {
-	return <Fragment />;
+function GalleryPage(): ReactNode {
+	return <Gallery />;
 }
 
-Gallery.displayName = 'GalleryPage';
+GalleryPage.displayName = 'GalleryPage';
 
-export default Gallery;
+export default GalleryPage;

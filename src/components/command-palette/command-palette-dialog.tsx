@@ -1,25 +1,42 @@
+import background from '@components/background';
+import border from '@components/border';
+import rounded from '@components/rounded';
+import shadow from '@components/shadow';
+import { cn } from '@shared/cva';
 import { Command } from 'cmdk';
+import { Dialog } from 'radix-ui';
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
-interface CommandPaletteDialogProps {
+import { useCommandPaletteContext } from './command-palette-context';
+
+interface CommandPaletteDialogProperties {
 	children: ReactNode;
-	/** Called when the dialog requests open state change. */
-	onOpenChange: (open: boolean) => void;
-	/** Whether the dialog is currently open. */
-	open: boolean;
 }
 
 /**
  * Styled wrapper for the cmdk Command.Dialog.
  * Renders a modal overlay + centered panel above all other content (z-50).
  */
-function CommandPaletteDialog({ children, onOpenChange, open }: CommandPaletteDialogProps): ReactNode {
+function CommandPaletteDialog({ children }: CommandPaletteDialogProperties): ReactNode {
+	const { open, setOpen } = useCommandPaletteContext();
+	const { t } = useTranslation();
+
 	return (
 		<Command.Dialog
-			contentClassName='fixed inset-x-4 top-[20%] z-50 mx-auto max-w-xl overflow-hidden rounded-xl border border-foreground-200 bg-foreground-50 shadow-2xl dark:border-foreground-700 dark:bg-foreground-900'
-			onOpenChange={onOpenChange}
+			aria-label={t('commandPalette.dialogTitle')}
+			contentClassName={cn(
+				'fixed inset-x-4 top-[20%] z-50 mx-auto max-w-xl overflow-hidden',
+				background({ strength: 'soft', variant: 'default' }),
+				rounded({ dimension: 'xl' }),
+				shadow({ depth: '2xl' }),
+				border({ strength: 'default', variant: 'default' })
+			)}
+			onOpenChange={setOpen}
 			open={open}
-			overlayClassName='fixed inset-0 z-50 bg-black/40 backdrop-blur-sm'>
+			overlayClassName={cn('fixed inset-0 z-50 backdrop-blur-sm', background({ variant: 'overlay' }))}>
+			<Dialog.Title className='sr-only'>{t('commandPalette.dialogTitle')}</Dialog.Title>
+			<Dialog.Description className='sr-only'>{t('commandPalette.dialogDescription')}</Dialog.Description>
 			{children}
 		</Command.Dialog>
 	);
@@ -27,5 +44,5 @@ function CommandPaletteDialog({ children, onOpenChange, open }: CommandPaletteDi
 
 CommandPaletteDialog.displayName = 'CommandPaletteDialog';
 
-export type { CommandPaletteDialogProps };
+export type { CommandPaletteDialogProperties };
 export default CommandPaletteDialog;

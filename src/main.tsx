@@ -1,12 +1,17 @@
-import './index.css';
+import '@styles';
+import 'reflect-metadata';
+import '@shared/i18n';
 
-import Layout from '@shared/layout';
-import { lazy, StrictMode, Suspense } from 'react';
+import { TooltipProvider } from '@components/tooltip';
+import { SettingsSync } from '@modules/settings/presentation';
+import { settingsApi } from '@modules/settings/store';
+import Router from '@router';
+import { store } from '@shared/store';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { Provider as ReduxProvider } from 'react-redux';
 
-const Creator = lazy(() => import('@pages/creator'));
-const Gallery = lazy(() => import('@pages/gallery'));
+await store.dispatch(settingsApi.endpoints.findSettings.initiate());
 
 const root = document.querySelector('#root');
 
@@ -16,27 +21,11 @@ if (!root) {
 
 createRoot(root).render(
 	<StrictMode>
-		<BrowserRouter>
-			<Suspense fallback={<div className='flex h-screen items-center justify-center'>Loading…</div>}>
-				<Routes>
-					<Route
-						element={<Layout fullScreen />}
-						path='/'>
-						<Route
-							element={<Creator />}
-							index
-						/>
-					</Route>
-					<Route
-						element={<Layout />}
-						path='/gallery'>
-						<Route
-							element={<Gallery />}
-							path='/gallery'
-						/>
-					</Route>
-				</Routes>
-			</Suspense>
-		</BrowserRouter>
+		<ReduxProvider store={store}>
+			<TooltipProvider>
+				<SettingsSync />
+				<Router />
+			</TooltipProvider>
+		</ReduxProvider>
 	</StrictMode>
 );

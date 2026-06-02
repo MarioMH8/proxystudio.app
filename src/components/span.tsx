@@ -9,8 +9,15 @@ import type { ComponentPropsWithRef, ReactNode } from 'react';
 const variants = cva({
 	base: '',
 	compoundVariants: [],
-	defaultVariants: {},
-	variants: {},
+	defaultVariants: {
+		truncate: false,
+	},
+	variants: {
+		truncate: {
+			false: '',
+			true: 'truncate',
+		},
+	},
 });
 
 type SpanProperties = PropertiesWithAsChild<
@@ -23,6 +30,7 @@ function Span({
 	dimension,
 	leading,
 	tracking,
+	truncate,
 	uppercase,
 	variant,
 	weight,
@@ -34,7 +42,7 @@ function Span({
 		<Comp
 			className={cn(
 				font({ dimension, leading, tracking, uppercase, variant, weight }),
-				variants({ className }),
+				variants({ className, truncate }),
 				className
 			)}
 			{...properties}

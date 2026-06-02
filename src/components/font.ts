@@ -2,10 +2,11 @@ import type { VariantProperties } from '@shared/cva';
 import { cva } from '@shared/cva';
 
 const variants = cva({
-	base: 'motion-safe:transition-colors',
+	base: '',
 	compoundVariants: [],
 	defaultVariants: {
 		dimension: 'base',
+		tracking: 'wide',
 		weight: 'normal',
 	},
 	variants: {
@@ -26,6 +27,7 @@ const variants = cva({
 			tight: 'leading-tight',
 		},
 		tracking: {
+			normal: 'tracking-normal',
 			tight: 'tracking-tight',
 			wide: 'tracking-wide',
 			wider: 'tracking-wider',
@@ -35,6 +37,7 @@ const variants = cva({
 			true: 'uppercase',
 		},
 		variant: {
+			danger: 'text-error-600 dark:text-error-400',
 			default: 'text-foreground-800 dark:text-foreground-200',
 			middle: 'text-foreground-500',
 			muted: 'text-foreground-600 dark:text-foreground-400',
@@ -43,6 +46,7 @@ const variants = cva({
 		weight: {
 			bold: 'font-bold',
 			extrabold: 'font-extrabold',
+			extralight: 'font-extralight',
 			light: 'font-light',
 			medium: 'font-medium',
 			normal: 'font-normal',

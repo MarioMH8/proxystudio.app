@@ -1,4 +1,10 @@
+import background from '@components/background';
+import border from '@components/border';
+import { flexBoxClassName } from '@components/flex-box';
 import focus from '@components/focus';
+import font from '@components/font';
+import hover from '@components/hover';
+import rounded from '@components/rounded';
 import type { VariantProperties } from '@shared/cva';
 import { cn, cva } from '@shared/cva';
 import type { PropertiesWithAsChild } from '@shared/types';
@@ -6,85 +12,127 @@ import { Slot } from 'radix-ui';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 const variants = cva({
-	base: 'motion-safe:transition-all flex items-center justify-center gap-2',
+	base: 'gap-2 tracking-wide',
 	compoundVariants: [
 		{
-			className: 'p-3 w-12 h-12',
+			className: 'p-3 w-11 h-11',
 			dimension: 'base',
 			icon: true,
 		},
 		{
-			className: 'px-6 py-3 rounded-lg',
+			className: 'px-5 py-2.5',
 			dimension: 'base',
 			icon: false,
 		},
 		{
-			className: 'p-2 w-8 h-8',
+			className: 'p-2 w-9 h-9',
 			dimension: 'sm',
 			icon: true,
 		},
 		{
-			className: 'px-4 py-2 rounded',
+			className: 'px-3.5 py-2',
 			dimension: 'sm',
 			icon: false,
 		},
 		{
-			className: 'p-2 w-6 h-6',
+			className: 'p-1.5 w-8 h-8',
 			dimension: 'xs',
 			icon: true,
 		},
 		{
-			className: 'px-3 py-1 rounded',
+			className: 'px-2 py-1.5',
 			dimension: 'xs',
 			icon: false,
 		},
 		{
-			className: 'bg-foreground-300/50 dark:bg-foreground-700/50',
+			className: cn(
+				font({ tracking: 'normal', variant: 'muted' }),
+				background({ strength: 'soft', variant: 'default' }),
+				border({ strength: 'default', variant: 'default' }),
+				hover({ strength: 'soft', variant: 'default' }),
+				'rounded-full'
+			),
+			surface: 'command',
+		},
+		{
+			className: 'gap-2 px-2.75 py-1.5',
+			dimension: 'base',
+			icon: false,
+			surface: 'command',
+		},
+		{
+			className: 'gap-1.5 px-2.25 py-1',
+			dimension: 'sm',
+			icon: false,
+			surface: 'command',
+		},
+		{
+			className: 'gap-1.25 px-1.75 py-0.625',
+			dimension: 'xs',
+			icon: false,
+			surface: 'command',
+		},
+		{
+			className: background({ strength: 'default', variant: 'default' }),
+			surface: 'default',
 			transparent: false,
 			variant: 'default',
 		},
 		{
-			className: 'bg-primary-600',
+			className: background({ variant: 'primary' }),
+			surface: 'default',
 			transparent: false,
 			variant: 'primary',
 		},
 		{
-			className: 'bg-error-600',
+			className: background({ variant: 'danger' }),
+			surface: 'default',
 			transparent: false,
 			variant: 'danger',
 		},
 		{
-			className: 'bg-success-600',
+			className: background({ variant: 'success' }),
+			surface: 'default',
 			transparent: false,
 			variant: 'success',
 		},
 		{
-			className: 'text-primary-600 hover:text-white',
+			className: cn('text-foreground-600', hover({ strength: 'soft', variant: 'default' })),
+			surface: 'default',
+			transparent: true,
+			variant: 'default',
+		},
+		{
+			className: cn('text-primary-600', hover({ effect: 'text', variant: 'inverse' })),
+			surface: 'default',
 			transparent: true,
 			variant: 'primary',
 		},
 		{
-			className: 'text-error-600 hover:bg-error-600/10 dark:text-error-400 dark:hover:bg-error-400/10',
+			className: cn('text-error-600 dark:text-error-400', hover({ strength: 'soft', variant: 'danger' })),
+			surface: 'default',
 			transparent: true,
 			variant: 'danger',
 		},
 		{
-			className: 'text-success-600 hover:bg-success-600/10 dark:text-success-400 dark:hover:bg-success-400/10',
+			className: cn('text-success-600 dark:text-success-400', hover({ strength: 'soft', variant: 'success' })),
+			surface: 'default',
 			transparent: true,
 			variant: 'success',
 		},
 	],
 	defaultVariants: {
 		dimension: 'base',
+		surface: 'default',
 		transparent: false,
 		variant: 'default',
-		weight: 'bold',
+		weight: 'normal',
 	},
 	variants: {
 		dimension: {
-			base: 'text-base',
-			sm: 'text-sm',
-			xs: 'text-xs',
+			base: ['text-base', rounded({ dimension: 'lg' })],
+			sm: ['text-sm', rounded({ dimension: 'base' })],
+			xs: ['text-xs', rounded({ dimension: 'sm' })],
 		},
 		disabled: {
 			false: [],
@@ -92,21 +140,25 @@ const variants = cva({
 		},
 		icon: {
 			false: '',
-			true: 'rounded-full',
+			true: '',
+		},
+		surface: {
+			command: '',
+			default: '',
 		},
 		transparent: {
 			false: '',
-			true: 'rounded-full',
+			true: '',
 		},
 		variant: {
-			danger: 'text-white hover:bg-error-600 dark:hover:bg-error-400',
-			default:
-				'text-foreground-950 hover:bg-foreground-400/40 dark:text-foreground-50 dark:hover:bg-foreground-700',
-			primary: 'text-white hover:bg-primary-500',
-			success: 'text-white hover:bg-success-600 dark:hover:bg-success-400',
+			danger: cn('text-white', hover({ variant: 'danger' })),
+			default: cn('text-foreground-950 dark:text-foreground-50', hover({ variant: 'default' })),
+			primary: cn('text-white', hover({ variant: 'primary' })),
+			success: cn('text-white', hover({ variant: 'success' })),
 		},
 		weight: {
 			bold: 'font-bold',
+			light: 'font-light',
 			medium: 'font-medium',
 			normal: 'font-normal',
 			semibold: 'font-semibold',
@@ -122,9 +174,10 @@ function Button({
 	dimension = 'base',
 	disabled,
 	icon = false,
+	surface,
 	transparent = false,
 	variant,
-	weight = 'medium',
+	weight = 'normal',
 	...properties
 }: ButtonProperties): ReactNode {
 	const Comp = asChild ? Slot.Slot : 'button';
@@ -132,8 +185,9 @@ function Button({
 	return (
 		<Comp
 			className={cn(
-				focus({ variant }),
-				variants({ className, dimension, disabled, icon, transparent, variant, weight }),
+				focus({ dimension, variant }),
+				flexBoxClassName({ items: 'center', justify: 'center' }),
+				variants({ className, dimension, disabled, icon, surface, transparent, variant, weight }),
 				className
 			)}
 			disabled={disabled}
@@ -145,7 +199,5 @@ function Button({
 Button.displayName = 'Button';
 
 export type { ButtonProperties };
-
-export { variants };
 
 export default Button;

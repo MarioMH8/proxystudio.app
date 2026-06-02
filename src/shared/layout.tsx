@@ -1,33 +1,26 @@
 import Main from '@components/main';
-import { NavigationMenu, NavigationMenuLink } from '@components/navigation-menu';
 import Toaster from '@components/toaster';
 import { TooltipProvider } from '@components/tooltip';
+import { NavigationMenu } from '@modules/navigation-menu/presentation';
+import { selectTheme } from '@modules/settings/store';
+import { useAppSelector } from '@shared/store';
+import UpdateNotifier from '@shared/update-notifier';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
 import { Outlet } from 'react-router';
 
-import UpdateNotifier from './update-notifier';
+function Layout(): ReactNode {
+	const theme = useAppSelector(selectTheme);
 
-interface LayoutProps {
-	fullScreen?: boolean;
-}
-
-function Layout({ fullScreen }: LayoutProps): ReactNode {
 	return (
 		<Fragment>
-			<NavigationMenu>
-				<NavigationMenuLink
-					to='/gallery'
-					viewTransition>
-					Gallery
-				</NavigationMenuLink>
-			</NavigationMenu>
+			<NavigationMenu />
 			<TooltipProvider>
-				<Main fullscreen={fullScreen}>
+				<Main className='min-h-0 flex-1'>
 					<Outlet />
 				</Main>
 			</TooltipProvider>
-			<Toaster theme='system' />
+			<Toaster theme={theme} />
 			<UpdateNotifier />
 		</Fragment>
 	);
