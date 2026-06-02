@@ -12,7 +12,20 @@ jobs:
       - name: Verify PR body references an issue
         uses: actions/github-script@v9
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            
+            const user = pr.user;
+            if (user.login === 'renovate' && user.type === 'bot') {
+              core.info(`🔄 Renovate PR`);
+              return;
+            }
+            
             const body = context.payload.pull_request.body || '';
             const pattern = /(?:closes|fixes|resolves)\s+#(\d+)/gi;
             const matches = [...body.matchAll(pattern)];
@@ -27,7 +40,7 @@ jobs:
               );
             } else {
               const numbers = matches.map(m => `#${m[1]}`).join(', ');
-              console.log(`✅ Found issue reference(s): ${numbers}`);
+              core.info(`✅ Found issue reference(s): ${numbers}`);
             }
 
   check-issue-status:
@@ -53,7 +66,7 @@ jobs:
             const failures = [];
 
             for (const issueNumber of issueNumbers) {
-              console.log(`Checking issue #${issueNumber} for status:approved label...`);
+              core.info(`Checking issue #${issueNumber} for status:approved label...`);
 
               let issue;
               try {
@@ -69,7 +82,7 @@ jobs:
               }
 
               const labels = issue.labels.map(l => l.name);
-              console.log(`Labels on issue #${issueNumber}: ${labels.join(', ') || '(none)'}`);
+              core.info(`Labels on issue #${issueNumber}: ${labels.join(', ') || '(none)'}`);
 
               if (!labels.includes('status:approved')) {
                 failures.push(
@@ -78,7 +91,7 @@ jobs:
                   '   Please comment on the issue and wait for it to be labelled status:approved.'
                 );
               } else {
-                console.log(`✅ Issue #${issueNumber} has status:approved.`);
+                core.info(`✅ Issue #${issueNumber} has status:approved.`);
               }
             }
 
@@ -87,7 +100,7 @@ jobs:
             }
             
 
-  check-PR-label:
+  check-pr-label:
     name: Check PR label
     runs-on: ubuntu-latest
     steps:
@@ -105,8 +118,8 @@ jobs:
             const labels = pr.labels.map(l => l.name);
             const typeLabels = labels.filter(l => l.startsWith('type:'));
             
-            console.log(`All PR labels: ${labels.join(', ') || '(none)'}`);
-            console.log(`type:* labels found: ${typeLabels.join(', ') || '(none)'}`);
+            core.info(`All PR labels: ${labels.join(', ') || '(none)'}`);
+            core.info(`type:* labels found: ${typeLabels.join(', ') || '(none)'}`);
             
             if (typeLabels.length === 0) {
               core.setFailed(
@@ -122,5 +135,5 @@ jobs:
                 'A PR must have exactly ONE type:* label. Please remove the extra one(s).'
               );
             } else {
-              console.log(`✅ PR has type label: ${typeLabels[0]}`);
+              core.info(`✅ PR has type label: ${typeLabels[0]}`);
             }
