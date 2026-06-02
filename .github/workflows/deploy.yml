@@ -66,8 +66,20 @@ jobs:
           git config --global user.email "github@mariomh.com"
           git config --global user.name "$GITHUB_ACTOR"
 
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: bun changeset publish
+          version: bun changeset version
+          commit: 'chore: release'
+          title: 'chore: release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v4
+        if: steps.changesets.outputs.hasChangesets == 'false'
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
