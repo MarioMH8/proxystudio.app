@@ -24,7 +24,7 @@
         "react": "19.2.7",
         "react-dom": "19.2.7",
         "react-hotkeys-hook": "5.2.4",
-        "react-i18next": "17.0.6",
+        "react-i18next": "17.0.8",
         "react-redux": "9.2.0",
         "react-resizable-panels": "4.10.0",
         "react-router": "7.16.0",
@@ -1586,7 +1586,7 @@
 
     "react-hotkeys-hook": ["react-hotkeys-hook@5.2.4", "", { "peerDependencies": { "react": ">=16.8.0", "react-dom": ">=16.8.0" } }, "sha512-BgKg+A1+TawkYluh5Bo4cTmcgMN5L29uhJbDUQdHwPX+qgXRjIPYU5kIDHyxnAwCkCBiu9V5OpB2mpyeluVF2A=="],
 
-    "react-i18next": ["react-i18next@17.0.6", "", { "dependencies": { "@babel/runtime": "^7.29.2", "html-parse-stringify": "^3.0.1", "use-sync-external-store": "^1.6.0" }, "peerDependencies": { "i18next": ">= 26.0.1", "react": ">= 16.8.0", "typescript": "^5 || ^6" }, "optionalPeers": ["typescript"] }, "sha512-WzJ6SMKF+GTD7JZZqxSR1AKKmXjaSu39sClUrNlwxS4Tl7a99O+ltFy6yhPMO+wgZuxpQjJ2PZkfrQKmAqrLhw=="],
+    "react-i18next": ["react-i18next@17.0.8", "", { "dependencies": { "@babel/runtime": "^7.29.2", "html-parse-stringify": "^3.0.1", "use-sync-external-store": "^1.6.0" }, "peerDependencies": { "i18next": ">= 26.2.0", "react": ">= 16.8.0", "react-dom": "*", "react-native": "*", "typescript": "^5 || ^6" }, "optionalPeers": ["react-dom", "react-native", "typescript"] }, "sha512-0ooKbGLU8JXhe1zwpQUWIeXSgLPOfwJmgheWRIUpcoA0CpyabpGhayjdG+/eA5esC1AQ8h2jWpXjJfzQzeDOCw=="],
 
     "react-is": ["react-is@16.13.1", "", {}, "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="],
 
