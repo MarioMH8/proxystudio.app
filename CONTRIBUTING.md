@@ -13,7 +13,6 @@ Before you dive in, please read this guide fully. We have a structured workflow 
 - [Development Setup](#development-setup)
 - [Testing](#testing)
 - [Commit Convention](#commit-convention)
-- [Delivery Strategy for SDD Changes](#delivery-strategy-for-sdd-changes)
 - [Pull Request Rules](#pull-request-rules)
 - [Code of Conduct](#code-of-conduct)
 
