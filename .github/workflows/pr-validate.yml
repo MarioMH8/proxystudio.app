@@ -22,8 +22,8 @@ jobs:
             
             const user = pr.user;
             console.log(user);
-            if (user.login === 'renovate' && user.type === 'bot') {
-              core.info(`🔄 Renovate PR`);
+            if (user.id === 29139614 && user.type === 'Bot') {
+              core.notice(`Renovate PR`);
               return;
             }
             
@@ -32,16 +32,16 @@ jobs:
             const matches = [...body.matchAll(pattern)];
             
             if (matches.length === 0) {
+              core.error(`Every PR must be linked to an approved issue.`);
               core.setFailed(
-                '❌ PR body must reference a linked issue using one of:\n' +
+                'PR body must reference a linked issue using one of:\n' +
                 '  - Closes #<number>\n' +
                 '  - Fixes #<number>\n' +
-                '  - Resolves #<number>\n\n' +
-                'Every PR must be linked to an approved issue.'
+                '  - Resolves #<number>'
               );
             } else {
               const numbers = matches.map(m => `#${m[1]}`).join(', ');
-              core.info(`✅ Found issue reference(s): ${numbers}`);
+              core.info(`Found issue reference(s): ${numbers}`);
             }
 
   check-issue-status:
@@ -59,7 +59,13 @@ jobs:
             const matches = [...body.matchAll(pattern)];
 
             if (matches.length === 0) {
-              core.setFailed('❌ Could not find issue reference in PR body.');
+              core.error(`Every PR must be linked to an approved issue.`);
+              core.setFailed(
+                'PR body must reference a linked issue using one of:\n' +
+                '  - Closes #<number>\n' +
+                '  - Fixes #<number>\n' +
+                '  - Resolves #<number>'
+              );
               return;
             }
 
@@ -78,7 +84,7 @@ jobs:
                 });
                 issue = response.data;
               } catch (err) {
-                failures.push(`❌ Could not fetch issue #${issueNumber}: ${err.message}`);
+                failures.push(`Could not fetch issue #${issueNumber}: ${err.message}`);
                 continue;
               }
 
@@ -87,16 +93,17 @@ jobs:
 
               if (!labels.includes('status:approved')) {
                 failures.push(
-                  `❌ Issue #${issueNumber} does not have the "status:approved" label.\n` +
+                  `Issue #${issueNumber} does not have the "status:approved" label.\n` +
                   '   Issues must be approved by a maintainer before work begins.\n' +
                   '   Please comment on the issue and wait for it to be labelled status:approved.'
                 );
               } else {
-                core.info(`✅ Issue #${issueNumber} has status:approved.`);
+                core.info(`Issue #${issueNumber} has status:approved.`);
               }
             }
 
             if (failures.length > 0) {
+              core.error(`Every PR must be linked to an approved issue.`);
               core.setFailed(failures.join('\n\n'));
             }
             
@@ -123,16 +130,17 @@ jobs:
             core.info(`type:* labels found: ${typeLabels.join(', ') || '(none)'}`);
             
             if (typeLabels.length === 0) {
+              core.error(`Every PR must be a type:* label.`);
               core.setFailed(
-                '❌ PR must have exactly one type:* label.\n\n' +
+                'PR must have exactly one type:* label.\n\n' +
                 'Valid labels:\n' +
                 '  type:bug, type:feature, type:refactor,\n' +
-                '  type:docs, type:chore, type:breaking-change\n\n' +
-                'Ask a maintainer to add the appropriate label.'
+                '  type:docs, type:chore, type:breaking-change'
               );
             } else if (typeLabels.length > 1) {
+              core.error(`Every PR must one type:* label.`);
               core.setFailed(
-                `❌ PR has ${typeLabels.length} type:* labels: ${typeLabels.join(', ')}\n` +
+                `PR has ${typeLabels.length} type:* labels: ${typeLabels.join(', ')}\n` +
                 'A PR must have exactly ONE type:* label. Please remove the extra one(s).'
               );
             } else {
