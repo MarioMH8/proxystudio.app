@@ -21,6 +21,7 @@ jobs:
             });
             
             const user = pr.user;
+            console.log(user);
             if (user.login === 'renovate' && user.type === 'bot') {
               core.info(`🔄 Renovate PR`);
               return;
