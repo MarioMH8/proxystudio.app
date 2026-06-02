@@ -190,9 +190,11 @@ jobs:
               pull_number: context.payload.pull_request.number,
             });
 
+            const renovate_labels = ['renovate', 'dependencies']
+
             const labels = pr.labels.map(l => l.name);
-            const typeLabels = labels.filter(l => l.startsWith('type:'));
-            const requiresChangeset = ['type:bug', 'type:feature', 'type:refactor', 'renovate', 'dependencies'];
+            const typeLabels = labels.filter(l => l.startsWith('type:') || renovate_labels.includes(l));
+            const requiresChangeset = ['type:bug', 'type:feature', 'type:refactor', ...renovate_labels];
 
             if (typeLabels.length !== 1 || !requiresChangeset.includes(typeLabels[0])) {
               core.info(`No changeset required for label: ${typeLabels[0] || 'none'}`);
