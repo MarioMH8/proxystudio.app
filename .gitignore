@@ -27,3 +27,8 @@ Thumbs.db
 
 # Agent tooling (SDD, skill registry)
 .atl/
+
+# OpenSpec
+#openspec
+.opencode/commands/opsx*.md
+.opencode/skills/openspec-*
