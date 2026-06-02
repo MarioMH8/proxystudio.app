@@ -21,7 +21,6 @@ jobs:
             });
             
             const user = pr.user;
-            console.log(user);
             if (user.id === 29139614 && user.type === 'Bot') {
               core.notice(`Renovate PR`);
               return;
@@ -54,6 +53,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            
+            const user = pr.user;
+            if (user.id === 29139614 && user.type === 'Bot') {
+              core.notice(`Renovate PR`);
+              return;
+            }
+
             const body = context.payload.pull_request.body || '';
             const pattern = /(?:closes|fixes|resolves)\s+#(\d+)/gi;
             const matches = [...body.matchAll(pattern)];
@@ -106,7 +117,6 @@ jobs:
               core.error(`Every PR must be linked to an approved issue.`);
               core.setFailed(failures.join('\n\n'));
             }
-            
 
   check-pr-label:
     name: Check PR label
@@ -128,6 +138,12 @@ jobs:
             
             core.info(`All PR labels: ${labels.join(', ') || '(none)'}`);
             core.info(`type:* labels found: ${typeLabels.join(', ') || '(none)'}`);
+            
+            const user = pr.user;
+            if (user.id === 29139614 && user.type === 'Bot') {
+              core.notice(`Renovate PR`);
+              return;
+            }
             
             if (typeLabels.length === 0) {
               core.error(`Every PR must be a type:* label.`);
