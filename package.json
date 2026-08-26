@@ -80,7 +80,7 @@
 		"eslint": "9.39.4",
 		"husky": "9.1.7",
 		"lint-staged": "17.0.7",
-		"sharp": "0.34.5",
+		"sharp": "0.35.4",
 		"sharp-ico": "0.1.5",
 		"tailwindcss": "4.3.0",
 		"tailwindcss-flow-type": "0.0.2",
