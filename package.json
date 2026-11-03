@@ -1,6 +1,6 @@
 {
 	"name": "proxystudio.app",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"author": "MarioMH <dev@mariomh.com>",
 	"description": "A website that creates custom TCG cards",
 	"keywords": [
